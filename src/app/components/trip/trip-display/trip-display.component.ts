@@ -22,7 +22,7 @@ export class TripDisplayComponent implements OnInit {
     this.trip.destinity = "Valencia";
     this.isSpecial = true;
     this.trip.cancelledReason = "";
-    this.trip.pictures = ['../../../../assets/playa1.jpg','../../../../assets/playa2.jpg','../../../../assets/playa3.jpg'];
+    this.trip.pictures = ['../../../../assets/images/playa1.jpg','../../../../assets/images/playa2.jpg','../../../../assets/imageplaya3.jpg'];
   }
 
   cancelTrip() {

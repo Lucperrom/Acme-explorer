@@ -1,0 +1,7 @@
+{
+    "/trips/search?startFrom=:startFrom&pageSize&tripTitle=:keyword":
+    "/trips?q=:keyword&_page=startFrom&_limit=:pageSize",
+    "/trips/:tripId":
+    "/trips/:tripId"
+}
+

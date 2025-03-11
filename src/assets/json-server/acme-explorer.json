@@ -1,0 +1,44 @@
+{
+    "trips": [
+        {
+            "id": 1,
+            "title": "Trip to the Moon",
+            "description": "A trip to the moon",
+            "price": 1000,
+            "startDate": "2020-01-01",
+            "endDate": "2020-01-10",
+            "destinity" : "A trip to the moon",
+            "requirements": ["Helmet", "Oxygen tank", "Space suit"],
+            "ticker": "TRP-0001",
+            "image": ["../images/playa1.jpg"],
+            "cancelledReason": ""
+
+        },
+        {
+            "id": 2,
+            "title": "Trip to Mars",
+            "description": "A trip to Mars",
+            "price": 2000,
+            "startDate": "2020-02-01",
+            "endDate": "2020-02-10",
+            "destinity" : "A trip to the Mars",
+            "requirements": ["Helmet", "Oxygen tank", "Space suit"],
+            "ticker": "TRP-0002",
+            "image": ["../images/playa2.jpg"],
+            "cancelledReason": ""
+        },
+        {
+            "id": 3,
+            "title": "Trip to Venus",
+            "description": "A trip to Venus",
+            "price": 3000,
+            "startDate": "2020-03-01",
+            "endDate": "2020-03-10", 
+            "destinity" : "A trip to Venus",
+            "requirements": ["Helmet", "Oxygen tank", "Space suit"],
+            "ticker": "TRP-0003",         
+            "image": ["../images/playa3.jpg"],
+            "cancelledReason": ""
+        }
+    ]
+}
