@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Trip } from 'src/app/models/trip.model';
-import {faTrash} from '@fortawesome/free-solid-svg-icons';
+import { TripService } from 'src/app/services/trip.service';
+import { ActivatedRoute } from '@angular/router';
+import { faTrash } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-trip-display',
@@ -12,17 +14,20 @@ export class TripDisplayComponent implements OnInit {
   protected isSpecial = false;
   protected trash = faTrash;
 
-  constructor() { 
+  constructor(private tripService: TripService, private route: ActivatedRoute) { 
     this.trip = new Trip();
-    this.trip.title = "Trip to the beach";
-    this.trip.description = "A trip to the beach to relax";
-    this.trip.startDate = new Date('2025-03-18');
-    this.trip.endDate = new Date('2025-03-20');
-    this.trip.price = 100;
-    this.trip.destinity = "Valencia";
-    this.isSpecial = true;
-    this.trip.cancelledReason = "";
-    this.trip.pictures = ['../../../../assets/images/playa1.jpg','../../../../assets/images/playa2.jpg','../../../../assets/imageplaya3.jpg'];
+    console.log("inicializando trip", this.trip);
+  }
+
+  async ngOnInit(): Promise<void> {
+    const tripId = this.route.snapshot.paramMap.get('id');
+    if (tripId) {
+      this.trip = await this.tripService.getTripById(tripId);
+      this.trip.startDate = new Date(this.trip.startDate);
+      this.trip.endDate = new Date(this.trip.endDate);
+      console.log("Trip loaded", this.trip);
+      this.isSpecial = this.trip.price < 100;
+    }
   }
 
   cancelTrip() {
@@ -77,9 +82,4 @@ export class TripDisplayComponent implements OnInit {
   getDestinity() {
     return this.trip.destinity;
   }
-
-
-  ngOnInit(): void {
-  }
-
 }

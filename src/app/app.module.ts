@@ -14,7 +14,10 @@ import { LoginComponent } from './components/security/login/login.component';
 import { environment } from 'src/environments/environment';
 import {provideAuth, getAuth} from '@angular/fire/auth';
 import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
-import { getAnalytics } from "firebase/analytics";
+import { NotFoundComponent } from './components/not-found/not-found.component';
+import { NavbarComponent } from './components/navbar/navbar.component';
+import { HomeComponent } from './components/home/home.component';
+import { AuthGuard } from './guards/auth.guard';
 
 @NgModule({
   declarations: [
@@ -22,7 +25,10 @@ import { getAnalytics } from "firebase/analytics";
     TripDisplayComponent,
     TripListComponent,
     RegisterComponent,
-    LoginComponent
+    LoginComponent,
+    NotFoundComponent,
+    NavbarComponent,
+    HomeComponent
   ],
   imports: [
     BrowserModule,
@@ -36,7 +42,7 @@ import { getAnalytics } from "firebase/analytics";
     provideFirebaseApp(() => initializeApp(environment.firebaseConfig)),
     provideAuth(() => getAuth())
   ],
-  providers: [],
+  providers: [AuthGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

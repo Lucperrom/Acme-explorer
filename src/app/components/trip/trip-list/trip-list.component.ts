@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Trip } from '../../../models/trip.model';
 import { TripService } from '../../../services/trip.service';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
-
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-trip-list',
   templateUrl: './trip-list.component.html',
@@ -13,16 +13,20 @@ export class TripListComponent implements OnInit {
   protected trash = faTrash;
   //no se si esto es cancelled
 
-  constructor (private tripService: TripService) {
-    this.trips = this.tripService.createTrips();
+  constructor(private tripService: TripService, private router: Router) {
+    this.trips = [];
   }
   
-
   isCancelled(trip: Trip) {
     return trip.cancelledReason != "";
   }
 
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
+    console.log("Loading trips...");
+    this.trips = await this.tripService.getAllTrips();
+    console.log("Trips were loaded", this.trips);
   }
-
+  goToTrip(tripId: string) {
+    this.router.navigate(['/trips', tripId]);
+  }
 }

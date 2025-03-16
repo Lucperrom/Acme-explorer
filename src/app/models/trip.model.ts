@@ -20,6 +20,10 @@ export class Trip extends Entity {
 
     constructor() {
         super();
+        this._requirements = new Array<string>();
+        this._pictures = new Array<string>();
+        this._startDate = new Date();
+        this._endDate = new Date();
     }
 
 //GETTERS

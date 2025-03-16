@@ -24,8 +24,8 @@ export class RegisterComponent implements OnInit {
       surname: [''],
       email: [''],
       password: [''],
-      role: [''],
       phone: [''],
+      role: [''],
       validated: [true]
     });
   }

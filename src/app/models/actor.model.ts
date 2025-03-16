@@ -2,9 +2,9 @@ import { Entity } from "./entity.model";
 
 export class Actor extends Entity {
     private _name!: string;
-
     private _surname!: string;
     private _phone!: string;
+    private _role!: string;
     private _email!: string;
     private _password!: string;
     private _validate!: boolean;
@@ -24,7 +24,12 @@ export class Actor extends Entity {
     public get phone(): string {
         return this._phone;
     }
-
+    public get role(): string {
+        return this._role;
+    }
+    public set role(value: string) {
+        this._role = value;
+    }
     public get email(): string {
         return this._email;
     }

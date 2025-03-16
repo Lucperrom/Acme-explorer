@@ -1,0 +1,28 @@
+/* Styles for the Not Found component */
+body {
+    background-color: #f8d7da; /* Light red background */
+    color: #721c24; /* Dark red text color */
+    font-family: Arial, sans-serif; /* Font style */
+    text-align: center; /* Centered text */
+    padding: 50px; /* Padding around the content */
+}
+
+h1 {
+    font-size: 48px; /* Large font size for the heading */
+    margin-bottom: 20px; /* Space below the heading */
+}
+
+p {
+    font-size: 24px; /* Medium font size for the message */
+    margin-bottom: 30px; /* Space below the message */
+}
+
+a {
+    font-size: 20px; /* Font size for the link */
+    color: #0056b3; /* Blue color for the link */
+    text-decoration: none; /* Remove underline from the link */
+}
+
+a:hover {
+    text-decoration: underline; /* Underline on hover */
+}
