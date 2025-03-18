@@ -30,8 +30,8 @@
                         </li>
                     </ul>
                 </td>
-                <td>{{ trip.startDate }}</td>
-                <td>{{ trip.endDate }}</td>
+                <td>{{ trip.startDate | date:'d MMMM yyyy' }}</td>
+                <td>{{ trip.endDate | date:'d MMMM yyyy' }}</td>
                 <td>{{ trip.origin }}</td>
                 <td>{{ trip.destinity }}</td>
                 <td>{{ trip.cancelledReason }}</td>
