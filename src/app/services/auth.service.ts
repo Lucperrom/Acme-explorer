@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpHeaders, HttpClient } from '@angular/common/http';
 import { Actor } from '../models/actor.model';
-import { Auth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged, User, authState } from '@angular/fire/auth';
+import { Auth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged, User, authState, deleteUser } from '@angular/fire/auth';
 import { environment } from '../../environments/environment';
 import { firstValueFrom, map, Observable, BehaviorSubject } from 'rxjs';
 import { Router } from '@angular/router';
@@ -26,16 +26,18 @@ export class AuthService {
   }
 
   async signUp(actor: Actor) {
-    createUserWithEmailAndPassword(this.auth, actor.email, actor.password)
-      .then(async res => {
-        console.log('You have successfully signed up with firebase', res);
-        const url = `${environment.backendApiBaseUrl + '/actors'}`;
-        const body = JSON.stringify(actor);
-        const response = await firstValueFrom(this.http.post(url, body, httpOptions));
-        console.log('Resolving fristValueFrom: ', response);
-        this.router.navigate(['/trips']);
-        return (response);
-      })
+    try {
+      const res = await createUserWithEmailAndPassword(this.auth, actor.email, actor.password);
+      console.log('You have successfully signed up with firebase', res);
+      const url = `${environment.backendApiBaseUrl + '/actors'}`;
+      const body = JSON.stringify(actor);
+      const response = await firstValueFrom(this.http.post(url, body, httpOptions));
+      console.log('Resolving firstValueFrom: ', response);
+      return true; // Removed navigation
+    } catch (err) {
+      console.error('There was an error signing up with firebase', err);
+      throw err;
+    }
   }
 
   getRoles(): string[] {
@@ -46,8 +48,7 @@ export class AuthService {
     return new Promise<any>((resolve, reject) => {
       signInWithEmailAndPassword(this.auth, email, password)
         .then(res => {
-          this.router.navigate(['/trips']);
-          resolve(res);
+          resolve(true); // Removed navigation
         })
         .catch(err => {
           reject(err);
@@ -59,14 +60,40 @@ export class AuthService {
     return new Promise<any>((resolve, reject) => {
       signOut(this.auth)
         .then(res => {
-          console.log('You have successfully logged out', res);
-          resolve(res);
+          console.log('You have successfully logged out');
+          resolve(true);
         })
         .catch(err => {
           console.log('There was an error logging out', err);
           reject(err);
         });
     })
+  }
+
+  removeUser(email?: string, password?: string) {
+    return new Promise<any>(async (resolve, reject) => {
+      try {
+        let userToDelete: User | null = null;
+        // Defaults to delete the currently logged in user
+        if (email && password) {
+          const userCredential = await signInWithEmailAndPassword(this.auth, email, password);
+          userToDelete = userCredential.user;
+        } else {
+          userToDelete = this.auth.currentUser;
+        }
+
+        if (userToDelete) {
+          await deleteUser(userToDelete);
+          console.log('User successfully deleted');
+          resolve(true);
+        } else {
+          reject('No user to delete');
+        }
+      } catch (err) {
+        console.error('Error deleting user', err);
+        reject(err);
+      }
+    });
   }
 
   isLoggedIn(): boolean {

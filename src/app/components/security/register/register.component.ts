@@ -13,7 +13,7 @@ export class RegisterComponent implements OnInit {
   roleList: string[];
 
 
-  constructor(private authService: AuthService, private fb: FormBuilder) { 
+  constructor(private authService: AuthService, private fb: FormBuilder, private router: Router) { // Inject Router
     this.roleList = this.authService.getRoles();
     this.createForm();
   }
@@ -32,10 +32,12 @@ export class RegisterComponent implements OnInit {
 
   onRegister() {
     this.authService.signUp(this.registrationForm.value)
-    .then( res => {
-      console.log(res);
-    }, err => {
-      console.log(err);
+    .then(res => {
+      console.log('Registration successful', res);
+      this.router.navigate(['/trips']); // Navigate after successful registration
+    })
+    .catch(err => {
+      console.error('Registration failed', err);
     });
   }
 
