@@ -7,13 +7,32 @@ import { NotFoundComponent } from './components/not-found/not-found.component';
 import { TripDisplayComponent } from './components/trip/trip-display/trip-display.component';
 import { HomeComponent } from './components/home/home.component';
 import { AuthGuard } from './guards/auth.guard';
+import { ActorRoleGuard } from './guards/actor-role.guard';
+import { DeniedAccessComponent } from './components/security/denied-access/denied-access.component';
 const routes: Routes = [
-  { path: 'login', component: LoginComponent },
-  { path: 'register', component: RegisterComponent },
+  { path: 'login', component: LoginComponent, canActivate: [ActorRoleGuard], data: {expectedRole: 'anonymous'} },
+  { path: 'register', component: RegisterComponent, canActivate: [ActorRoleGuard], data: {expectedRole: 'anonymous' }},
   { path: 'trips/:id', component: TripDisplayComponent, canActivate: [AuthGuard] }, // Ruta para un viaje específico
-  { path: 'trips', component: TripListComponent, canActivate: [AuthGuard] },
+  { path: 'trips', children:[
+    // {path: 'load', component: TripLoadComponent, canActivate: [ActorRoleGuard], data: {expectedRole: 'administrator' },
+    //Crear TripEditComponent
+    // {path: ':id', component: TripEditComponent},
+    {path: '', component: TripListComponent}
+   ]},
+
+   //Crear ApplicationListComponent
+  // { path: 'applications', component: ApplicationListComponent, children: [
+  //   {path:'list-pending', component: ApplicationListComponent},
+  //   {path:'list-rejected', component: ApplicationListComponent},
+  //   {path:'list-due', component: ApplicationListComponent},
+  //   {path:'list-accepted',component: ApplicationListComponent}
+  // ]},
+  //PENDIENTE
+  // {path: 'terms-and-conditions', component: TermsAndConditionsComponent},,
+  // {path: 'dashboard', component: DashboardComponent},
   { path: 'home', component: HomeComponent },
-  { path: '', redirectTo: '/home', pathMatch: 'full' },
+  { path: 'denied-access', component: DeniedAccessComponent},
+  { path: '', redirectTo: '/trips', pathMatch: 'full' },
   { path: '**', component: NotFoundComponent },
 ];
 

@@ -3,7 +3,7 @@ import { HttpHeaders, HttpClient } from '@angular/common/http';
 import { Actor } from '../models/actor.model';
 import { Auth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged, User, authState, deleteUser } from '@angular/fire/auth';
 import { environment } from '../../environments/environment';
-import { firstValueFrom, map, Observable, BehaviorSubject } from 'rxjs';
+import { firstValueFrom, map, Observable, BehaviorSubject, Subject } from 'rxjs';
 import { Router } from '@angular/router';
 
 const httpOptions = {
@@ -18,13 +18,15 @@ const httpOptions = {
 export class AuthService {
   private loggedInUserSubject = new BehaviorSubject<boolean>(false);
   loggedInUser$ = this.loggedInUserSubject.asObservable();
+  private currentActor!: Actor;
+  private loginStatus = new Subject<Boolean>();
 
   constructor(private auth: Auth, private http: HttpClient, private router: Router) {
     onAuthStateChanged(this.auth, (user) => {
       this.loggedInUserSubject.next(!!user);
     });
   }
-
+  
   async signUp(actor: Actor) {
     try {
       const res = await createUserWithEmailAndPassword(this.auth, actor.email, actor.password);
@@ -47,7 +49,11 @@ export class AuthService {
   login(email: string, password: string) {
     return new Promise<any>((resolve, reject) => {
       signInWithEmailAndPassword(this.auth, email, password)
-        .then(res => {
+        .then(async _ => {
+          const url = environment.backendApiBaseUrl + `/actors?email=` + email;
+          const actor = await firstValueFrom(this.http.get<Actor[]>(url))
+          this.currentActor = actor[0];
+          this.loginStatus.next(true);
           resolve(true); // Removed navigation
         })
         .catch(err => {
@@ -56,12 +62,17 @@ export class AuthService {
     })
   }
 
+  getCurrentActor(): Actor {
+    return this.currentActor;
+  }
+
   logout() {
     return new Promise<any>((resolve, reject) => {
       signOut(this.auth)
         .then(res => {
+          this.loginStatus.next(false)
           console.log('You have successfully logged out');
-          resolve(true);
+          resolve(res);
         })
         .catch(err => {
           console.log('There was an error logging out', err);
@@ -101,5 +112,9 @@ export class AuthService {
     let loggedIn = this.loggedInUserSubject.value;
     console.log('User is logged in: ', loggedIn);
     return loggedIn;
+  }
+  
+  getStatus(): Observable<Boolean> {
+    return this.loginStatus.asObservable();
   }
 }

@@ -3,6 +3,7 @@ import { Trip } from '../../../models/trip.model';
 import { TripService } from '../../../services/trip.service';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import { Router } from '@angular/router';
+import { MessageService } from 'src/app/services/message.service';
 @Component({
   selector: 'app-trip-list',
   templateUrl: './trip-list.component.html',
@@ -13,7 +14,7 @@ export class TripListComponent implements OnInit {
   protected trash = faTrash;
   //no se si esto es cancelled
 
-  constructor(private tripService: TripService, private router: Router) {
+  constructor(private tripService: TripService, private router: Router, private messageService: MessageService) {
     this.trips = [];
   }
   
@@ -28,5 +29,10 @@ export class TripListComponent implements OnInit {
   }
   goToTrip(tripId: string) {
     this.router.navigate(['/trips', tripId]);
+  }
+
+  removeTrip(index:number){
+    this.trips[index].deleted = true;
+    this.messageService.notifyMessage("Item successfully deleted", "alert alert-success")
   }
 }

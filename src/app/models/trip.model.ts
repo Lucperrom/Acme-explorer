@@ -15,6 +15,7 @@ export class Trip extends Entity {
     private _origin!: string;
     private _destinity!: string;
     private _cancelledReason!: string;
+    private _deleted!: boolean;
 
 //CONSTRUCTOR
 
@@ -64,7 +65,11 @@ export class Trip extends Entity {
 
     public get pictures(): Array<string> {
         return this._pictures;
-    }   
+    }  
+    
+    public get deleted(): boolean {
+        return this._deleted;
+    }  
     
     //SETTER
     
@@ -101,5 +106,8 @@ export class Trip extends Entity {
     }
     public set pictures(value: Array<string>) {
         this._pictures = value;
+    }
+    public set deleted(value: boolean) {
+        this._deleted = value;
     }
 }

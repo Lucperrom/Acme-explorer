@@ -9,6 +9,37 @@
       "role": "",
       "validated": true,
       "id": 1
+    },
+    {
+      "_id": "0",
+      "_version": 0,
+      "_name": "John",
+      "_surname": "Doe",
+      "_email": "newuser15@example.com",
+      "_password": "password123",
+      "_role": "CONSUMER",
+      "_phone": "123456789",
+      "id": 2
+    },
+    {
+      "name": "",
+      "surname": "",
+      "email": "pedrito@gmail.com",
+      "password": "pedrito",
+      "phone": "",
+      "role": "",
+      "validated": true,
+      "id": 3
+    },
+    {
+      "name": "",
+      "surname": "",
+      "email": "juanito@gmail.com",
+      "password": "juanito",
+      "phone": "",
+      "role": "",
+      "validated": true,
+      "id": 4
     }
   ],
   "trips": [

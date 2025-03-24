@@ -18,6 +18,9 @@ import { NotFoundComponent } from './components/not-found/not-found.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { HomeComponent } from './components/home/home.component';
 import { AuthGuard } from './guards/auth.guard';
+import { MessageComponent } from './components/master/message/message.component';
+import { FooterComponent } from './components/master/footer/footer.component';
+import { DeniedAccessComponent } from './components/security/denied-access/denied-access.component';
 
 @NgModule({
   declarations: [
@@ -28,7 +31,10 @@ import { AuthGuard } from './guards/auth.guard';
     LoginComponent,
     NotFoundComponent,
     NavbarComponent,
-    HomeComponent
+    HomeComponent,
+    MessageComponent,
+    FooterComponent,
+    DeniedAccessComponent
   ],
   imports: [
     BrowserModule,

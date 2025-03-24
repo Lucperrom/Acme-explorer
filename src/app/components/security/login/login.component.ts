@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from 'src/app/services/auth.service'
 import { NgForm } from '@angular/forms'
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -9,9 +9,12 @@ import { Router } from '@angular/router';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
-  constructor(private authService: AuthService, private router: Router) { }
 
+  private returnUrl!: string;
+
+  constructor(private authService: AuthService, private route: ActivatedRoute , private router: Router) { }
   ngOnInit(): void {
+    this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
   }
 
   onLogin(form: NgForm) {
