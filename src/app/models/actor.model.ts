@@ -9,8 +9,17 @@ export class Actor extends Entity {
     private _password!: string;
     private _validate!: boolean;
 
-    public constructor() {
+    public constructor(data?: any) {
         super();
+        if (data) {
+            this._name = data._name || '';
+            this._surname = data._surname || '';
+            this._phone = data._phone || '';
+            this._role = data._role || '';
+            this._email = data._email || '';
+            this._password = data._password || '';
+            this._validate = data._validate || false;
+        }
     }
 
     public get name(): string {

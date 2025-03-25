@@ -52,7 +52,7 @@ export class AuthService {
         .then(async _ => {
           const url = environment.backendApiBaseUrl + `/actors?email=` + email;
           const actor = await firstValueFrom(this.http.get<Actor[]>(url))
-          this.currentActor = actor[0];
+          this.currentActor = new Actor(actor[0]);
           this.loginStatus.next(true);
           resolve(true); // Removed navigation
         })

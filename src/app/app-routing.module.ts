@@ -9,7 +9,11 @@ import { HomeComponent } from './components/home/home.component';
 import { AuthGuard } from './guards/auth.guard';
 import { ActorRoleGuard } from './guards/actor-role.guard';
 import { DeniedAccessComponent } from './components/security/denied-access/denied-access.component';
+import { ProfileEditComponent } from './components/profile-edit/profile-edit.component';
+import { DashboardComponent } from './components/dashboard/dashboard.component';
+import { TermsAndConditionsComponent } from './components/terms-and-conditions/terms-and-conditions.component';
 const routes: Routes = [
+  { path: 'profile/:id', component: ProfileEditComponent },
   { path: 'login', component: LoginComponent, canActivate: [ActorRoleGuard], data: {expectedRole: 'anonymous'} },
   { path: 'register', component: RegisterComponent, canActivate: [ActorRoleGuard], data: {expectedRole: 'anonymous' }},
   { path: 'trips/:id', component: TripDisplayComponent, canActivate: [AuthGuard] }, // Ruta para un viaje específico
@@ -28,8 +32,8 @@ const routes: Routes = [
   //   {path:'list-accepted',component: ApplicationListComponent}
   // ]},
   //PENDIENTE
-  // {path: 'terms-and-conditions', component: TermsAndConditionsComponent},,
-  // {path: 'dashboard', component: DashboardComponent},
+  { path: 'terms-and-conditions', component: TermsAndConditionsComponent },
+  { path: 'dashboard', component: DashboardComponent, canActivate: [ActorRoleGuard], data: {expectedRole: 'administrator'} },
   { path: 'home', component: HomeComponent },
   { path: 'denied-access', component: DeniedAccessComponent},
   { path: '', redirectTo: '/trips', pathMatch: 'full' },

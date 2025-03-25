@@ -20,7 +20,7 @@ export class NavbarComponent implements OnInit {
     this.authService.getStatus().subscribe((loggedIn:Boolean) => {
       if (loggedIn) {
         this.currentActor = this.authService.getCurrentActor();
-        this.activeRole = this.currentActor.role.toString().toLowerCase()
+        this.activeRole = this.currentActor.role
       }
     })
 
