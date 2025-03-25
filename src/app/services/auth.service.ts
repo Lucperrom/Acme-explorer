@@ -5,6 +5,7 @@ import { Auth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signO
 import { environment } from '../../environments/environment';
 import { firstValueFrom, map, Observable, BehaviorSubject, Subject } from 'rxjs';
 import { Router } from '@angular/router';
+import { addDoc, collection, Firestore, query, where, getDocs } from '@angular/fire/firestore';
 
 const httpOptions = {
   headers: new HttpHeaders({
@@ -21,13 +22,33 @@ export class AuthService {
   private currentActor!: Actor;
   private loginStatus = new Subject<Boolean>();
 
-  constructor(private auth: Auth, private http: HttpClient, private router: Router) {
+  constructor(private auth: Auth, private firestore: Firestore,private http: HttpClient, private router: Router) {
     onAuthStateChanged(this.auth, (user) => {
       this.loggedInUserSubject.next(!!user);
     });
   }
   
   async signUp(actor: Actor) {
+    /*
+    return new Promise<any>((resolve, reject) => {
+      createUserWithEmailAndPassword(this.auth, actor.email, actor.password).then( async res => {
+        console.log('You have succesfully signed up with Firebase!', res);
+        const actorRef = collection(this.firestore, 'actors');
+        addDoc(actorRef, actor).then((docRef) => {
+          console.log("Document written with ID: ", docRef.id);
+          resolve(actor);
+        }).catch((error) => {
+          console.error("Error adding document: ", error);
+          reject();
+        });
+      }).catch(error => {
+        console.log('Something is wrong, check on details: ', error.message);
+        reject(error);
+      })
+    })
+    */
+
+
     try {
       const res = await createUserWithEmailAndPassword(this.auth, actor.email, actor.password);
       console.log('You have successfully signed up with firebase', res);
@@ -46,7 +67,7 @@ export class AuthService {
     return ['CLERK', 'ADMINISTRATOR', 'CONSUMER']
   }
 
-  login(email: string, password: string) {
+  async login(email: string, password: string) {
     return new Promise<any>((resolve, reject) => {
       signInWithEmailAndPassword(this.auth, email, password)
         .then(async _ => {
@@ -60,9 +81,28 @@ export class AuthService {
           reject(err);
         });
     })
+
+    // const response = await signInWithEmailAndPassword(this.auth, email, password)
+    // console.log(response)
+    // const actorRef = collection(this.firestore, 'actors');
+    // const q = query(actorRef, where("email", "==", email));
+    // const querySnapshot = await getDocs(q);
+    // console.log(querySnapshot);
+    // querySnapshot.forEach((doc) => {
+    //   let actor = this.getCurrentActor(doc)
+    //   this.loginStatus.next(actor)
+    //   return(doc.data())
+    // })
   }
 
   getCurrentActor(): Actor {
+  // getCurrentActor(doc: any): Actor {
+    // const data = doc.data();
+    // let actor = new Actor()
+    // actor.id = data['id']
+    // actor.name = data['name']
+    // actor.surname = data['surname']
+    // actor.phone = data['phone']
     return this.currentActor;
   }
 

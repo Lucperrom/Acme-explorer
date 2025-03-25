@@ -24,6 +24,11 @@
             ],
             "styles": [
               "node_modules/bootstrap/dist/css/bootstrap.min.css",
+              "./node_modules/@swimlane/ngx-datatable/index.css",
+              "./node_modules/@swimlane/ngx-datatable/themes/material.css",
+              "./node_modules/@swimlane/ngx-datatable/themes/dark.css",
+              "./node_modules/@swimlane/ngx-datatable/themes/bootstrap.css",
+              "./node_modules/@swimlane/ngx-datatable/assets/icons.css",
               "src/styles.css"
             ],
             "scripts": [
@@ -96,6 +101,16 @@
               "src/styles.css"
             ],
             "scripts": []
+          }
+        },
+        "deploy": {
+          "builder": "@angular/fire:deploy",
+          "options": {
+            "prerender": false,
+            "ssr": false,
+            "browserTarget": "acme-explorer:build:production",
+            "firebaseProject": "acme-explorer-bc8fd",
+            "firebaseHostingSite": "acme-explorer-bc8fd"
           }
         }
       }

@@ -1,0 +1,25 @@
+[debug] [2025-03-25T17:40:06.178Z] ----------------------------------------------------------------------
+[debug] [2025-03-25T17:40:06.183Z] Command:       C:\nvm4w\nodejs\node.exe C:\Users\lucia\AppData\Roaming\npm\node_modules\firebase-tools\lib\bin\firebase.js init
+[debug] [2025-03-25T17:40:06.184Z] CLI Version:   11.30.0
+[debug] [2025-03-25T17:40:06.184Z] Platform:      win32
+[debug] [2025-03-25T17:40:06.184Z] Node Version:  v21.6.2
+[debug] [2025-03-25T17:40:06.184Z] Time:          Tue Mar 25 2025 18:40:06 GMT+0100 (hora estándar de Europa central)
+[debug] [2025-03-25T17:40:06.185Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2025-03-25T17:40:06.326Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2025-03-25T17:40:06.327Z] > authorizing via signed-in user (luciaperezromero07@gmail.com)
+[info] 
+     ######## #### ########  ######## ########     ###     ######  ########
+     ##        ##  ##     ## ##       ##     ##  ##   ##  ##       ##
+     ######    ##  ########  ######   ########  #########  ######  ######
+     ##        ##  ##    ##  ##       ##     ## ##     ##       ## ##
+     ##       #### ##     ## ######## ########  ##     ##  ######  ########
+
+You're about to initialize a Firebase project in this directory:
+
+  C:\Users\lucia\OneDrive\Escritorio\Máster\TC\Acme-explorer
+
+Before we get started, keep in mind:
+
+  * You are initializing within an existing Firebase project directory
+
