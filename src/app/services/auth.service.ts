@@ -43,14 +43,15 @@ export class AuthService {
   }
 
   getRoles(): string[] {
-    return ['CLERK', 'ADMINISTRATOR', 'CONSUMER']
+    return ['EXPLORER', 'ADMINISTRATOR', 'MANAGER', 'SPONSOR']
   }
 
   login(email: string, password: string) {
     return new Promise<any>((resolve, reject) => {
       signInWithEmailAndPassword(this.auth, email, password)
         .then(async _ => {
-          const url = environment.backendApiBaseUrl + `/actors?email=` + email;
+          console.log(email)
+          const url = environment.backendApiBaseUrl + `/actors?_email=` + email;
           const actor = await firstValueFrom(this.http.get<Actor[]>(url))
           this.currentActor = new Actor(actor[0]);
           this.loginStatus.next(true);
@@ -71,6 +72,7 @@ export class AuthService {
       signOut(this.auth)
         .then(res => {
           this.loginStatus.next(false)
+          this.currentActor = new Actor();
           console.log('You have successfully logged out');
           resolve(res);
         })

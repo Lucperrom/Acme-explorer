@@ -12,15 +12,14 @@ import { DeniedAccessComponent } from './components/security/denied-access/denie
 import { ProfileEditComponent } from './components/profile-edit/profile-edit.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { TermsAndConditionsComponent } from './components/terms-and-conditions/terms-and-conditions.component';
+import { TripLoadComponent } from './components/trip/trip-load/trip-load.component';
 const routes: Routes = [
   { path: 'profile/:id', component: ProfileEditComponent },
   { path: 'login', component: LoginComponent, canActivate: [ActorRoleGuard], data: {expectedRole: 'anonymous'} },
   { path: 'register', component: RegisterComponent, canActivate: [ActorRoleGuard], data: {expectedRole: 'anonymous' }},
-  { path: 'trips/:id', component: TripDisplayComponent, canActivate: [AuthGuard] }, // Ruta para un viaje específico
   { path: 'trips', children:[
-    // {path: 'load', component: TripLoadComponent, canActivate: [ActorRoleGuard], data: {expectedRole: 'administrator' },
-    //Crear TripEditComponent
-    // {path: ':id', component: TripEditComponent},
+    { path: 'load', component: TripLoadComponent, canActivate: [ActorRoleGuard], data: {expectedRole: 'administrator' }},
+    {path: ':id', component: TripDisplayComponent, canActivate: [AuthGuard]},
     {path: '', component: TripListComponent}
    ]},
 

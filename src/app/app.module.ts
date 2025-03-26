@@ -24,6 +24,7 @@ import { DeniedAccessComponent } from './components/security/denied-access/denie
 import { ProfileEditComponent } from './components/profile-edit/profile-edit.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { TermsAndConditionsComponent } from './components/terms-and-conditions/terms-and-conditions.component';
+import { TripLoadComponent } from './components/trip/trip-load/trip-load.component';
 
 @NgModule({
   declarations: [
@@ -40,7 +41,8 @@ import { TermsAndConditionsComponent } from './components/terms-and-conditions/t
     DeniedAccessComponent,
     ProfileEditComponent,
     DashboardComponent,
-    TermsAndConditionsComponent
+    TermsAndConditionsComponent,
+    TripLoadComponent
   ],
   imports: [
     BrowserModule,

@@ -3,7 +3,7 @@
     {
       "name": "",
       "surname": "Manuel",
-      "email": "m.otero.barbasan@gmail.com",
+      "_email": "m.otero.barbasan@gmail.com",
       "password": "123456",
       "phone": "662640469",
       "role": "",
@@ -22,9 +22,31 @@
       "id": 2
     },
     {
+      "_id": "10",
+      "_version": 0,
+      "_name": "admin",
+      "_surname": "admin",
+      "_email": "admin@admin.com",
+      "_password": "admin-explorer",
+      "_role": "ADMINISTRATOR",
+      "_phone": "123456789",
+      "id": 10
+    },
+    {
+      "_id": "5",
+      "_version": 0,
+      "_name": "juan",
+      "_surname": "juan",
+      "_email": "juan@juan.es",
+      "_password": "juanjuanjuan",
+      "_role": "MANAGER",
+      "_phone": "123456789",
+      "id": 5
+    },
+    {
       "name": "",
       "surname": "",
-      "email": "pedrito@gmail.com",
+      "_email": "pedrito@gmail.com",
       "password": "pedrito",
       "phone": "",
       "role": "",
@@ -34,7 +56,7 @@
     {
       "name": "",
       "surname": "",
-      "email": "juanito@gmail.com",
+      "_email": "juanito@gmail.com",
       "password": "juanito",
       "phone": "",
       "role": "",
