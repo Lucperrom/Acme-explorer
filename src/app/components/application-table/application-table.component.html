@@ -1,0 +1,44 @@
+<div>
+    <ngx-datatable >
+        <!-- Row Detail Template -->
+
+        <ngx-datatable-row-detail [rowHeight]="100" #myDetailRow (toggle)="onDetailToggle($event)">
+            <ng-template let-row let-expanded="expanded" ngx-datatable-row-detail-template>
+                <div style="padding-left:35px;">
+                    <div><strong>Ordered items</strong></div>
+                    <div *ngFor="let i of row.orderedItems">
+                        {{ i.name }} (sku: {{ i.sku }})
+                    </div>
+                </div>
+            </ng-template>
+        </ngx-datatable-row-detail>
+
+        <!-- Column Templates -->
+        <ngx-datatable-column [width]="70" [resizeable]="false" [sortable]="false" [draggable]="false"
+            [canAutoResize]="false" i18n-name name="Details">
+            <ng-template let-row let-expanded="expanded" ngx-datatable-cell-template>
+                <a href="javascript:void(0)" title="Expand/Collapse Row" (click)="toggleExpandRow(row)">
+                    <i class="fa-solid fa-table-list"></i>
+                </a>
+            </ng-template>
+        </ngx-datatable-column>
+        <ngx-datatable-column i18n-name name="Ticker" prop="ticker">
+            <ng-template let-value="value" ngx-datatable-cell-template>
+                <strong>{{ value }}</strong>
+            </ng-template>
+        </ngx-datatable-column>
+
+        <ngx-datatable-column i18n-name name="Name" prop="consumerName">
+            <ng-template let-value="value" ngx-datatable-cell-template>
+                {{ value }}
+            </ng-template>
+        </ngx-datatable-column>
+
+        <ngx-datatable-column i18n-name name="Address" prop="deliveryAddress">
+            <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+                {{ value }}
+            </ng-template>
+        </ngx-datatable-column>
+
+    </ngx-datatable>
+</div>

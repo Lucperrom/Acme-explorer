@@ -16,6 +16,8 @@ export class TripDisplayComponent implements OnInit {
 
   constructor(private tripService: TripService, private route: ActivatedRoute) { 
     this.trip = new Trip();
+    this.trip.pictures = ["/assets/images/playa3.jpg"]
+    this.trip.title = "megusta"
     console.log("inicializando trip", this.trip);
   }
 

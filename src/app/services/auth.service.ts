@@ -5,6 +5,7 @@ import { Auth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signO
 import { environment } from '../../environments/environment';
 import { firstValueFrom, map, Observable, BehaviorSubject, Subject } from 'rxjs';
 import { Router } from '@angular/router';
+import { addDoc, collection, Firestore, query, where, getDocs } from '@angular/fire/firestore';
 
 const httpOptions = {
   headers: new HttpHeaders({
@@ -21,49 +22,81 @@ export class AuthService {
   private currentActor!: Actor;
   private loginStatus = new Subject<Boolean>();
 
-  constructor(private auth: Auth, private http: HttpClient, private router: Router) {
+  constructor(private auth: Auth, private firestore: Firestore,private http: HttpClient, private router: Router) {
     onAuthStateChanged(this.auth, (user) => {
       this.loggedInUserSubject.next(!!user);
     });
   }
   
   async signUp(actor: Actor) {
-    try {
-      const res = await createUserWithEmailAndPassword(this.auth, actor.email, actor.password);
-      console.log('You have successfully signed up with firebase', res);
-      const url = `${environment.backendApiBaseUrl + '/actors'}`;
-      const body = JSON.stringify(actor);
-      const response = await firstValueFrom(this.http.post(url, body, httpOptions));
-      console.log('Resolving firstValueFrom: ', response);
-      return true; // Removed navigation
-    } catch (err) {
-      console.error('There was an error signing up with firebase', err);
-      throw err;
-    }
+  
+    return new Promise<any>((resolve, reject) => {
+      createUserWithEmailAndPassword(this.auth, actor.email, actor.password).then( async res => {
+        console.log('You have succesfully signed up with Firebase!', res);
+        const actorRef = collection(this.firestore, 'actors');
+        addDoc(actorRef, actor).then((docRef) => {
+          console.log("Document written with ID: ", docRef.id);
+          resolve(actor);
+        }).catch((error) => {
+          console.error("Error adding document: ", error);
+          reject();
+        });
+      }).catch(error => {
+        console.log('Something is wrong, check on details: ', error.message);
+        reject(error);
+      })
+    })
+
+
+
+    // try {
+    //   const res = await createUserWithEmailAndPassword(this.auth, actor.email, actor.password);
+    //   console.log('You have successfully signed up with firebase', res);
+    //   const url = `${environment.backendApiBaseUrl + '/actors'}`;
+    //   const body = JSON.stringify(actor);
+    //   const response = await firstValueFrom(this.http.post(url, body, httpOptions));
+    //   console.log('Resolving firstValueFrom: ', response);
+    //   return true; // Removed navigation
+    // } catch (err) {
+    //   console.error('There was an error signing up with firebase', err);
+    //   throw err;
+    // }
   }
 
   getRoles(): string[] {
-    return ['CLERK', 'ADMINISTRATOR', 'CONSUMER']
+    return ['EXPLORER', 'ADMINISTRATOR', 'MANAGER', 'SPONSOR']
   }
 
-  login(email: string, password: string) {
-    return new Promise<any>((resolve, reject) => {
-      signInWithEmailAndPassword(this.auth, email, password)
-        .then(async _ => {
-          const url = environment.backendApiBaseUrl + `/actors?email=` + email;
-          const actor = await firstValueFrom(this.http.get<Actor[]>(url))
-          this.currentActor = new Actor(actor[0]);
-          this.loginStatus.next(true);
-          resolve(true); // Removed navigation
-        })
-        .catch(err => {
-          reject(err);
-        });
+  async login(email: string, password: string) {
+    const response = await signInWithEmailAndPassword(this.auth, email, password)
+    console.log(response)
+    const actorRef = collection(this.firestore, 'actors');
+    const q = query(actorRef, where("email", "==", email));
+    const querySnapshot = await getDocs(q);
+    console.log(querySnapshot);
+    querySnapshot.forEach((doc) => {
+      let actor = this.getCurrentActorFromDoc(doc)
+      this.currentActor = actor
+      this.loginStatus.next(true)
+      console.log(doc)
+      return(doc.data())
     })
   }
 
   getCurrentActor(): Actor {
     return this.currentActor;
+  }
+  getCurrentActorFromDoc(doc: any): Actor {
+    const data = doc.data();
+    let actor = new Actor()
+    actor.id = data['id']
+    actor.name = data['name']
+    actor.email = data['email']
+    actor.password = data['password']
+    actor.role=data['role']
+    actor.surname = data['surname']
+    actor.phone = data['phone']
+    return actor;
   }
 
   logout() {
@@ -71,6 +104,7 @@ export class AuthService {
       signOut(this.auth)
         .then(res => {
           this.loginStatus.next(false)
+          this.currentActor = new Actor();
           console.log('You have successfully logged out');
           resolve(res);
         })

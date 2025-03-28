@@ -1,0 +1,14 @@
+{
+  "projects": {
+    "default": "acme-explorer-bc8fd"
+  },
+  "targets": {
+    "acme-explorer-bc8fd": {
+      "hosting": {
+        "acme-explorer": [
+          "acme-explorer-bc8fd"
+        ]
+      }
+    }
+  }
+}
