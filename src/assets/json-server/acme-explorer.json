@@ -3,7 +3,7 @@
     {
       "name": "",
       "surname": "Manuel",
-      "email": "m.otero.barbasan@gmail.com",
+      "_email": "m.otero.barbasan@gmail.com",
       "password": "123456",
       "phone": "662640469",
       "role": "",
@@ -22,9 +22,31 @@
       "id": 2
     },
     {
+      "_id": "10",
+      "_version": 0,
+      "_name": "admin",
+      "_surname": "admin",
+      "_email": "admin@admin.com",
+      "_password": "admin",
+      "_role": "ADMINISTRATOR",
+      "_phone": "123456789",
+      "id": 10
+    },
+    {
+      "_id": "5",
+      "_version": 0,
+      "_name": "juan",
+      "_surname": "juan",
+      "_email": "juan@juan.es",
+      "_password": "juanjuanjuan",
+      "_role": "MANAGER",
+      "_phone": "123456789",
+      "id": 5
+    },
+    {
       "name": "",
       "surname": "",
-      "email": "pedrito@gmail.com",
+      "_email": "pedrito@gmail.com",
       "password": "pedrito",
       "phone": "",
       "role": "",
@@ -34,7 +56,7 @@
     {
       "name": "",
       "surname": "",
-      "email": "juanito@gmail.com",
+      "_email": "juanito@gmail.com",
       "password": "juanito",
       "phone": "",
       "role": "",
@@ -51,6 +73,7 @@
       "startDate": "2028-01-01T00:00:00.000Z",
       "endDate": "2028-01-10T00:00:00.000Z",
       "destinity": "A trip to the moon",
+      "deleted": false,
       "requirements": [
         "Helmet",
         "Oxygen tank",
@@ -70,6 +93,7 @@
       "startDate": "2020-02-01T00:00:00.000Z",
       "endDate": "2020-02-10T00:00:00.000Z",
       "destinity": "A trip to the Mars",
+      "deleted": false,
       "requirements": [
         "Helmet",
         "Oxygen tank",
@@ -89,6 +113,7 @@
       "startDate": "2020-03-01T00:00:00.000Z",
       "endDate": "2020-03-10T00:00:00.000Z",
       "destinity": "A trip to Venus",
+      "deleted": false,
       "requirements": [
         "Helmet",
         "Oxygen tank",

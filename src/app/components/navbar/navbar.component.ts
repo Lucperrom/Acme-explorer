@@ -21,6 +21,7 @@ export class NavbarComponent implements OnInit {
       if (loggedIn) {
         this.currentActor = this.authService.getCurrentActor();
         this.activeRole = this.currentActor.role
+        console.log(this.currentActor)
       }
     })
 
@@ -28,6 +29,8 @@ export class NavbarComponent implements OnInit {
 
   logout(): void {
     this.authService.logout().then(() => {
+      this.currentActor = undefined;
+      this.activeRole = 'anonymous';
       this.router.navigate(['/login']);
     });
   }

@@ -16,21 +16,19 @@ export class TripDisplayComponent implements OnInit {
 
   constructor(private tripService: TripService, private route: ActivatedRoute) { 
     this.trip = new Trip();
+    this.trip.pictures = ["/assets/images/playa3.jpg"]
+    this.trip.title = "megusta"
     console.log("inicializando trip", this.trip);
   }
 
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
     const tripId = this.route.snapshot.paramMap.get('id');
     if (tripId) {
-      this.tripService.getTripById(tripId).subscribe((trip) => {
-        this.trip = trip;
-      });
-      console.log('Displaying trip: ' + this.trip);
-      // this.trip = await this.tripService.getTripById(tripId);
-      // this.trip.startDate = new Date(this.trip.startDate);
-      // this.trip.endDate = new Date(this.trip.endDate);
-      // console.log("Trip loaded", this.trip);
-      // this.isSpecial = this.trip.price < 100;
+      this.trip = await this.tripService.getTripById(tripId);
+      this.trip.startDate = new Date(this.trip.startDate);
+      this.trip.endDate = new Date(this.trip.endDate);
+      console.log("Trip loaded", this.trip);
+      this.isSpecial = this.trip.price < 100;
     }
   }
 

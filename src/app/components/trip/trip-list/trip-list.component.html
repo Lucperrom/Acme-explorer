@@ -1,48 +1,28 @@
-<table class="table table-hover">
-    <thead>
-        <tr>
-            <th scope="col"></th>
-            <th scope="col">Ticker</th>
-            <th scope="col">Title</th>
-            <th scope="col">Description</th>
-            <th scope="col">Price</th>
-            <th scope="col">Requirements</th>
-            <th scope="col">Start date</th>
-            <th scope="col">End date</th>
-            <th scope="col">Origin</th>
-            <th scope="col">Destiny</th>
-            <th scope="col">Cancelled reason</th>
-        </tr>
-    </thead>
-
-    <tbody>
+<div class="container mt-4">
+    <div class="row">
         <ng-container *ngFor="let trip of trips; let i = index">
-            <tr *ngIf="!isCancelled(trip)" (click)="goToTrip(trip.id)" style="cursor: pointer;">
-                <td scope="row">{{ i + 1 }}</td>
-                <td>{{ trip.ticker }}</td>
-                <td>{{ trip.title }}</td>
-                <td>{{ trip.description }}</td>
-                <td>{{ trip.price }}</td>
-                <td>
-                    <ul class="list-group">
-                        <li class="list-group-item" *ngFor="let requirement of trip.requirements">
-                            <p class="card-text">{{ requirement }}</p>
-                        </li>
-                    </ul>
-                </td>
-                <td>{{ trip.startDate | date:'d MMMM yyyy' }}</td>
-                <td>{{ trip.endDate | date:'d MMMM yyyy' }}</td>
-                <td>{{ trip.origin }}</td>
-                <td>{{ trip.destinity }}</td>
-                <td>{{ trip.cancelledReason }}</td>
-                <td>
-                    <ngb-carousel>
-                        <ng-template ngbSlide *ngFor="let picture of trip.pictures; let j = index">
-                            <img class="d-block w-100" [src]="picture" alt="Slide {{ j + 1 }}">
-                        </ng-template>
-                    </ngb-carousel>
-                </td>
-            </tr>
+            <div class="col-md-4 mb-4" *ngIf="!isCancelled(trip) && trip.deleted === false">
+                <div class="card h-100" (click)="goToTrip(trip.id)" style="cursor: pointer;">
+                    <div class="card-header">
+                        <ngb-carousel *ngIf="trip.pictures?.length">
+                            <ng-template ngbSlide *ngFor="let picture of trip.pictures; let j = index">
+                                <img class="d-block w-100" [src]="picture" alt="Slide {{ j + 1 }}">
+                            </ng-template>
+                        </ngb-carousel>
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title">{{ trip.title }}</h5>
+                        <p class="card-text">{{ trip.description }}</p>
+                        <p><strong>Price:</strong> {{ trip.price }} EUR</p>
+                        <p><strong>Date:</strong> {{ trip.startDate | date:'d MMMM yyyy'}} - {{ trip.endDate | date:'d MMMM yyyy' }}</p>
+                        <p><strong>Destiny:</strong> {{ trip.destinity }}</p>
+                        <p *ngIf="trip.cancelledReason"><strong>Cancelled Reason:</strong> {{ trip.cancelledReason }}</p>
+                        
+                    </div>
+                    
+
+                </div>
+            </div>
         </ng-container>
-    </tbody>
-</table>
+    </div>
+</div>

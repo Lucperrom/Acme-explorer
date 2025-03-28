@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { DatatableComponent } from '@swimlane/ngx-datatable';
 
 @Component({
   selector: 'app-application-table',
@@ -6,8 +7,12 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./application-table.component.css']
 })
 export class ApplicationTableComponent implements OnInit {
+  @ViewChild(DatatableComponent) table!: DatatableComponent;
+  expanded: any = {};
 
-  constructor() { }
+  constructor(){}
+
+
   onDetailToggle(event: any){
     return null
   }
@@ -36,6 +41,9 @@ export class ApplicationTableComponent implements OnInit {
     }    
   ];
   ngOnInit(): void {
+  }
+  toggleExpandRow(row: any) {
+    this.table.rowDetail.toggleExpandRow(row);
   }
 
 }
