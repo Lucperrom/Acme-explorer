@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-light" style="padding: 10px;">
+ <nav class="navbar navbar-expand-lg navbar-light bg-light" style="padding: 10px;">
   <div class="container-fluid">
     <!-- Logo + Nombre -->
     <a class="navbar-brand d-flex align-items-center" routerLink="/trips">
@@ -20,10 +20,10 @@
             Trips
           </a>
           <ul class="dropdown-menu">
-            <li><a class="dropdown-item" [routerLink]="['/trips']">List trips</a></li>
-            <li><a class="dropdown-item" [routerLink]="['/trips/load']">Load trips</a></li>
+            <li><a i18n class="dropdown-item" [routerLink]="['/trips']">List trips</a></li>
+            <li><a i18n class="dropdown-item" [routerLink]="['/trips/load']">Load trips</a></li>
             <li *ngIf="currentActor && currentActor.role === 'MANAGER'"><hr class="dropdown-divider"></li>
-            <li *ngIf="currentActor && currentActor.role === 'MANAGER'"><a class="dropdown-item" [routerLink]="['/trips/new']">New trip</a></li>
+            <li *ngIf="currentActor && currentActor.role === 'MANAGER'"><a i18n class="dropdown-item" [routerLink]="['/trips/new']">New trip</a></li>
           </ul>
         </li>
 
@@ -42,8 +42,8 @@
       <!-- Barra de búsqueda -->
 
       <form class="form-inline d-flex my-2 my-lg-0 me-2">
-        <input class="form-control mr-2 me-1" type="search" placeholder="Search" aria-label="Search">
-        <button class="btn btn-outline-success" type="submit">Search</button>
+        <input class="form-control mr-2 me-1" type="search" i18n-placeholer placeholder="Search" aria-label="Search">
+        <button i18n class="btn btn-outline-success" type="submit">Search</button>
     </form>
 
     <!-- Botones de cambiar idioma -->
@@ -58,21 +58,30 @@
         </a>
         <ul class = "dropdown-menu text-small" data-popper-placement="bottom-end"
         style = "position:absolute; inset:0px 0px auto auto; margin: 0px; transform: translate3d(0.5px,34px,0px);">
-          <li><a class = "dropdown-item" [routerLink]="['/profile', currentActor.id]"> Profile </a></li>
-          <li><a class = "dropdown-item" (click)="logout()"> Logout </a></li>
+          <li><a i18n class = "dropdown-item" [routerLink]="['/profile', currentActor.id]"> Profile </a></li>
+          <li><a i18n class = "dropdown-item" (click)="logout()"> Logout </a></li>
 
         </ul>
       </div>
 
       <ul class="navbar-nav ms-auto">
         <li class="nav-item" *ngIf="!currentActor">
-          <a class="nav-link" routerLink="/login">Login</a>
+          <a class="nav-link" routerLink="/login">
+            <span i18n>
+              Login
+            </span> 
+          </a>
         </li>
         <li class="nav-item" *ngIf="!currentActor">
-          <a class="nav-link" routerLink="/register">Register</a>
+          <a class="nav-link" routerLink="/register">
+            <span i18n>
+              Register
+            </span>
+
+          </a>
         </li>
         <li class="nav-item" *ngIf="activeRole ==='consumer'">
-        <a class="nav-link active" routerLink="/applications">
+        <a i18n class="nav-link active" routerLink="/applications">
           <i class="fa-solid fa-cart-shopping"></i>
           Your Applications
         </a>

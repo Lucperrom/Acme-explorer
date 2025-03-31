@@ -1,4 +1,4 @@
-<h1 class="bg-blue">Trip Display</h1>
+<h1 i18n class="bg-blue">Trip Display</h1>
 <div class="card mx-auto mt-4" style="width: 18rem;">
     <div class="card-body text-end">
         <!-- <button [hidden]=!isCancelled() (click)="cancelTrip()">
@@ -30,15 +30,15 @@
         </li>
     </ul>
     <div class="card-body" *ngIf="isCancelled(); else noCancelled">
-        <span class="card-text text-danger ml-2 nb-1">This trip has been cancelled</span>
+        <span i18n class="card-text text-danger ml-2 nb-1">This trip has been cancelled</span>
     </div>
     <ng-template #noCancelled>
         <div *ngIf="isCancelable(); else notCancelable">
-            <p class="card-body text-muted">Write a cancel reason to cancel the trip</p>
+            <p i18n class="card-body text-muted">Write a cancel reason to cancel the trip</p>
         </div>
     </ng-template>
     <ng-template #notCancelable>
-        <div class="card-text text-danger ml-2 nb-1">This trip cannot be cancelled.</div>
+        <div i18n class="card-text text-danger ml-2 nb-1">This trip cannot be cancelled.</div>
     </ng-template>
 
     <div class="card-body">
@@ -48,7 +48,7 @@
         <input *ngIf="isCancelable(); else noCancelable" type="text" class="form-control"
             [(ngModel)]="trip.cancelledReason">
         <ng-template #noCancelable>
-            <p class="card-body text-muted">To be cancelled it should be one week in advance of its starting date</p>
+            <p i18n class="card-body text-muted">To be cancelled it should be one week in advance of its starting date</p>
         </ng-template>
     </div>
 </div>
