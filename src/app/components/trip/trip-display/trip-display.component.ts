@@ -13,6 +13,7 @@ export class TripDisplayComponent implements OnInit {
   protected trip: Trip;
   protected isSpecial = false;
   protected trash = faTrash;
+  protected tripId: string | null = null;
 
   constructor(private tripService: TripService, private route: ActivatedRoute) { 
     this.trip = new Trip();
@@ -22,9 +23,9 @@ export class TripDisplayComponent implements OnInit {
   }
 
   async ngOnInit(): Promise<void> {
-    const tripId = this.route.snapshot.paramMap.get('id');
-    if (tripId) {
-      this.trip = await this.tripService.getTripById(tripId);
+    this.tripId = this.route.snapshot.paramMap.get('id');
+    if (this.tripId) {
+      this.trip = await this.tripService.getTripById(this.tripId);
       this.trip.startDate = new Date(this.trip.startDate);
       this.trip.endDate = new Date(this.trip.endDate);
       console.log("Trip loaded", this.trip);
@@ -83,5 +84,8 @@ export class TripDisplayComponent implements OnInit {
   }
   getDestinity() {
     return this.trip.destinity;
+  }
+  getTripId() {
+    return this.tripId;
   }
 }
