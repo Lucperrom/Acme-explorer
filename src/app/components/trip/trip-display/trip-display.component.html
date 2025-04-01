@@ -24,11 +24,6 @@
             <span *ngIf=" isSpecial">Deal!</span>
         </p>
     </div>
-    <ul class="list-group list-group-flush">
-        <li class="list-group-trip" *ngFor="let origin of getOrigin(); let i = index">
-            <p class="card-text ml-2 m2-1">{{i+1}}{{' - '}}{{origin}}</p>
-        </li>
-    </ul>
     <div class="card-body" *ngIf="isCancelled(); else noCancelled">
         <span class="card-text text-danger ml-2 nb-1">This trip has been cancelled</span>
     </div>

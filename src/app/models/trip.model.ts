@@ -12,19 +12,30 @@ export class Trip extends Entity {
     private _startDate!: Date;
     private _endDate!: Date;
     private _pictures!: Array<string>;
-    private _origin!: string;
-    private _destinity!: string;
     private _cancelledReason!: string;
     private _deleted!: boolean;
 
 //CONSTRUCTOR
 
-    constructor() {
+    constructor(data?: any) {
         super();
-        this._requirements = new Array<string>();
-        this._pictures = new Array<string>();
-        this._startDate = new Date();
-        this._endDate = new Date();
+        this._requirements = data?._requirements || new Array<string>();
+        this._pictures = data?._pictures || new Array<string>();
+        this._startDate = data?._startDate || new Date();
+        this._endDate = data?._endDate || new Date();
+        const generateTicker = (): string => {
+            const datePart = new Date().toISOString().slice(2, 10).replace(/-/g, '');
+            const lettersPart = Array.from({ length: 4 }, () =>
+                String.fromCharCode(65 + Math.floor(Math.random() * 26))
+            ).join('');
+            return `${datePart}-${lettersPart}`;
+        };
+        this._ticker = generateTicker();
+        this._title = data?._title || '';
+        this._description = data?._description || '';
+        this._price = data?._price || 0;
+        this._cancelledReason = '';
+        this._deleted = false;
     }
 
 //GETTERS
@@ -44,13 +55,6 @@ export class Trip extends Entity {
     public get price(): number {
         return this._price;
     }
-    public get origin(): string {
-        return this._origin;
-    }
-    public get destinity(): string {
-        return this._destinity;
-    }
-    
     public get cancelledReason(): string {
         return this._cancelledReason;
     }
@@ -87,12 +91,6 @@ export class Trip extends Entity {
     }
     public set price(value: number) {
         this._price = value;
-    }
-    public set origin(value: string) {
-        this._origin = value;
-    }
-    public set destinity(value: string) {
-        this._destinity = value;
     }
     
     public set cancelledReason(value: string) {
