@@ -31,8 +31,6 @@ describe('TripService', () => {
       requirements: ["Passport", "Travel Insurance"],
       startDate: "2023-12-01T00:00:00Z",
       endDate: "2023-12-10T00:00:00Z",
-      origin: "New York",
-      destinity: "Swiss Alps",
       cancelledReason: "",
       deleted: false,
       pictures: ["https://example.com/image1.jpg"]
@@ -58,8 +56,6 @@ describe('TripService', () => {
     expect(trip.ticker).toBe(testTripData.ticker);
     expect(trip.title).toBe(testTripData.title);
     expect(trip.price).toBe(testTripData.price);
-    expect(trip.origin).toBe(testTripData.origin);
-    expect(trip.destinity).toBe(testTripData.destinity);
     expect(trip.pictures.length).toBe(1);
     expect(trip.deleted).toBe(false);
   });

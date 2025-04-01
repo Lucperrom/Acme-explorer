@@ -19,8 +19,6 @@ export class TripService {
     trip.requirements = data['requirements'] || []; // Manejo seguro de arrays
     trip.startDate = new Date(data['startDate']);
     trip.endDate = new Date(data['endDate']);
-    trip.origin = data['origin'];
-    trip.destinity = data['destinity'];
     trip.cancelledReason = data['cancelledReason'] || '';
     trip.deleted = data['deleted'] || false; // Valor predeterminado
     trip.pictures = data['pictures'] || []; // Manejo seguro de imágenes

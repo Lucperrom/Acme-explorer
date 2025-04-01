@@ -79,12 +79,6 @@ export class TripDisplayComponent implements OnInit {
   getPrice() {
     return this.trip.price;
   }
-  getOrigin() {
-    return this.trip.origin;
-  }
-  getDestinity() {
-    return this.trip.destinity;
-  }
   getTripId() {
     return this.tripId;
   }

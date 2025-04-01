@@ -15,7 +15,6 @@
                         <p class="card-text">{{ trip.description }}</p>
                         <p><strong>Price:</strong> {{ trip.price }} EUR</p>
                         <p><strong>Date:</strong> {{ trip.startDate | date:'d MMMM yyyy'}} - {{ trip.endDate | date:'d MMMM yyyy' }}</p>
-                        <p><strong>Destiny:</strong> {{ trip.destinity }}</p>
                         <p *ngIf="trip.cancelledReason"><strong>Cancelled Reason:</strong> {{ trip.cancelledReason }}</p>
                         
                     </div>

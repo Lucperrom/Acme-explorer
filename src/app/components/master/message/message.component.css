@@ -1,0 +1,38 @@
+.alert {
+    font-size: 16px;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    position: relative; /* Necesario para posicionar el botón relativo al contenedor */
+    padding-left: 40px;
+  }
+  
+  .alert-dismissible .close {
+    font-size: 20px;
+    color: #000;
+  }
+  
+  .alert-success {
+    background-color: #28a745;
+    color: white;
+  }
+  
+  .alert-danger {
+    background-color: #dc3545;
+    color: white;
+  }
+  
+  .alert-warning {
+    background-color: #ffc107;
+    color: white;
+  }
+
+  .close-left {
+    position: absolute;
+    left: 10px; /* Ajusta la distancia desde la izquierda */
+    top: 50%; /* Centra el botón verticalmente */
+    transform: translateY(-50%); /* Ajusta para que quede perfectamente centrado */
+    font-size: 1.5rem; /* Ajusta el tamaño del botón */
+    color: inherit; /* Mantiene el color del texto */
+  }
+  
