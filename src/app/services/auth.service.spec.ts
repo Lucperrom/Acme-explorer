@@ -6,6 +6,8 @@ import { environment } from 'src/environments/environment';
 import { AuthGuard } from '../guards/auth.guard';
 import { HttpClientModule } from '@angular/common/http';
 import { Actor } from '../models/actor.model';
+import { Firestore, provideFirestore } from '@angular/fire/firestore';
+import { getFirestore } from 'firebase/firestore';
 
 let testUser = new Actor()
 testUser.name = "John";
@@ -28,9 +30,10 @@ describe('AuthService', () => {
       imports: [
         HttpClientModule,
         provideFirebaseApp(() => initializeApp(environment.firebaseConfig)),
-        provideAuth(() => getAuth())
+        provideAuth(() => getAuth()),
+        provideFirestore(() => getFirestore())
       ],
-      providers: [AuthGuard]
+      providers: [AuthGuard, { provide: Firestore, useValue: {} }]
     });
     service = TestBed.inject(AuthService);
     auth = getAuth();
@@ -41,7 +44,7 @@ describe('AuthService', () => {
   });
 
   it('should return roles', () => {
-    expect(service.getRoles()).toEqual(['CLERK', 'ADMINISTRATOR', 'CONSUMER']);
+    expect(service.getRoles()).toEqual(['EXPLORER', 'MANAGER', 'SPONSOR']);
   });
 
   it('[+] should sign up successfully', async () => {
