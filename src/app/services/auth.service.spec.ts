@@ -6,7 +6,6 @@ import { environment } from 'src/environments/environment';
 import { AuthGuard } from '../guards/auth.guard';
 import { HttpClientModule } from '@angular/common/http';
 import { Actor } from '../models/actor.model';
-import { Firestore, provideFirestore } from '@angular/fire/firestore';
 import { getFirestore } from 'firebase/firestore';
 
 let testUser = new Actor()
@@ -31,9 +30,8 @@ describe('AuthService', () => {
         HttpClientModule,
         provideFirebaseApp(() => initializeApp(environment.firebaseConfig)),
         provideAuth(() => getAuth()),
-        provideFirestore(() => getFirestore())
       ],
-      providers: [AuthGuard, { provide: Firestore, useValue: {} }]
+      providers: [AuthGuard]
     });
     service = TestBed.inject(AuthService);
     auth = getAuth();
