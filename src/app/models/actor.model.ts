@@ -4,6 +4,7 @@ export class Actor extends Entity {
     private _name!: string;
     private _surname!: string;
     private _phone!: string;
+    private _address!: string;
     private _role!: string;
     private _email!: string;
     private _password!: string;
@@ -15,6 +16,7 @@ export class Actor extends Entity {
             this._name = data._name || '';
             this._surname = data._surname || '';
             this._phone = data._phone || '';
+            this._address = data._address || '';
             this._role = data._role || '';
             this._email = data._email || '';
             this._password = data._password || '';
@@ -32,6 +34,10 @@ export class Actor extends Entity {
 
     public get phone(): string {
         return this._phone;
+    }
+
+    public get address(): string {
+        return this._address;
     }
     public get role(): string {
         return this._role;
@@ -61,6 +67,10 @@ export class Actor extends Entity {
     
     public set phone(value: string) {
         this._phone = value;
+    }
+
+    public set address(value: string) {
+        this._address = value;
     }
 
     public set email(value: string) {
