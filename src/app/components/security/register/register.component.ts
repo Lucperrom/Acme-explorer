@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import {AuthService} from '../../../services/auth.service';
 import { Router} from '@angular/router';
-import { FormGroup, FormBuilder } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { MessageService } from 'src/app/services/message.service';
 
 @Component({
   selector: 'app-register',
@@ -13,32 +14,49 @@ export class RegisterComponent implements OnInit {
   roleList: string[];
 
 
-  constructor(private authService: AuthService, private fb: FormBuilder, private router: Router) { // Inject Router
+  constructor(private authService: AuthService, private fb: FormBuilder, private router: Router, private messageService: MessageService) { // Inject Router
     this.roleList = this.authService.getRoles();
     this.createForm();
   }
 
   createForm() {
     this.registrationForm = this.fb.group({
-      name: [''],
-      surname: [''],
-      email: [''],
-      password: [''],
-      phone: [''],
-      role: [''],
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', Validators.required],
+      role: ['', Validators.required],
+      name: ['', Validators.required],
+      surname: ['', Validators.required],
+      phone: [''],  // No validators, making it optional
+      address: [''],  // No validators, making it optional
       validated: [true]
     });
   }
 
   onRegister() {
-    this.authService.signUp(this.registrationForm.value)
-    .then(res => {
-      console.log('Registration successful', res);
-      this.router.navigate(['/login']); // Navigate after successful registration
-    })
-    .catch(err => {
-      console.error('Registration failed', err);
-    });
+    if (this.registrationForm.invalid) {
+      this.messageService.notifyMessage('Form is invalid', 'alert-danger');
+      return;
+    } else {
+      this.authService.signUp(this.registrationForm.value)
+      .then(res => {
+        console.log('Registration successful', res);
+        this.messageService.removeMessage();
+        this.router.navigate(['/login']); // Navigate after successful registration
+      })
+      .catch(err => {
+        console.error('Registration failed', err);
+        if (err.message.includes('email-already-in-use')) {
+          this.messageService.notifyMessage('Email already in use', 'alert-danger');
+        } else if (err.message.includes('invalid-email')) {
+          this.messageService.notifyMessage('Invalid email format', 'alert-danger');
+        } else if (err.message.includes('weak-password')) {
+          this.messageService.notifyMessage('Password should be at least 6 characters', 'alert-danger');
+        } else {
+          this.messageService.notifyMessage('Registration failed', 'alert-danger');
+        }
+      });
+    }
+    
   }
 
   ngOnInit(): void {

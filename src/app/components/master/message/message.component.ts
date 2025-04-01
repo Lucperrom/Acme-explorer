@@ -30,6 +30,11 @@ export class MessageComponent implements OnInit {
     )
   }
 
+  removeMessage(): void {
+    this.messageService.removeMessage();  // Llama al método del servicio para eliminar el mensaje
+    this.showMessage = false;  // Oculta el mensaje en el componente
+  }
+
 
   ngOnDestroy(){
     this.subscription.unsubscribe();

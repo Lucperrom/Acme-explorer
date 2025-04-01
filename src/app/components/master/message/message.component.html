@@ -1,4 +1,9 @@
-<div class="{{cssClass}}" role = "alert"
-    *ngIf="infoMessage != null && infoMessage.length > 0 && showMessage">
-    {{infoMessage}}
-</div>
+<div class="alert {{cssClass}} alert-dismissible fade show" role="alert" *ngIf="infoMessage != null && infoMessage.length > 0 && showMessage">
+    <div style="margin-left: 10px;">
+        <strong>Message:</strong> {{infoMessage}}
+    </div>
+    <button type="button" class="close-left" (click)="removeMessage()" aria-label="Close" style="left: 10px;">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  
