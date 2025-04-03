@@ -23,7 +23,7 @@
             <li><a class="dropdown-item" [routerLink]="['/trips']">List trips</a></li>
             <li><a class="dropdown-item" [routerLink]="['/trips/load']">Load trips</a></li>
             <li *ngIf="currentActor && currentActor.role === 'MANAGER'"><hr class="dropdown-divider"></li>
-            <li *ngIf="currentActor && currentActor.role === 'MANAGER'"><a class="dropdown-item" [routerLink]="['/trips/new']">New trip</a></li>
+            <li *ngIf="currentActor && currentActor.role === 'MANAGER'"><a class="dropdown-item" [routerLink]="['/trips/create']">New trip</a></li>
           </ul>
         </li>
 
@@ -34,7 +34,7 @@
           <ul class="dropdown-menu">
             <li *ngIf="currentActor.role === 'ADMINISTRATOR'"><a class="dropdown-item" [routerLink]="['/dashboard']">Dashboard</a></li>
             <li *ngIf="currentActor.role === 'ADMINISTRATOR'"><a class="dropdown-item" [routerLink]="['/register']">Create New Manager</a></li>
-            <li *ngIf="currentActor.role === 'MANAGER'"><a class="dropdown-item" [routerLink]="['/trips/new']">Applications</a></li>
+            <li *ngIf="currentActor.role === 'MANAGER'"><a class="dropdown-item" [routerLink]="['/trips/create']">Applications</a></li>
           </ul>
         </li>
       </ul>

@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Trip } from '../models/trip.model';
 import { Firestore, collection, getDocs, getDoc, doc } from '@angular/fire/firestore';
+import { addDoc } from 'firebase/firestore';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -22,7 +24,6 @@ export class TripService {
     trip.cancelledReason = data['cancelledReason'] || '';
     trip.deleted = data['deleted'] || false; // Valor predeterminado
     trip.pictures = data['pictures'] || []; // Manejo seguro de imágenes
-
     return trip;
   }
 
@@ -65,4 +66,18 @@ export class TripService {
       return {} as Trip;
     }
   }
+
+  async createTrip(trip: Trip) {
+      return new Promise<any>((resolve, reject) => {
+        console.log(this.firestore)
+          const tripRef = collection(this.firestore, 'trips');
+          addDoc(tripRef, trip).then((docRef) => {
+            console.log("Document written with ID: ", docRef.id);
+            resolve(trip);
+          }).catch((error) => {
+            console.error("Error adding document: ", error);
+            reject();
+          });
+        });
+    }
 }

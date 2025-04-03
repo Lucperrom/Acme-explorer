@@ -14,15 +14,16 @@ export class Trip extends Entity {
     private _pictures!: Array<string>;
     private _cancelledReason!: string;
     private _deleted!: boolean;
+    private _managerId!: string;
 
 //CONSTRUCTOR
 
     constructor(data?: any) {
         super();
-        this._requirements = data?._requirements || new Array<string>();
-        this._pictures = data?._pictures || new Array<string>();
-        this._startDate = data?._startDate || new Date();
-        this._endDate = data?._endDate || new Date();
+        this._requirements = data?.requirements || new Array<string>();
+        this._pictures = data?.pictures || new Array<string>();
+        this._startDate = data?.startDate || new Date();
+        this._endDate = data?.endDate || new Date();
         const generateTicker = (): string => {
             const datePart = new Date().toISOString().slice(2, 10).replace(/-/g, '');
             const lettersPart = Array.from({ length: 4 }, () =>
@@ -31,11 +32,12 @@ export class Trip extends Entity {
             return `${datePart}-${lettersPart}`;
         };
         this._ticker = generateTicker();
-        this._title = data?._title || '';
-        this._description = data?._description || '';
-        this._price = data?._price || 0;
+        this._title = data?.title || '';
+        this._description = data?.description || '';
+        this._price = data?.price || 0;
         this._cancelledReason = '';
         this._deleted = false;
+        this._managerId = data?.managerId || '';
     }
 
 //GETTERS
@@ -74,6 +76,10 @@ export class Trip extends Entity {
     public get deleted(): boolean {
         return this._deleted;
     }  
+
+    public get managerId(): string {
+        return this._managerId;
+    }
     
     //SETTER
     
@@ -107,5 +113,9 @@ export class Trip extends Entity {
     }
     public set deleted(value: boolean) {
         this._deleted = value;
+    }
+
+    public set managerId(value: string) {
+        this._managerId = value;
     }
 }

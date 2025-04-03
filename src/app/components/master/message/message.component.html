@@ -1,9 +1,9 @@
 <div class="alert {{cssClass}} alert-dismissible fade show" role="alert" *ngIf="infoMessage != null && infoMessage.length > 0 && showMessage">
-    <div style="margin-left: 10px;">
+    <div style="margin-left: 25px;">
         <strong>Message:</strong> {{infoMessage}}
     </div>
     <button type="button" class="close-left" (click)="removeMessage()" aria-label="Close" style="left: 10px;">
-      <span aria-hidden="true">&times;</span>
+      <span aria-hidden="true">❌</span>
     </button>
   </div>
   

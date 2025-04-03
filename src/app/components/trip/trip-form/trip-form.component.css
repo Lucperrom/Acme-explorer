@@ -1,0 +1,47 @@
+/* Ocultar el input de tipo file visualmente pero dejarlo funcional */
+.file-input {
+    display: none;
+  }
+
+  .custom-file-upload {
+    margin-bottom: 2px;
+  }
+  
+  /* Estilo para el botón que actuará como selector */
+  .custom-file-upload button {
+    background-color: #28a745;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-size: 16px;
+  }
+  
+  .custom-file-upload button:hover {
+    background-color: #218838;
+  }
+
+  /* Para aplicar un espacio entre los campos en la fila */
+.form-row {
+    display: flex;
+    flex-direction: column; /* En pantallas pequeñas, los campos estarán en columna */
+    gap: 15px; /* Espacio entre los elementos cuando estén en columna */
+  }
+  
+  .form-group {
+    margin-bottom: 3px; /* Margen entre los campos */
+  }
+  
+  @media (min-width: 768px) {
+    /* En pantallas grandes, los campos estarán en fila */
+    .form-row {
+      flex-direction: row; 
+      gap: 15px; /* Añadir espacio entre los campos en horizontal */
+    }
+    
+    .form-group {
+      flex: 1; /* Asegura que los campos ocupen el mismo ancho */
+    }
+  }
+  
+  

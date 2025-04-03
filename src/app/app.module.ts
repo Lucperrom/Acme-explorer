@@ -28,6 +28,7 @@ import { provideFirestore, getFirestore } from '@angular/fire/firestore';
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 import { ApplicationTableComponent } from './components/application-table/application-table.component';
 import { TripLoadComponent } from './components/trip/trip-load/trip-load.component';
+import { TripFormComponent } from './components/trip/trip-form/trip-form.component';
 
 @NgModule({
   declarations: [
@@ -46,7 +47,8 @@ import { TripLoadComponent } from './components/trip/trip-load/trip-load.compone
     DashboardComponent,
     TermsAndConditionsComponent,
     ApplicationTableComponent,
-    TripLoadComponent
+    TripLoadComponent,
+    TripFormComponent
   ],
   imports: [
     BrowserModule,

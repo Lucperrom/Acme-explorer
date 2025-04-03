@@ -13,12 +13,14 @@ import { ProfileEditComponent } from './components/profile-edit/profile-edit.com
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { TermsAndConditionsComponent } from './components/terms-and-conditions/terms-and-conditions.component';
 import { TripLoadComponent } from './components/trip/trip-load/trip-load.component';
+import { TripFormComponent } from './components/trip/trip-form/trip-form.component';
 const routes: Routes = [
   { path: 'profile/:id', component: ProfileEditComponent },
   { path: 'login', component: LoginComponent, canActivate: [ActorRoleGuard], data: {expectedRole: 'anonymous'} },
   { path: 'register', component: RegisterComponent, canActivate: [ActorRoleGuard], data: {expectedRole: 'anonymous' }},
   { path: 'trips', children:[
     { path: 'load', component: TripLoadComponent, canActivate: [ActorRoleGuard], data: {expectedRole: 'administrator' }},
+    {path: 'create', component: TripFormComponent, canActivate: [ActorRoleGuard], data: {expectedRole: 'manager', mode: 'post' }},
     {path: ':id', component: TripDisplayComponent, canActivate: [AuthGuard]},
     {path: '', component: TripListComponent}
    ]},
