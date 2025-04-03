@@ -4,7 +4,7 @@
             <div class="col-md-4 mb-4" *ngIf="!isCancelled(trip) && trip.deleted === false">
                 <div class="card h-100" (click)="goToTrip(trip.id)" style="cursor: pointer;">
                     <div class="card-header">
-                        <ngb-carousel *ngIf="trip.pictures?.length">
+                        <ngb-carousel *ngIf="trip.pictures?.length" (click)="$event.stopPropagation()" style="height: 230px; overflow: hidden;">
                             <ng-template ngbSlide *ngFor="let picture of trip.pictures; let j = index">
                                 <img class="d-block w-100" [src]="picture" alt="Slide {{ j + 1 }}">
                             </ng-template>
