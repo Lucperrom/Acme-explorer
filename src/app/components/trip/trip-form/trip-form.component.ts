@@ -26,12 +26,17 @@ export class TripFormComponent implements OnInit {
       endDate: ['', Validators.required],
       requirements: this.fb.array([this.fb.control('', Validators.required)]),
       pictures: this.fb.array([]),
+      stages: this.fb.array([this.createStage()])
     });
   }
 
   ngOnInit(): void {
     // Obtenemos el ID del usuario autenticado
     this.actor = this.authService.getCurrentActor();
+
+    this.stages.valueChanges.subscribe(() => {
+      this.updateTotalPrice();
+    });
   }
 
   get requirements(): FormArray {
@@ -40,6 +45,37 @@ export class TripFormComponent implements OnInit {
 
   get pictures(): FormArray {
     return this.tripForm.get('pictures') as FormArray;
+  }
+
+  get stages(): FormArray {
+    return this.tripForm.get('stages') as FormArray;
+  }
+
+  createStage(): FormGroup {
+    return this.fb.group({
+      title: ['', Validators.required],
+      description: ['', Validators.required],
+      price: [0, [Validators.required, Validators.min(0)]]
+    });
+  }
+
+  addStage() {
+    this.stages.push(this.createStage());
+  }
+
+  removeStage(index: number) {
+    if (this.stages.length > 1) {
+      this.stages.removeAt(index);
+    }
+  }
+
+  updateTotalPrice() {
+    const totalPrice = this.stages.controls.reduce((sum, stage) => {
+      return sum + (stage.get('price')?.value || 0);
+    }, 0);
+
+    // Asigna el precio total al campo 'price' (solo lectura)
+    this.tripForm.get('price')?.setValue(totalPrice);
   }
 
   addRequirement() {
