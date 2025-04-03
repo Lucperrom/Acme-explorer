@@ -15,8 +15,9 @@ import { TripService } from 'src/app/services/trip.service';
 export class TripFormComponent implements OnInit {
 
   tripForm: FormGroup;
+  actor!: Actor
 
-  constructor(private fb: FormBuilder, private tripService: TripService, private router: Router, private messageService: MessageService, private authService: AuthService, private actor: Actor) {
+  constructor(private fb: FormBuilder, private tripService: TripService, private router: Router, private messageService: MessageService, private authService: AuthService) {
     this.tripForm = this.fb.group({
       title: ['', Validators.required],
       description: ['', Validators.required],
