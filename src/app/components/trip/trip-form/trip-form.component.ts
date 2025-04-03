@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { Actor } from 'src/app/models/actor.model';
 import { Trip } from 'src/app/models/trip.model';
+import { AuthService } from 'src/app/services/auth.service';
 import { MessageService } from 'src/app/services/message.service';
 import { TripService } from 'src/app/services/trip.service';
 
@@ -14,7 +16,7 @@ export class TripFormComponent implements OnInit {
 
   tripForm: FormGroup;
 
-  constructor(private fb: FormBuilder, private tripService: TripService, private router: Router, private messageService: MessageService) {
+  constructor(private fb: FormBuilder, private tripService: TripService, private router: Router, private messageService: MessageService, private authService: AuthService, private actor: Actor) {
     this.tripForm = this.fb.group({
       title: ['', Validators.required],
       description: ['', Validators.required],
@@ -22,11 +24,13 @@ export class TripFormComponent implements OnInit {
       startDate: ['', Validators.required],
       endDate: ['', Validators.required],
       requirements: this.fb.array([this.fb.control('', Validators.required)]),
-      pictures: this.fb.array([])
+      pictures: this.fb.array([]),
     });
   }
 
   ngOnInit(): void {
+    // Obtenemos el ID del usuario autenticado
+    this.actor = this.authService.getCurrentActor();
   }
 
   get requirements(): FormArray {
@@ -54,6 +58,7 @@ export class TripFormComponent implements OnInit {
     }
   }
 
+  // TODO: Almacenar las imagenes en Firebase Storage y guardar las URLs en Firestore
   onFileSelected(event: Event) {
     const input = event.target as HTMLInputElement;
     if (input.files) {
@@ -98,8 +103,8 @@ export class TripFormComponent implements OnInit {
       return;
     }
     try {
-      console.log(this.tripForm.value)
-      const trip = new Trip(this.tripForm.value);
+      const tripData = { ...this.tripForm.value, managerId: this.actor.id };
+      const trip = new Trip(tripData);
       console.log('Trip data:', trip);
       const tripId = await this.tripService.createTrip(trip);
       this.messageService.notifyMessage('Trip created successfully', 'alert-success');
