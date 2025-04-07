@@ -44,10 +44,29 @@ export class TripService {
         }
       });
 
-      console.log("Trips loaded:", trips);
       return trips;
     } catch (error) {
       console.error("Error fetching trips:", error);
+      return [];
+    }
+  }
+
+  async getAllTripsByManager(managerId: string): Promise<Trip[]> {
+    try {
+      const tripsRef = collection(this.firestore, 'trips');
+      const querySnapshot = await getDocs(tripsRef);
+  
+      let trips: Trip[] = [];
+      querySnapshot.forEach((doc) => {
+        let trip = this.getCurrentTripFromDoc(doc);
+        if (trip.managerId === managerId && !trip.deleted) {
+          trips.push(trip);
+        }
+      });
+      console.log("Trips for manager:", trips);
+      return trips;
+    } catch (error) {
+      console.error(`Error fetching trips for manager ${managerId}:`, error);
       return [];
     }
   }
@@ -120,10 +139,49 @@ export class TripService {
         }
       });
   
-      console.log("Filtered trips loaded:", trips);
       return trips;
     } catch (error) {
       console.error("Error fetching trips:", error);
+      return [];
+    }
+  }
+  async getAllTripsFilteredByManager(term: string, managerId: string): Promise<Trip[]> {
+    try {
+      const tripsRef = collection(this.firestore, 'trips');
+      const querySnapshot = await getDocs(tripsRef);
+  
+      let trips: Trip[] = [];
+      querySnapshot.forEach((doc) => {
+        let trip = this.getCurrentTripFromDoc(doc);
+        if (trip.managerId === managerId && !trip.deleted) { 
+          let condicion1 = false;
+          let condicion2 = false;
+          let condicion3 = false;
+  
+          if (trip.ticker != undefined && trip.ticker != null) {
+            if (trip.ticker.toLowerCase().includes(term.toLowerCase())) {
+              condicion1 = true;
+            }
+          }
+          if (trip.title != undefined && trip.title != null) {
+            if (trip.title.toLowerCase().includes(term.toLowerCase())) {
+              condicion2 = true;
+            }
+          }
+          if (trip.description != undefined && trip.description != null) {
+            if (trip.description.toLowerCase().includes(term.toLowerCase())) {
+              condicion3 = true;
+            }
+          }
+  
+          if (condicion1 || condicion2 || condicion3) {
+            trips.push(trip);
+          }
+        }
+      });
+      return trips;
+    } catch (error) {
+      console.error(`Error fetching filtered trips for manager ${managerId}:`, error);
       return [];
     }
   }

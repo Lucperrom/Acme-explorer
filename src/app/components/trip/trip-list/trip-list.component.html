@@ -1,5 +1,5 @@
 <div class="container mt-4">
-    <div class="row">
+    <div class="row">        
         <ng-container *ngFor="let trip of filteredTrips; let i = index">
             <div class="col-md-4 mb-4" *ngIf="!isCancelled(trip) && trip.deleted === false">
                 <div class="card h-100" (click)="goToTrip(trip.id)" style="cursor: pointer;">
@@ -17,7 +17,7 @@
                         <p><strong>Price:</strong> {{ trip.price }} EUR</p>
                         <p><strong>Date:</strong> {{ trip.startDate | date:'d MMMM yyyy'}} - {{ trip.endDate | date:'d MMMM yyyy' }}</p>
                         <p *ngIf="trip.cancelledReason"><strong>Cancelled Reason:</strong> {{ trip.cancelledReason }}</p>
-                        <p *ngIf="trip.managerName"><strong>Created by</strong> {{ trip.managerName }}<span *ngIf="trip.createdAt"> on {{ trip.createdAt | date:'d MMMM yyyy' }}</span></p>
+                        <p *ngIf="trip.managerName"><strong>Created by</strong> {{ trip.managerName }}<span *ngIf="trip.createdAt"></span></p>
                     </div>
                 </div>
             </div>
