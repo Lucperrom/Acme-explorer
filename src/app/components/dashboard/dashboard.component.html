@@ -1,34 +1,34 @@
 <div class="dashboard">
-    <h1>Dashboard</h1>
+    <h1 class="dashboard-title">Dashboard</h1>
   
-    <section>
-      <h2>Trips Statistics</h2>
-      <p>Average trips per manager: {{ tripsStats.average }}</p>
-      <p>Minimum trips per manager: {{ tripsStats.minimum }}</p>
-      <p>Maximum trips per manager: {{ tripsStats.maximum }}</p>
-      <p>Standard deviation: {{ tripsStats.stdDeviation }}</p>
+    <section class="dashboard-section">
+      <h2 class="section-title">Trips Statistics</h2>
+      <p class="section-item">Average trips per manager: {{ tripsStats.average }}</p>
+      <p class="section-item">Minimum trips per manager: {{ tripsStats.minimum }}</p>
+      <p class="section-item">Maximum trips per manager: {{ tripsStats.maximum }}</p>
+      <p class="section-item">Standard deviation: {{ tripsStats.stdDeviation }}</p>
     </section>
   
-    <section>
-      <h2>Applications Statistics</h2>
-      <p>Average applications per trip: {{ applicationsStats.average }}</p>
-      <p>Minimum applications per trip: {{ applicationsStats.minimum }}</p>
-      <p>Maximum applications per trip: {{ applicationsStats.maximum }}</p>
-      <p>Standard deviation: {{ applicationsStats.stdDeviation }}</p>
+    <section class="dashboard-section">
+      <h2 class="section-title">Applications Statistics</h2>
+      <p class="section-item">Average applications per trip: {{ applicationsStats.average }}</p>
+      <p class="section-item">Minimum applications per trip: {{ applicationsStats.minimum }}</p>
+      <p class="section-item">Maximum applications per trip: {{ applicationsStats.maximum }}</p>
+      <p class="section-item">Standard deviation: {{ applicationsStats.stdDeviation }}</p>
     </section>
   
-    <section>
-      <h2>Price Statistics</h2>
-      <p>Average price of trips: {{ priceStats.average }}</p>
-      <p>Minimum price of trips: {{ priceStats.minimum }}</p>
-      <p>Maximum price of trips: {{ priceStats.maximum }}</p>
-      <p>Standard deviation: {{ priceStats.stdDeviation }}</p>
+    <section class="dashboard-section">
+      <h2 class="section-title">Price Statistics</h2>
+      <p class="section-item">Average price of trips: {{ priceStats.average }}</p>
+      <p class="section-item">Minimum price of trips: {{ priceStats.minimum }}</p>
+      <p class="section-item">Maximum price of trips: {{ priceStats.maximum }}</p>
+      <p class="section-item">Standard deviation: {{ priceStats.stdDeviation }}</p>
     </section>
   
-    <section>
-      <h2>Applications by Status</h2>
-      <ul>
-        <li *ngFor="let status of applicationsByStatus | keyvalue">
+    <section class="dashboard-section">
+      <h2 class="section-title">Applications by Status</h2>
+      <ul class="status-list">
+        <li class="status-item" *ngFor="let status of applicationsByStatus | keyvalue">
           {{ status.key }}: {{ status.value }}
         </li>
       </ul>
