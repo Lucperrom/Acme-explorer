@@ -12,10 +12,13 @@ import { MessageService } from 'src/app/services/message.service';
 export class TripListComponent implements OnInit {
   protected trips: Trip[];
   protected trash = faTrash;
+  protected filteredTrips: Trip[];
+
   //no se si esto es cancelled
 
   constructor(private tripService: TripService, private router: Router, private messageService: MessageService) {
     this.trips = [];
+    this.filteredTrips = [];
   }
   
   isCancelled(trip: Trip) {
@@ -26,6 +29,13 @@ export class TripListComponent implements OnInit {
     console.log("Loading trips...");
     this.trips = await this.tripService.getAllTrips();
     console.log("Trips were loaded", this.trips);
+    this.filteredTrips = [...this.trips]; 
+    this.tripService.searchTerm$.subscribe(term => {
+      this.tripService.getAllTripsFiltered(term).then((trips: Trip[]) => {
+        this.filteredTrips = trips; 
+      } );
+    });
+
   }
   goToTrip(tripId: string) {
     this.router.navigate(['/trips', tripId]);
