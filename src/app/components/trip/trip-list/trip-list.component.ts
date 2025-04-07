@@ -4,6 +4,8 @@ import { TripService } from '../../../services/trip.service';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import { Router } from '@angular/router';
 import { MessageService } from 'src/app/services/message.service';
+import { AuthService } from 'src/app/services/auth.service';
+import { Actor } from 'src/app/models/actor.model';
 @Component({
   selector: 'app-trip-list',
   templateUrl: './trip-list.component.html',
@@ -12,10 +14,14 @@ import { MessageService } from 'src/app/services/message.service';
 export class TripListComponent implements OnInit {
   protected trips: Trip[];
   protected trash = faTrash;
-  //no se si esto es cancelled
+  protected filteredTrips: Trip[];
+  protected currentActor: Actor | null = null;
+  protected activeRole: string = 'anonymous';
 
-  constructor(private tripService: TripService, private router: Router, private messageService: MessageService) {
+
+  constructor(private tripService: TripService, private router: Router, private messageService: MessageService, private authService: AuthService) {
     this.trips = [];
+    this.filteredTrips = [];
   }
   
   isCancelled(trip: Trip) {
@@ -24,9 +30,32 @@ export class TripListComponent implements OnInit {
 
   async ngOnInit(): Promise<void> {
     console.log("Loading trips...");
-    this.trips = await this.tripService.getAllTrips();
-    console.log("Trips were loaded", this.trips);
+    const actorData = localStorage.getItem('currentActor');
+    this.currentActor = actorData ? JSON.parse(actorData) as Actor : null;
+    this.activeRole = this.currentActor?.role || '';
+    if (this.activeRole === 'MANAGER') {
+      //Se usa con el email temporalmente
+      this.trips = await this.tripService.getAllTripsByManager(this.currentActor?.email || '');
+    } else {
+      this.trips = await this.tripService.getAllTrips();
+    }
+  
+    this.filteredTrips = [...this.trips]; 
+  
+    this.tripService.searchTerm$.subscribe(term => {
+      if (this.activeRole === 'MANAGER') {
+        this.tripService.getAllTripsFilteredByManager(term, this.currentActor?.email || '').then((trips: Trip[]) => {
+          this.filteredTrips = trips;
+        });
+      } else {
+        this.tripService.getAllTripsFiltered(term).then((trips: Trip[]) => {
+          this.filteredTrips = trips;
+        });
+      }
+    });
+    
   }
+
   goToTrip(tripId: string) {
     this.router.navigate(['/trips', tripId]);
   }

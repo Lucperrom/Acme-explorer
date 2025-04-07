@@ -17,7 +17,7 @@ import { TripFormComponent } from './components/trip/trip-form/trip-form.compone
 const routes: Routes = [
   { path: 'profile/:id', component: ProfileEditComponent, canActivate: [AuthGuard] },
   { path: 'login', component: LoginComponent, canActivate: [ActorRoleGuard], data: {expectedRole: 'anonymous'} },
-  { path: 'register', component: RegisterComponent, canActivate: [AuthGuard,ActorRoleGuard], data: {expectedRole: 'anonymous' }},
+  { path: 'register', component: RegisterComponent, canActivate: [ActorRoleGuard], data: {expectedRole: 'anonymous' }},
   { path: 'trips', children:[
     { path: 'load', component: TripLoadComponent, canActivate: [AuthGuard,ActorRoleGuard], data: {expectedRole: 'administrator' }},
     {path: 'create', component: TripFormComponent, canActivate: [AuthGuard,ActorRoleGuard], data: {expectedRole: 'manager', mode: 'post' }},

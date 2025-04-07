@@ -41,10 +41,10 @@
 
       <!-- Barra de búsqueda -->
 
-      <form class="form-inline d-flex my-2 my-lg-0 me-2">
-        <input class="form-control mr-2 me-1" type="search" placeholder="Search" aria-label="Search">
+      <form class="form-inline d-flex my-2 my-lg-0 me-2" (submit)="onSearch($event)">
+        <input [(ngModel)]="searchTerm" name="search" class="form-control mr-2 me-1" type="search" placeholder="Search by ticker, title, or description" aria-label="Search">
         <button class="btn btn-outline-success" type="submit">Search</button>
-    </form>
+      </form>
 
     <!-- Botones de cambiar idioma -->
      <button class="btn btn-secondary me-2" (click)="changeLanguage('EN')">EN</button>
