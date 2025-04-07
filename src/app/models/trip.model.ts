@@ -1,5 +1,6 @@
 import { Entity } from "./entity.model";
 import { Stage } from "./stage.model";
+import { Location } from "./location.model";
 
 export class Trip extends Entity {
     private _ticker!: string;
@@ -16,6 +17,7 @@ export class Trip extends Entity {
     private _managerId!: string;
     private _managerName!: string;
     private _createdAt!: Date; // New property
+    private _location!: Location; // Use Location model
 
     constructor(data?: any) {
         super();
@@ -26,6 +28,7 @@ export class Trip extends Entity {
         this._startDate = data?.startDate || new Date();
         this._endDate = data?.endDate || new Date();
         this._createdAt = data?.createdAt || new Date(); // Initialize createdAt
+        this._location = new Location(data?.location); // Initialize with Location model
         
         const generateTicker = (): string => {
             const datePart = new Date().toISOString().slice(2, 10).replace(/-/g, '');
@@ -59,6 +62,7 @@ export class Trip extends Entity {
     public get stages(): Stage[] { return this._stages; }
     public get price(): number { return this._price; }
     public get createdAt(): Date { return this._createdAt; } // Getter for createdAt
+    public get location(): Location { return this._location; } // Getter for location
 
     // SETTERS
     public set title(value: string) { this._title = value; }
@@ -75,4 +79,5 @@ export class Trip extends Entity {
     public set stages(value: Stage[]) { this._stages = value; }
     public set price(value: number) { this._price = value; }
     public set createdAt(value: Date) { this._createdAt = value; } // Setter for createdAt
+    public set location(value: Location) { this._location = value; } // Setter for location
 }

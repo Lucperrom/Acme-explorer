@@ -37,7 +37,11 @@
     <ng-template #notCancelable>
         <div class="card-text text-danger ml-2 nb-1">This trip cannot be cancelled.</div>
     </ng-template>
-
+    <div class="card-body" *ngIf="trip.location?.latitude && trip.location?.longitude">
+        <button class="btn btn-primary" (click)="seeForecast(trip.id)">
+            See Forecast
+        </button>
+    </div>
     <div class="card-body">
         <label for="price" class="form-label">{{'New Price: '}}</label>
         <input type="text" class="form-control" [(ngModel)]="trip.price" (keyup)="onPriceChange()">
