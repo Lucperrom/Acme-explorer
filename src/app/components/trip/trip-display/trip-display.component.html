@@ -49,3 +49,25 @@
         </ng-template>
     </div>
 </div>
+
+<!-- Formulario para aplicar al viaje (separado del card de trip) -->
+<div class="container mt-5" *ngIf="!hasAppliedFlag && !isManager">
+    <h3 class="text-center">Aplica al viaje</h3>
+    <div class="card mx-auto" style="max-width: 30rem;">
+        <div class="card-body">
+            <form class="form-horizontal" (ngSubmit)="onApplicationSubmit(f)" #f="ngForm">
+                <div class="form-group mb-3">
+                    <label for="comments" class="form-label">Comentarios</label>
+                    <textarea name="comments" id="comments" class="form-control" rows="3" 
+                              ngModel></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">Aplicar</button>
+            </form>            
+        </div>
+    </div>
+</div>
+
+<div class="container mt-5" *ngIf="hasAppliedFlag && !isManager">
+    <h3 class="text-center text-success">Ya has aplicado a este viaje</h3>
+</div>
+
