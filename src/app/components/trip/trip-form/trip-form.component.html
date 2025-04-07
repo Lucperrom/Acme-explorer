@@ -1,99 +1,100 @@
-<form [formGroup]="tripForm"(ngSubmit)= "onSubmit()">
-    <fieldset>
-        <legend>Create new Trip</legend>
-        <div class="form-group has danger">
-            <label for="title" class="form-control-label">Title:</label>
-            <input id="title" type="text" formControlName="title" class="form-control">
-        </div>
-        <div class="form-group has danger">
-            <label for="description" class="form-control-label">Description:</label>
-            <input id="description" type="textarea" formControlName="description" class="form-control">
-        </div>
-        <div class="form-row d-flex flex-column flex-md-row">
-            <div class="form-group col-12 col-md-4 mb-2">
-                <label for="totalPrice" class="form-control-label">Total Price:</label>
-                <div id="totalPrice" class="form-control" [class.disabled]="true">
-                    {{ tripForm.get('price')?.value | currency: 'EUR' }}
-                </div>
-            </div>
-      
-            <div class="form-group col-12 col-md-4 mb-2">
-              <label for="startDate" class="form-control-label">Start Date:</label>
-              <input id="startDate" type="date" formControlName="startDate" class="form-control">
-            </div>
-      
-            <div class="form-group col-12 col-md-4 mb-2">
-              <label for="endDate" class="form-control-label">End Date:</label>
-              <input id="endDate" type="date" formControlName="endDate" class="form-control">
-            </div>
-          </div>
+<form [formGroup]="tripForm" (ngSubmit)="onSubmit()">
+  <fieldset>
+    <legend>Create new Trip</legend>
 
-          <div class="form-group">
-            <label>Stages:</label>
-            <div formArrayName="stages" class="d-flex flex-wrap">
-              <div *ngFor="let stage of stages.controls; let i = index" class="card m-2" style="width: 18rem;">
-                <div class="card-body">
-                  <div [formGroupName]="i">
-                    <div class="mb-2">
-                      <label for="stageTitle{{i}}" class="form-label">Stage Title:</label>
-                      <input id="stageTitle{{i}}" formControlName="title" type="text" placeholder="Stage Title" class="form-control" required>
-                    </div>
-                    <div class="mb-2">
-                      <label for="stageDescription{{i}}" class="form-label">Stage Description:</label>
-                      <input id="stageDescription{{i}}" formControlName="description" type="text" placeholder="Stage Description" class="form-control" required>
-                    </div>
-                    <div class="mb-2">
-                      <label for="stagePrice{{i}}" class="form-label">Stage Price:</label>
-                      <input id="stagePrice{{i}}" formControlName="price" type="number" placeholder="Stage Price" class="form-control" required min="0">
-                    </div>
-                  </div>
-                  <button type="button" class="btn btn-danger" (click)="removeStage(i)" *ngIf="stages.length > 1">-</button>
+    <!-- Prefill Button -->
+    <button type="button" class="btn btn-secondary mb-3" (click)="prefillForm()">Prefill Form</button>
+
+    <div class="form-group" *ngFor="let field of ['title', 'description', 'startDate', 'endDate']">
+      <label [for]="field">{{ field | titlecase }}:</label>
+      <input [id]="field" [type]="field.includes('Date') ? 'date' : 'text'" class="form-control"
+        [formControlName]="field" />
+      <div class="text-danger" *ngIf="tripForm.get(field)?.invalid && tripForm.get(field)?.touched">
+        <div *ngFor="let err of tripForm.get(field)?.errors | keyvalue">
+          {{ err.key }} error.
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group col-12 col-md-4 mb-2">
+      <label for="totalPrice" class="form-control-label">Total Price:</label>
+      <div id="totalPrice" class="form-control" [class.disabled]="true">
+        {{ tripForm.get('price')?.value | currency: 'EUR' }}
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>Stages:</label>
+      <div formArrayName="stages" class="d-flex flex-wrap">
+        <div *ngFor="let stage of stages.controls; let i = index" class="card m-2" style="width: 18rem;">
+          <div class="card-body" [formGroupName]="i">
+            <div *ngFor="let field of ['title', 'description', 'price']" class="mb-2">
+              <label [for]="field + i">{{ field | titlecase }}:</label>
+              <input [id]="field + i" [type]="field === 'price' ? 'number' : 'text'" class="form-control"
+                [formControlName]="field" />
+              <div class="text-danger" *ngIf="stage.get(field)?.invalid && stage.get(field)?.touched">
+                <div *ngFor="let err of stage.get(field)?.errors | keyvalue">
+                  {{ err.key }} error.
                 </div>
               </div>
             </div>
-          
-            <!-- Botón de añadir Stage fuera del *ngFor -->
-            <button type="button" class="btn btn-success ms-2" (click)="addStage()">+</button>
+            <button type="button" class="btn btn-danger" (click)="removeStage(i)" *ngIf="stages.length > 1">-</button>
           </div>
-          
-        
+        </div>
+      </div>
+      <div class="text-danger"
+        *ngIf="tripForm.get('stages')?.hasError('emptyArray') && tripForm.get('stages')?.touched">
+        At least one stage is required.
+      </div>
+      <button type="button" class="btn btn-success" (click)="addStage()">+</button>
+    </div>
 
-        <div class="form-group">
-            <label>Requirements:</label>
-            <div formArrayName="requirements">
-                <div *ngFor="let req of requirements.controls; let i = index" class="d-flex align-items-center mb-2">
-                    <input [formControlName]="i" type="text" class="form-control">
-                    <button type="button" class="btn btn-danger ms-2" (click)="removeRequirement(i)" *ngIf="requirements.length > 1">-</button>
-                    <button type="button" class="btn btn-success ms-2" (click)="addRequirement()" *ngIf="i === requirements.length - 1">+</button>
-                </div>
+    <div class="form-group">
+      <label>Requirements:</label>
+      <div formArrayName="requirements">
+        <div *ngFor="let req of requirements.controls; let i = index" class="d-flex flex-column mb-2">
+          
+          <input [formControlName]="i" type="text" class="form-control" />
+          <div class="text-danger" *ngIf="req.invalid && req.touched">
+            <div *ngFor="let err of req.errors | keyvalue">
+              {{ err.key }} error.
             </div>
-        </div>
-
-        <!-- Contenedor para organizar input y carrusel en la misma línea -->
-        <div class="custom-file-upload">
-            <!-- Input de tipo file, oculto visualmente -->
-            <input type="file" id="pictures" (change)="onFileSelected($event)" class="file-input" multiple>
-          
-            <!-- Botón que simula un clic en el input -->
-            <button type="button" class="btn btn-primary" (click)="triggerFileInput()">Upload Pictures</button>
           </div>
-
-    <!-- Carrusel (Derecha) -->
-            <div *ngIf="pictures.controls.length > 0" style="max-width: 300px;">
-            <ngb-carousel>
-                <ng-template ngbSlide *ngFor="let picture of pictures.controls; let j = index">
-                    <div class="position-relative">
-                        <img class="d-block w-100" [src]="picture.value" alt="Slide {{ j + 1 }}" style="height: 200px; object-fit: cover;">
-                        <!-- Botón para eliminar la imagen con z-index alto -->
-                        <button type="button" class="btn btn-danger btn-sm position-absolute top-0 end-0 m-1"
-                                style="z-index: 10;" (click)="removePicture(j)">❌</button>
-                    </div>
-                </ng-template>
-            </ngb-carousel>
+          
+          <div class="mt-1 d-flex">
+            <button type="button" class="btn btn-danger me-2" (click)="removeRequirement(i)"
+            *ngIf="requirements.length > 1">-</button>
+          </div>
+          
         </div>
+        <button type="button" class="btn btn-success" (click)="addRequirement()"
+          >+</button>
+      </div>
+      <div class="text-danger"
+        *ngIf="tripForm.get('requirements')?.hasError('emptyArray') && tripForm.get('requirements')?.touched">
+        At least one requirement is required.
+      </div>
+    </div>
+    <br />
+    <div class="custom-file-upload">
+      <input type="file" id="pictures" (change)="onFileSelected($event)" class="file-input" multiple hidden />
+      <button type="button" class="btn btn-primary" (click)="triggerFileInput()">Upload Pictures</button>
+    </div>
 
+    <div *ngIf="pictures.controls.length > 0" style="max-width: 300px;">
+      <ngb-carousel>
+        <ng-template ngbSlide *ngFor="let picture of pictures.controls; let j = index">
+          <div class="position-relative">
+            <img class="d-block w-100" [src]="picture.value" alt="Slide {{ j + 1 }}"
+              style="height: 200px; object-fit: cover;" />
+            <button type="button" class="btn btn-danger btn-sm position-absolute top-0 end-0 m-1" style="z-index: 10;"
+              (click)="removePicture(j)">❌</button>
+          </div>
+        </ng-template>
+      </ngb-carousel>
+    </div>
 
-        <br>
-        <button type="submit" class="btn btn-primary mb-3">Create</button>
-    </fieldset>
+    <br />
+    <button type="submit" class="btn btn-primary mb-3">Create</button>
+  </fieldset>
 </form>

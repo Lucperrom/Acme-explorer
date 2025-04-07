@@ -1,8 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Trip } from '../models/trip.model';
-import { Firestore, collection, getDocs, getDoc, doc } from '@angular/fire/firestore';
-import { addDoc } from 'firebase/firestore';
-import { Router } from '@angular/router';
+import { Firestore, collection, getDocs, getDoc,addDoc, doc } from '@angular/fire/firestore';
 
 @Injectable({
   providedIn: 'root'
@@ -24,6 +22,9 @@ export class TripService {
     trip.cancelledReason = data['cancelledReason'] || '';
     trip.deleted = data['deleted'] || false; // Valor predeterminado
     trip.pictures = data['pictures'] || []; // Manejo seguro de imágenes
+    trip.managerId = data['managerId'] || ''; // Manejo seguro de ID
+    trip.managerName = data['managerName'] || ''; // Manejo seguro de nombre
+    trip.createdAt = data['createdAt'] ? new Date(data['createdAt']) : new Date(); // Manejo seguro de fecha
     return trip;
   }
 
@@ -67,17 +68,15 @@ export class TripService {
     }
   }
 
-  async createTrip(trip: Trip) {
-      return new Promise<any>((resolve, reject) => {
-        console.log(this.firestore)
-          const tripRef = collection(this.firestore, 'trips');
-          addDoc(tripRef, trip).then((docRef) => {
-            console.log("Document written with ID: ", docRef.id);
-            resolve(trip);
-          }).catch((error) => {
-            console.error("Error adding document: ", error);
-            reject();
-          });
-        });
+  async createTrip(trip: Object): Promise<string> {
+    try {
+      const tripRef = collection(this.firestore, 'trips'); // Firestore from AngularFire
+      const docRef = await addDoc(tripRef, trip); // ✅ this addDoc now matches your Firestore type
+      console.log("Trip created with ID:", docRef.id);
+      return docRef.id;
+    } catch (error) {
+      console.error("Error creating trip:", error);
+      throw error;
     }
+  }
 }

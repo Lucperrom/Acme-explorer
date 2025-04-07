@@ -6,9 +6,10 @@
                     <div class="card-header">
                         <ngb-carousel *ngIf="trip.pictures?.length" (click)="$event.stopPropagation()" style="height: 230px; overflow: hidden;">
                             <ng-template ngbSlide *ngFor="let picture of trip.pictures; let j = index">
-                                <img class="d-block w-100" [src]="picture" alt="Slide {{ j + 1 }}">
+                                <img class="d-block w-100" [src]="picture || '/assets/images/no-image.png'" alt="Slide {{ j + 1 }}">
                             </ng-template>
                         </ngb-carousel>
+                        <img *ngIf="!trip.pictures?.length" class="d-block w-100" src="/assets/images/no-image.png" alt="No image available" style="height: 230px; object-fit: cover;">
                     </div>
                     <div class="card-body">
                         <h5 class="card-title">{{ trip.title }}</h5>
@@ -16,10 +17,8 @@
                         <p><strong>Price:</strong> {{ trip.price }} EUR</p>
                         <p><strong>Date:</strong> {{ trip.startDate | date:'d MMMM yyyy'}} - {{ trip.endDate | date:'d MMMM yyyy' }}</p>
                         <p *ngIf="trip.cancelledReason"><strong>Cancelled Reason:</strong> {{ trip.cancelledReason }}</p>
-                        
+                        <p *ngIf="trip.managerName"><strong>Created by</strong> {{ trip.managerName }}<span *ngIf="trip.createdAt"> on {{ trip.createdAt | date:'d MMMM yyyy' }}</span></p>
                     </div>
-                    
-
                 </div>
             </div>
         </ng-container>

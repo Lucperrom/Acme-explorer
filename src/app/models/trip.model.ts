@@ -14,6 +14,8 @@ export class Trip extends Entity {
     private _cancelledReason!: string;
     private _deleted!: boolean;
     private _managerId!: string;
+    private _managerName!: string;
+    private _createdAt!: Date; // New property
 
     constructor(data?: any) {
         super();
@@ -23,6 +25,7 @@ export class Trip extends Entity {
         this._price = this._stages.reduce((total, stage) => total + stage.price, 0);
         this._startDate = data?.startDate || new Date();
         this._endDate = data?.endDate || new Date();
+        this._createdAt = data?.createdAt || new Date(); // Initialize createdAt
         
         const generateTicker = (): string => {
             const datePart = new Date().toISOString().slice(2, 10).replace(/-/g, '');
@@ -38,6 +41,7 @@ export class Trip extends Entity {
         this._cancelledReason = '';
         this._deleted = false;
         this._managerId = data?.managerId || '';
+        this._managerName = data?.managerName || '';
     }
 
     // GETTERS
@@ -51,8 +55,10 @@ export class Trip extends Entity {
     public get pictures(): Array<string> { return this._pictures; }
     public get deleted(): boolean { return this._deleted; }
     public get managerId(): string { return this._managerId; }
+    public get managerName(): string { return this._managerName; }
     public get stages(): Stage[] { return this._stages; }
     public get price(): number { return this._price; }
+    public get createdAt(): Date { return this._createdAt; } // Getter for createdAt
 
     // SETTERS
     public set title(value: string) { this._title = value; }
@@ -65,6 +71,8 @@ export class Trip extends Entity {
     public set pictures(value: Array<string>) { this._pictures = value; }
     public set deleted(value: boolean) { this._deleted = value; }
     public set managerId(value: string) { this._managerId = value; }
+    public set managerName(value: string) { this._managerName = value; }
     public set stages(value: Stage[]) { this._stages = value; }
     public set price(value: number) { this._price = value; }
+    public set createdAt(value: Date) { this._createdAt = value; } // Setter for createdAt
 }

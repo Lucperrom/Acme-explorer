@@ -15,12 +15,12 @@ import { TermsAndConditionsComponent } from './components/terms-and-conditions/t
 import { TripLoadComponent } from './components/trip/trip-load/trip-load.component';
 import { TripFormComponent } from './components/trip/trip-form/trip-form.component';
 const routes: Routes = [
-  { path: 'profile/:id', component: ProfileEditComponent },
+  { path: 'profile/:id', component: ProfileEditComponent, canActivate: [AuthGuard] },
   { path: 'login', component: LoginComponent, canActivate: [ActorRoleGuard], data: {expectedRole: 'anonymous'} },
-  { path: 'register', component: RegisterComponent, canActivate: [ActorRoleGuard], data: {expectedRole: 'anonymous' }},
+  { path: 'register', component: RegisterComponent, canActivate: [AuthGuard,ActorRoleGuard], data: {expectedRole: 'anonymous' }},
   { path: 'trips', children:[
-    { path: 'load', component: TripLoadComponent, canActivate: [ActorRoleGuard], data: {expectedRole: 'administrator' }},
-    {path: 'create', component: TripFormComponent, canActivate: [ActorRoleGuard], data: {expectedRole: 'manager', mode: 'post' }},
+    { path: 'load', component: TripLoadComponent, canActivate: [AuthGuard,ActorRoleGuard], data: {expectedRole: 'administrator' }},
+    {path: 'create', component: TripFormComponent, canActivate: [AuthGuard,ActorRoleGuard], data: {expectedRole: 'manager', mode: 'post' }},
     {path: ':id', component: TripDisplayComponent, canActivate: [AuthGuard]},
     {path: '', component: TripListComponent}
    ]},
@@ -34,7 +34,7 @@ const routes: Routes = [
   // ]},
   //PENDIENTE
   { path: 'terms-and-conditions', component: TermsAndConditionsComponent },
-  { path: 'dashboard', component: DashboardComponent, canActivate: [ActorRoleGuard], data: {expectedRole: 'administrator'} },
+  { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard,ActorRoleGuard], data: {expectedRole: 'administrator'} },
   { path: 'home', component: HomeComponent },
   { path: 'denied-access', component: DeniedAccessComponent},
   { path: '', redirectTo: '/trips', pathMatch: 'full' },

@@ -10,7 +10,7 @@ import { Observable } from 'rxjs';
   styleUrls: ['./navbar.component.css']
 })
 export class NavbarComponent implements OnInit { 
-  protected currentActor: Actor | undefined;
+  protected currentActor: Actor | null = null;
   protected activeRole: string = 'anonymous'
 
   constructor(private authService: AuthService, private router: Router) {
@@ -20,7 +20,7 @@ export class NavbarComponent implements OnInit {
     this.authService.loggedInUserSubject.asObservable().subscribe((loggedIn: boolean) => {
       if (loggedIn) {
         this.currentActor = this.authService.getCurrentActor();
-        this.activeRole = this.currentActor.role;
+        this.activeRole = this.currentActor?.role || 'anonymous';
         console.log(this.currentActor);
       }
     });
@@ -30,7 +30,7 @@ export class NavbarComponent implements OnInit {
 
   logout(): void {
     this.authService.logout().then(() => {
-      this.currentActor = undefined;
+      this.currentActor = null;
       this.activeRole = 'anonymous';
       this.router.navigate(['/login']);
     });

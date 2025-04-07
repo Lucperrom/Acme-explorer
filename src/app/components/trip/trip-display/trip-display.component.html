@@ -13,6 +13,8 @@
                 <img class="d-block w-100" [src]="picture" alt="Slide {{ j + 1 }}">
             </ng-template>
         </ngb-carousel>
+        <img *ngIf="!trip.pictures?.length" class="d-block w-100" src="/assets/images/no-image.png" alt="No image available" style="height: 230px; object-fit: cover;">
+
         <p class="card-text ml-2">{{ trip.description }}</p>
         <p class="card-text ml-2">{{ trip.startDate | date:'d MMMM yyyy' }} - {{ trip.endDate | date:'d MMMM yyyy'}}</p>
     </div>

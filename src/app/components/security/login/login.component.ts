@@ -14,7 +14,10 @@ export class LoginComponent implements OnInit {
 
   constructor(private authService: AuthService, private route: ActivatedRoute , private router: Router) { }
   ngOnInit(): void {
-    this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
+    this.route.queryParams.subscribe(params => {
+      this.returnUrl = params['returnUrl'] || '/trips'; // Read returnUrl or default to '/trips'
+      console.log('Return URL:', this.returnUrl);
+    });
   }
 
   onLogin(form: NgForm) {
@@ -22,8 +25,7 @@ export class LoginComponent implements OnInit {
     const password = form.value.password;
     this.authService.login(email, password).then(data => {
       console.log('Logged in', data);
-      
-      this.router.navigate(['/trips']);
+      this.router.navigate([this.returnUrl]); // Redirect to the desired route
       form.reset();
     }).catch((error) => {
       console.log(error);

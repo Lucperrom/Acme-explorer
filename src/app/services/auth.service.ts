@@ -2,8 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpHeaders, HttpClient } from '@angular/common/http';
 import { Actor } from '../models/actor.model';
 import { Auth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged, User, authState, deleteUser } from '@angular/fire/auth';
-import { environment } from '../../environments/environment';
-import { firstValueFrom, map, Observable, BehaviorSubject, Subject } from 'rxjs';
+import { Observable, BehaviorSubject, Subject } from 'rxjs';
 import { Router } from '@angular/router';
 import { addDoc, collection, Firestore, query, where, getDocs } from '@angular/fire/firestore';
 
@@ -18,9 +17,7 @@ const httpOptions = {
 })
 export class AuthService {
   public loggedInUserSubject = new BehaviorSubject<boolean>(false);
-  private currentActor!: Actor;
-  private loginStatus = new Subject<Boolean>();
-
+  private currentActor!: Actor|null;
   constructor(private auth: Auth, private firestore: Firestore, private http: HttpClient, private router: Router) {
     const actorData = localStorage.getItem('currentActor');
     if (actorData) {
@@ -44,12 +41,13 @@ export class AuthService {
         const userQuery = query(actorRef, where("email", "==", user.email));
         const querySnapshot = await getDocs(userQuery);
         this.currentActor = this.getCurrentActorFromDoc(querySnapshot.docs[0]);
-        localStorage.setItem('currentActor', JSON.stringify(this.currentActor));
+        // Avoid storing the password in localStorage
+        localStorage.setItem('currentActor', this.currentActor.toJSON(true));
         this.loggedInUserSubject.next(true);
         
       } else {
         this.loggedInUserSubject.next(false);
-        this.currentActor = undefined!;
+        this.currentActor = null;
         localStorage.removeItem('currentActor'); 
       }
     });
@@ -87,14 +85,14 @@ export class AuthService {
     querySnapshot.forEach((doc) => {
       let actor = this.getCurrentActorFromDoc(doc);
       this.currentActor = actor;
-      localStorage.setItem('currentActor', JSON.stringify(actor)); 
+      localStorage.setItem('currentActor', actor.toJSON(true)); 
       this.loggedInUserSubject.next(true); 
       console.log(doc);
       return doc.data();
     });
   }
 
-  getCurrentActor(): Actor {
+  getCurrentActor(): Actor|null {
     return this.currentActor;
   }
 
@@ -116,7 +114,7 @@ export class AuthService {
       signOut(this.auth)
         .then(res => {
           this.loggedInUserSubject.next(false);
-          this.currentActor = undefined!;
+          this.currentActor = null;
           localStorage.removeItem('currentActor'); 
           console.log('You have successfully logged out');
           resolve(res);
@@ -154,13 +152,8 @@ export class AuthService {
   }
 
   isLoggedIn(): boolean {
-    console.log('Checking if user is logged in');
-    let loggedIn = this.loggedInUserSubject.value;
-    console.log('User is logged in: ', loggedIn);
-    return loggedIn;
+    return this.loggedInUserSubject.value; // Ensure this reflects the correct state
   }
-
-  
 
   getStatus(): Observable<Boolean> {
     return this.loggedInUserSubject.asObservable();

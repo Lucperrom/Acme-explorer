@@ -64,7 +64,7 @@ export class Actor extends Entity {
     public set surname(value: string) {
         this._surname = value;
     }
-    
+
     public set phone(value: string) {
         this._phone = value;
     }
@@ -83,5 +83,22 @@ export class Actor extends Entity {
 
     public set validate(value: boolean) {
         this._validate = value;
+    }
+
+    public toJSON(removePassword = false): any {
+        let json: any = {
+            id: this.id,
+            name: this._name,
+            surname: this._surname,
+            phone: this._phone,
+            address: this._address,
+            role: this._role,
+            email: this._email,
+            validate: this._validate
+        };
+        if (!removePassword) {
+            json.password = this._password;
+        }
+        return JSON.stringify(json);
     }
 }
