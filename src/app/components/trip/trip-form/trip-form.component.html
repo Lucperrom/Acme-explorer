@@ -16,6 +16,16 @@
       </div>
     </div>
 
+    <div *ngIf="isEditMode" class="form-group">
+      <label for="cancelledReason">Cancel Reason:</label>
+      <input id="cancelledReason" type="text" class="form-control" formControlName="cancelledReason" />
+      <div class="text-danger" *ngIf="tripForm.get('cancelledReason')?.invalid && tripForm.get('cancelledReason')?.touched">
+        <div *ngFor="let err of tripForm.get('cancelledReason')?.errors | keyvalue">
+          {{ err.key }} error.
+        </div>
+      </div>
+    </div>
+
     <div class="form-group col-12 col-md-4 mb-2">
       <label for="totalPrice" class="form-control-label">Total Price:</label>
       <div id="totalPrice" class="form-control" [class.disabled]="true">
@@ -92,5 +102,7 @@
 
     <br />
     <button type="submit" class="btn btn-primary mb-3">{{ isEditMode ? 'Update' : 'Create' }}</button>
+    <button *ngIf="isEditMode" type="button" class="btn btn-danger mb-3 ms-2" (click)="deleteTrip()">Delete</button>
+
   </fieldset>
 </form>

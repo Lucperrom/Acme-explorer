@@ -13,6 +13,7 @@ import { ActivatedRoute } from '@angular/router';
   templateUrl: './trip-form.component.html',
   styleUrls: ['./trip-form.component.css']
 })
+
 export class TripFormComponent implements OnInit {
   protected isEditMode: boolean = false;
   protected trip: Trip;
@@ -20,16 +21,16 @@ export class TripFormComponent implements OnInit {
   tripForm!: FormGroup;
   actor: Actor | null = null;
 
-constructor(
+  constructor(
     private tripService: TripService,
     private router: Router,
     private route: ActivatedRoute,
     private messageService: MessageService,
     private authService: AuthService) {
-      this.trip = new Trip();
-    }
+    this.trip = new Trip();
+  }
 
-    async ngOnInit(): Promise<void> {
+  async ngOnInit(): Promise<void> {
     this.isEditMode = this.route.snapshot.routeConfig?.path?.includes('edit') ?? false;
     this.tripForm = new FormGroup({
       title: new FormControl('', [Validators.required]),
@@ -39,12 +40,14 @@ constructor(
       endDate: new FormControl('', [Validators.required, this.endDateAfterStartDateValidator()]),
       stages: new FormArray([], [Validators.required, this.nonEmptyArrayValidator()]),
       requirements: new FormArray([], [Validators.required, this.nonEmptyArrayValidator()]),
-      pictures: new FormArray([])
+      pictures: new FormArray([]),
+      cancelledReason: new FormControl(''),
+      deleted: new FormControl(false)  // Añadimos el campo deleted al formulario
     });
 
     this.tripForm.get('stages')?.valueChanges.subscribe(() => this.updatePrice());
     this.actor = this.authService.getCurrentActor();
-    if(!this.actor){
+    if (!this.actor) {
       console.log('No actor found. Creating a trip is not possible. Redirecting to login page.');
       this.router.navigate(['/login']);
       return;
@@ -66,12 +69,15 @@ constructor(
       this.trip.startDate = startDate;
       this.trip.endDate = endDate;
 
+      // Actualiza el formulario con los valores del viaje
       this.tripForm.patchValue({
         title: this.trip.title,
         description: this.trip.description,
         startDate: startDate.toISOString().split('T')[0],
         endDate: endDate.toISOString().split('T')[0],
-        price: this.trip.price
+        price: this.trip.price,
+        cancelledReason: this.trip.cancelledReason || '',
+        deleted: this.trip.deleted || false  // Inicializamos el campo deleted
       });
 
       // Setear stages
@@ -103,6 +109,7 @@ constructor(
       }
     }
   }
+
   nonEmptyArrayValidator(): ValidatorFn {
     return (control: AbstractControl): ValidationErrors | null => {
       const array = control as FormArray;
@@ -199,6 +206,30 @@ constructor(
     this.tripForm.get('price')?.setValue(total);
   }
 
+  async deleteTrip(): Promise<void> {
+    if (!this.tripId) {
+      this.messageService.notifyMessage('No se puede borrar un viaje que no existe', 'alert-danger');
+      return;
+    }
+
+    if (confirm('¿Está seguro de que desea eliminar este viaje?')) {
+      try {
+        // Establecer deleted a true
+        await this.tripService.updateTrip(this.tripId, {
+          deleted: true
+        });
+        
+        
+        this.messageService.notifyMessage('Viaje eliminado correctamente', 'alert-success');
+        // Redireccionar a la lista de viajes
+        this.router.navigate(['/trips']);
+      } catch (error) {
+        this.messageService.notifyMessage('Error al eliminar el viaje', 'alert-danger');
+        console.error('Error al eliminar el viaje:', error);
+      }
+    }
+  }
+
   async onSubmit(): Promise<void> {
     console.log('Dates', this.tripForm.get('startDate')?.value, this.tripForm.get('endDate')?.value);
     console.log('Form Valid?', this.tripForm.valid);
@@ -214,20 +245,20 @@ constructor(
       console.log('Form is valid, submitting...');
       const formData = this.tripForm.getRawValue();
 
-       let startDate, endDate;
-    try {
-      startDate = new Date(formData.startDate);
-      endDate = new Date(formData.endDate);
-      
-      // Validar que las fechas son válidas
-      if (isNaN(startDate.getTime()) || isNaN(endDate.getTime())) {
-        throw new Error('Fechas inválidas');
+      let startDate, endDate;
+      try {
+        startDate = new Date(formData.startDate);
+        endDate = new Date(formData.endDate);
+        
+        // Validar que las fechas son válidas
+        if (isNaN(startDate.getTime()) || isNaN(endDate.getTime())) {
+          throw new Error('Fechas inválidas');
+        }
+      } catch (error) {
+        this.messageService.notifyMessage('Error en el formato de las fechas', 'alert-danger');
+        console.error('Error al procesar fechas:', error, formData.startDate, formData.endDate);
+        return;
       }
-    } catch (error) {
-      this.messageService.notifyMessage('Error en el formato de las fechas', 'alert-danger');
-      console.error('Error al procesar fechas:', error, formData.startDate, formData.endDate);
-      return;
-    }
 
       const tripData = {
         ...formData,
@@ -235,9 +266,15 @@ constructor(
         endDate: endDate.toISOString(),
         managerId: this.actor?.email,
         managerName: `${this.actor?.name || ''} ${this.actor?.surname || ''}`,
-        ticker: this.trip?.ticker || this.generateTicker()
+        ticker: this.trip?.ticker || this.generateTicker(),
+        deleted: this.trip?.deleted || false // Aseguramos que el campo deleted se mantiene
       };
-  
+
+      // Asegura que cancelledReason se actualiza con el valor del formulario
+      if (this.tripId && formData.cancelledReason !== undefined) {
+        tripData.cancelledReason = formData.cancelledReason;
+      }
+
       let tripId;
       if (this.tripId) {
         await this.tripService.updateTrip(this.tripId, tripData);
@@ -246,12 +283,13 @@ constructor(
       } else {
         tripId = await this.tripService.createTrip({
           ...tripData, 
-          createdAt: new Date()
+          createdAt: new Date(),
+          cancelledReason: "",
+          deleted: false // Al crear un nuevo viaje, deleted siempre es false
         });
         this.messageService.notifyMessage('Viaje creado correctamente', 'alert-success');
       }
-  
-  
+
       this.router.navigate(['/trips', tripId]);
       this.tripForm.reset();
     } catch (error) {
@@ -263,21 +301,15 @@ constructor(
 
   // Generate ticker
   private generateTicker(): string {
-    // Obtener la fecha actual
     const now = new Date();
     const yy = String(now.getFullYear()).slice(-2);
     const mm = String(now.getMonth() + 1).padStart(2, '0');
     const dd = String(now.getDate()).padStart(2, '0');
-  
-    // Generar 4 letras mayúsculas aleatorias
     const letters = Array.from({ length: 4 }, () =>
       String.fromCharCode(65 + Math.floor(Math.random() * 26))
     ).join('');
-  
     return `${yy}${mm}${dd}-${letters}`;
   }
-  
-  
 
   // Custom Validators
   private futureDateValidator(): ValidatorFn {
