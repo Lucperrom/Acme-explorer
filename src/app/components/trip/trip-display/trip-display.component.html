@@ -26,26 +26,26 @@
             <span *ngIf=" isSpecial">Deal!</span>
         </p>
     </div>
-    <div class="card-body" *ngIf="isCancelled(); else noCancelled">
+    <!-- <div class="card-body" *ngIf="isCancelled(); else noCancelled">
         <span class="card-text text-danger ml-2 nb-1">This trip has been cancelled</span>
-    </div>
-    <ng-template #noCancelled>
+    </div> -->
+    <!-- <ng-template #noCancelled>
         <div *ngIf="isCancelable(); else notCancelable">
             <p class="card-body text-muted">Write a cancel reason to cancel the trip</p>
         </div>
     </ng-template>
     <ng-template #notCancelable>
         <div class="card-text text-danger ml-2 nb-1">This trip cannot be cancelled.</div>
-    </ng-template>
+    </ng-template> -->
 
     <div class="card-body">
-        <label for="price" class="form-label">{{'New Price: '}}</label>
-        <input type="text" class="form-control" [(ngModel)]="trip.price" (keyup)="onPriceChange()">
-        <label for="price" class="form-label">{{'Cancel Reason: '}}</label>
-        <input *ngIf="isCancelable(); else noCancelable" type="text" class="form-control"
-            [(ngModel)]="trip.cancelledReason">
-        <ng-template #noCancelable>
+        <!-- <label for="price" class="form-label">{{'New Price: '}}</label>
+        <input type="text" class="form-control" [(ngModel)]="trip.price" (keyup)="onPriceChange()"> -->
+        <!-- <label for="price" class="form-label">{{'Cancel Reason: '}}</label> -->
+        <!-- <input *ngIf="isCancelable(); else noCancelable" type="text" class="form-control"
+            [(ngModel)]="trip.cancelledReason"> -->
+        <!-- <ng-template #noCancelable>
             <p class="card-body text-muted">To be cancelled it should be one week in advance of its starting date</p>
-        </ng-template>
+        </ng-template> -->
     </div>
 </div>

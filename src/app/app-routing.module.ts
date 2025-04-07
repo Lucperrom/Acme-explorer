@@ -21,7 +21,7 @@ const routes: Routes = [
   { path: 'trips', children:[
     { path: 'load', component: TripLoadComponent, canActivate: [AuthGuard,ActorRoleGuard], data: {expectedRole: 'administrator' }},
     {path: 'create', component: TripFormComponent, canActivate: [AuthGuard,ActorRoleGuard], data: {expectedRole: 'manager', mode: 'post' }},
-    {path: ':id', component: TripDisplayComponent, canActivate: [AuthGuard]},
+    {path: ':id', component: TripDisplayComponent},
     {path: '', component: TripListComponent},
     {path: 'edit/:id', component: TripFormComponent, canActivate: [AuthGuard,ActorRoleGuard], data: {expectedRole: 'manager', mode: 'put' }},
 
