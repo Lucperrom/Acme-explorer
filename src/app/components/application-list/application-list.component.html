@@ -4,7 +4,7 @@
 <ng-container *ngIf="actor.role.toLowerCase() === 'manager'">
   <div class="form-group">
     <label for="tripFilter">Filter by Trip:</label>
-    <select id="tripFilter" class="form-control" [(ngModel)]="selectedTripTitle" (change)="filterByTripTitle()">
+    <select id="tripFilter" class="form-control mt-2" [(ngModel)]="selectedTripTitle" (change)="filterByTripTitle()">
       <option value="all">All Trips</option>
       <option *ngFor="let title of tripTitles" [value]="title">{{ title }}</option>
     </select>
