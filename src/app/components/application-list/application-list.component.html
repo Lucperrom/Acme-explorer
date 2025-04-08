@@ -1,4 +1,16 @@
 <h1>Applications</h1>
+
+<!-- Desplegable para managers -->
+<ng-container *ngIf="actor.role.toLowerCase() === 'manager'">
+  <div class="form-group">
+    <label for="tripFilter">Filter by Trip:</label>
+    <select id="tripFilter" class="form-control" [(ngModel)]="selectedTripTitle" (change)="filterByTripTitle()">
+      <option value="all">All Trips</option>
+      <option *ngFor="let title of tripTitles" [value]="title">{{ title }}</option>
+    </select>
+  </div>
+</ng-container>
+
 <div class="filter-buttons">
   <button class="btn btn-primary" (click)="filterByStatus('all')">All</button>
   <button class="btn btn-secondary" (click)="filterByStatus('pending')">Pending</button>
@@ -6,6 +18,7 @@
   <button class="btn btn-success" (click)="filterByStatus('due')">Due</button>
   <button class="btn btn-danger" (click)="filterByStatus('rejected')">Rejected</button>
 </div>
+
 <div class="application-list">
   <div *ngFor="let application of filteredApplications" class="card">
     <div class="card-body">

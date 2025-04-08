@@ -13,10 +13,13 @@ export class ApplicationListComponent implements OnInit {
 
   constructor(private applicationService: ApplicationService, private authService: AuthService, private tripService: TripService, private messageService: MessageService) { }
 
-  protected actor: any;
-  protected applications: any[] = [];
-  protected filteredApplications: any[] = [];
-  protected rejectReason: string = '';
+  public actor: any;
+  public applications: any[] = [];
+  public filteredApplications: any[] = [];
+  public rejectReason: string = '';
+  public tripTitles: string[] = [];
+  public selectedTripTitle: string = '';
+  public selectedStatus: string = 'all'; // Agrega una propiedad para almacenar el estado seleccionado
 
   ngOnInit(): void {
     this.actor = this.authService.getCurrentActor();
@@ -29,25 +32,46 @@ export class ApplicationListComponent implements OnInit {
       fetchApplications.then(applications => {
         this.applications = applications;
         this.filteredApplications = applications; // Inicializa con todas las aplicaciones
-        for (let application of this.applications) {
-          this.tripService.getTripById(application.tripId).then(trip => {
-            application.trip = trip;
-          }).catch(error => {
-            console.error("Error fetching trip: ", error);
-          });
-        }
+        const tripTitleSet = new Set<string>(); // Usamos un Set para evitar duplicados
+        const tripPromises = this.applications.map(application => {
+          if (!application.trip) { // Evita llamadas duplicadas si el viaje ya está asignado
+            return this.tripService.getTripById(application.tripId).then(trip => {
+              application.trip = trip;
+              if (this.actor.role.toLowerCase() === 'manager') {
+                tripTitleSet.add(trip.title); // Agrega el título del viaje al Set
+              }
+            }).catch(error => {
+              console.error("Error fetching trip: ", error);
+            });
+          }
+          return Promise.resolve();
+        });
+
+        Promise.all(tripPromises).then(() => {
+          this.tripTitles = Array.from(tripTitleSet); // Convierte el Set a un array
+          console.log("Trip titles loaded:", this.tripTitles);
+        });
       }).catch(error => {
         console.error("Error fetching applications: ", error);
       });
     }
   }
 
+  filterApplications(): void {
+    this.filteredApplications = this.applications.filter(application => {
+      const matchesStatus = this.selectedStatus === 'all' || application.status?.toLowerCase() === this.selectedStatus.toLowerCase();
+      const matchesTripTitle = this.selectedTripTitle === 'all' || application.trip?.title === this.selectedTripTitle;
+      return matchesStatus && matchesTripTitle; // Combina ambos filtros
+    });
+  }
+
   filterByStatus(status: string): void {
-    if (status === 'all') {
-      this.filteredApplications = this.applications;
-    } else {
-      this.filteredApplications = this.applications.filter(application => application.status?.toLowerCase() === status);
-    }
+    this.selectedStatus = status; // Actualiza el estado seleccionado
+    this.filterApplications(); // Aplica el filtro combinado
+  }
+
+  filterByTripTitle(): void {
+    this.filterApplications(); // Aplica el filtro combinado
   }
 
   acceptApplication(application: string): void {
@@ -87,7 +111,7 @@ export class ApplicationListComponent implements OnInit {
     });
   }
 
-  private refreshApplications(): void {
+  public refreshApplications(): void {
     if (this.actor) {
       const fetchApplications = this.actor.role.toLowerCase() === 'explorer'
         ? this.applicationService.getAllApplicationsByExplorerId(this.actor.email)
