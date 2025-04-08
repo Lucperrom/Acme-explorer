@@ -1,10 +1,15 @@
-import { Component, OnInit } from '@angular/core';
-import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
+import { AfterViewInit, Component, OnInit } from '@angular/core';
+import {
+  AbstractControl, FormArray, FormControl, FormGroup, ValidationErrors,
+  ValidatorFn, Validators
+} from '@angular/forms';
 import { Router } from '@angular/router';
 import { Actor } from 'src/app/models/actor.model';
+import { Location } from 'src/app/models/location.model';
 import { AuthService } from 'src/app/services/auth.service';
 import { MessageService } from 'src/app/services/message.service';
 import { TripService } from 'src/app/services/trip.service';
+import * as L from 'leaflet';
 import { Trip } from 'src/app/models/trip.model';
 import { ActivatedRoute } from '@angular/router';
 
@@ -14,12 +19,15 @@ import { ActivatedRoute } from '@angular/router';
   styleUrls: ['./trip-form.component.css']
 })
 
-export class TripFormComponent implements OnInit {
+export class TripFormComponent implements AfterViewInit, OnInit {
   protected isEditMode: boolean = false;
   protected trip: Trip;
   protected tripId: string | null = null;
   tripForm!: FormGroup;
   actor: Actor | null = null;
+  map!: L.Map;
+  marker!: L.Marker;
+  searchQuery: string = ''; // Add search query state
 
   constructor(
     private tripService: TripService,
@@ -40,9 +48,15 @@ export class TripFormComponent implements OnInit {
       endDate: new FormControl('', [Validators.required, this.endDateAfterStartDateValidator()]),
       stages: new FormArray([], [Validators.required, this.nonEmptyArrayValidator()]),
       requirements: new FormArray([], [Validators.required, this.nonEmptyArrayValidator()]),
-      pictures: new FormArray([]),
       cancelledReason: new FormControl(''),
-      deleted: new FormControl(false)  // Añadimos el campo deleted al formulario
+      deleted: new FormControl(false),  // Añadimos el campo deleted al formulario
+      pictures: new FormArray([]),
+      location: new FormGroup({
+        latitude: new FormControl(null), // Latitude field
+        longitude: new FormControl(null), // Longitude field
+        address: new FormControl('') // Address field
+      }),
+      searchQuery: new FormControl('') // Add searchQuery as a FormControl
     });
 
     this.tripForm.get('stages')?.valueChanges.subscribe(() => this.updatePrice());
@@ -138,6 +152,99 @@ export class TripFormComponent implements OnInit {
     requirementsArray.push(new FormControl('Requirement 1', Validators.required));
   }
 
+
+  ngAfterViewInit(): void {
+    this.initializeMap();
+  }
+
+  initializeMap(): void {
+    const customIcon = L.icon({
+      iconUrl: '/assets/images/marker.png',
+      iconSize: [25, 41],
+      iconAnchor: [12, 41]
+    });
+
+    // Ensure the map is initialized only once
+    if (!this.map) {
+      this.map = L.map('map').setView([0, 0], 2);
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '© OpenStreetMap contributors'
+      }).addTo(this.map);
+
+      this.map.on('click', async (e: L.LeafletMouseEvent) => {
+        const { lat, lng } = e.latlng;
+        await this.updateLocation(lat, lng);
+        this.map.setView([lat, lng], 13);
+      });
+    }
+
+    this.map.invalidateSize();
+
+    // Update marker position if form values change
+    this.tripForm.get('location')?.valueChanges.subscribe((loc: any) => {
+      if (loc.latitude && loc.longitude) {
+        if (this.marker) {
+          this.marker.setLatLng([loc.latitude, loc.longitude]);
+        } else {
+          this.marker = L.marker([loc.latitude, loc.longitude], { icon: customIcon }).addTo(this.map);
+        }
+        this.map.setView([loc.latitude, loc.longitude], 13);
+      }
+    });
+  }
+
+  async updateLocation(lat: number, lng: number, address?: string): Promise<void> {
+    const locationGroup = this.tripForm.get('location') as FormGroup;
+    locationGroup.get('latitude')?.setValue(lat);
+    locationGroup.get('longitude')?.setValue(lng);
+    try {
+      if (!address) {
+        const res = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`);
+        const data = await res.json();
+        address = data.display_name || '';
+      }
+      locationGroup.get('address')?.setValue(address);
+    } catch (error) {
+      console.error('Error fetching address:', error);
+      locationGroup.get('address')?.setValue('');
+    }
+  }
+
+  async handleSearch(): Promise<void> {
+    const searchQuery = this.tripForm.get('searchQuery')?.value;
+    if (!searchQuery.trim()) {
+      console.warn('Search query is empty.');
+      return;
+    }
+
+    try {
+      const encodedQuery = encodeURIComponent(searchQuery.trim());
+      const response = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodedQuery}`);
+      const data = await response.json();
+
+      if (data.length > 0) {
+        const { lat, lon, display_name } = data[0];
+        this.map.setView([parseFloat(lat), parseFloat(lon)], 13);
+        await this.updateLocation(parseFloat(lat), parseFloat(lon), display_name);
+      } else {
+        console.warn('No results found for the search query.');
+      }
+    } catch (error) {
+      console.error('Error searching for location:', error);
+    }
+  }
+
+  onSearch(event: Event): void {
+    event.preventDefault(); // Prevent form submission
+    const input = event.target as HTMLInputElement;
+    this.searchQuery = input.value;
+
+    if (this.searchQuery.trim()) {
+      this.handleSearch();
+    }
+  }
+
+  // Utility Getters
   get stages(): FormArray {
     return this.tripForm.get('stages') as FormArray;
   }
@@ -150,6 +257,7 @@ export class TripFormComponent implements OnInit {
     return this.tripForm.get('pictures') as FormArray;
   }
 
+  // Stage & Requirement Management
   createStageGroup(): FormGroup {
     return new FormGroup({
       title: new FormControl('', Validators.required),
@@ -240,7 +348,7 @@ export class TripFormComponent implements OnInit {
       this.messageService.notifyMessage('Invalid form, please fix the errors', 'alert-danger');
       return;
     }
-  
+
     try {
       console.log('Form is valid, submitting...');
       const formData = this.tripForm.getRawValue();

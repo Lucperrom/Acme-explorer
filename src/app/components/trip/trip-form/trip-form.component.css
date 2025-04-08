@@ -1,3 +1,11 @@
+@import "~leaflet/dist/leaflet.css";
+
+#map {
+  height: 300px;
+  width: 100%;
+  min-height: 300px;
+}
+
 /* Ocultar el input de tipo file visualmente pero dejarlo funcional */
 .file-input {
     display: none;

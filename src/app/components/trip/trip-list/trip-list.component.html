@@ -1,57 +1,35 @@
+
 <div class="container mt-4">
-  <div class="row">
-    <ng-container *ngFor="let trip of trips; let i = index">
-      <div class="col-md-4 mb-4" *ngIf="trip.deleted === false">
 
-        <div *ngIf="currentActor?.role === 'MANAGER' && isCancelable(trip) && currentActor?.email === trip.managerId; else normalUserCard"
-             class="card h-100"
-             (click)="editTrip(trip.id)"
-             style="cursor: pointer;">
-
-          <div class="card-header">
-            <ngb-carousel *ngIf="trip.pictures?.length" (click)="$event.stopPropagation()" style="height: 230px; overflow: hidden;">
-              <ng-template ngbSlide *ngFor="let picture of trip.pictures; let j = index">
-                <img class="d-block w-100" [src]="picture || '/assets/images/no-image.png'" alt="Slide {{ j + 1 }}">
-              </ng-template>
-            </ngb-carousel>
-            <img *ngIf="!trip.pictures?.length" class="d-block w-100" src="/assets/images/no-image.png" alt="No image available" style="height: 230px; object-fit: cover;">
-          </div>
-
-          <div class="card-body">
-            <h5 class="card-title">{{ trip.title }}</h5>
-            <p class="card-text">{{ trip.description }}</p>
-            <p><strong>Price:</strong> {{ trip.price }} EUR</p>
-            <p><strong>Date:</strong> {{ trip.startDate | date:'d MMMM yyyy'}} - {{ trip.endDate | date:'d MMMM yyyy' }}</p>
-            <p *ngIf="trip.cancelledReason"><strong>Cancelled Reason:</strong> {{ trip.cancelledReason }}</p>
-            <p *ngIf="trip.managerName"><strong>Created by</strong> {{ trip.managerName }}<span *ngIf="trip.createdAt"> on {{ trip.createdAt | date:'d MMMM yyyy' }}</span></p>
-          </div>
-        </div>
-
-        <ng-template #normalUserCard>
-          <div class="card h-100"
-               (click)="goToTrip(trip.id)"
-               style="cursor: pointer;">
-
-            <div class="card-header">
-              <ngb-carousel *ngIf="trip.pictures?.length" (click)="$event.stopPropagation()" style="height: 230px; overflow: hidden;">
-                <ng-template ngbSlide *ngFor="let picture of trip.pictures; let j = index">
-                  <img class="d-block w-100" [src]="picture || '/assets/images/no-image.png'" alt="Slide {{ j + 1 }}">
-                </ng-template>
-              </ngb-carousel>
-              <img *ngIf="!trip.pictures?.length" class="d-block w-100" src="/assets/images/no-image.png" alt="No image available" style="height: 230px; object-fit: cover;">
-            </div>
-
-            <div class="card-body">
-              <h5 class="card-title">{{ trip.title }}</h5>
-              <p class="card-text">{{ trip.description }}</p>
-              <p><strong>Price:</strong> {{ trip.price }} EUR</p>
-              <p><strong>Date:</strong> {{ trip.startDate | date:'d MMMM yyyy'}} - {{ trip.endDate | date:'d MMMM yyyy' }}</p>
-              <p *ngIf="trip.managerName"><strong>Created by</strong> {{ trip.managerName }}<span *ngIf="trip.createdAt"> on {{ trip.createdAt | date:'d MMMM yyyy' }}</span></p>
-            </div>
-          </div>
-        </ng-template>
-
+    <div *ngIf="activeRole === 'MANAGER'" class="mb-3">
+        <label for="tripFilter" class="form-label"><strong>Filter Trips:</strong></label>
+        <select id="tripFilter" class="form-select" [(ngModel)]="selectedFilter" (change)="onFilterChange()">
+          <option value="all">All Trips</option>
+          <option value="cancelled">Cancelled Trips</option>
+        </select>
       </div>
-    </ng-container>
-  </div>
+    <div class="row">        
+        <ng-container *ngFor="let trip of filteredTrips; let i = index">
+            <div class="col-md-4 mb-4" *ngIf="isVisible(trip)">
+                <div class="card h-100" (click)="goToTrip(trip.id)" style="cursor: pointer;">
+                    <div class="card-header">
+                        <ngb-carousel *ngIf="trip.pictures?.length" (click)="$event.stopPropagation()" style="height: 230px; overflow: hidden;">
+                            <ng-template ngbSlide *ngFor="let picture of trip.pictures; let j = index">
+                                <img class="d-block w-100" [src]="picture || '/assets/images/no-image.png'" alt="Slide {{ j + 1 }}">
+                            </ng-template>
+                        </ngb-carousel>
+                        <img *ngIf="!trip.pictures?.length" class="d-block w-100" src="/assets/images/no-image.png" alt="No image available" style="height: 230px; object-fit: cover;">
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title">{{ trip.title }}</h5>
+                        <p class="card-text">{{ trip.description }}</p>
+                        <p><strong>Price:</strong> {{ trip.price }} EUR</p>
+                        <p><strong>Date:</strong> {{ trip.startDate | date:'d MMMM yyyy'}} - {{ trip.endDate | date:'d MMMM yyyy' }}</p>
+                        <p *ngIf="trip.cancelledReason"><strong>Cancelled Reason:</strong> {{ trip.cancelledReason }}</p>
+                        <p *ngIf="trip.managerName"><strong>Created by</strong> {{ trip.managerName }}<span *ngIf="trip.createdAt"></span></p>
+                    </div>
+                </div>
+            </div>
+        </ng-container>
+    </div>
 </div>

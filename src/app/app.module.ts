@@ -12,7 +12,7 @@ import { TripListComponent } from './components/trip/trip-list/trip-list.compone
 import { RegisterComponent } from './components/security/register/register.component';
 import { LoginComponent } from './components/security/login/login.component';
 import { environment } from 'src/environments/environment';
-import {provideAuth, getAuth} from '@angular/fire/auth';
+import { provideAuth, getAuth } from '@angular/fire/auth';
 import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
 import { NotFoundComponent } from './components/not-found/not-found.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
@@ -29,6 +29,10 @@ import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 import { ApplicationTableComponent } from './components/application-table/application-table.component';
 import { TripLoadComponent } from './components/trip/trip-load/trip-load.component';
 import { TripFormComponent } from './components/trip/trip-form/trip-form.component';
+import { CommonModule } from '@angular/common';
+import { TripForecastComponent } from './components/trip/trip-forecast/trip-forecast.component';
+import { MaxPipe } from './pipes/max.pipe';
+import { MinPipe } from './pipes/min.pipe';
 
 @NgModule({
   declarations: [
@@ -48,7 +52,10 @@ import { TripFormComponent } from './components/trip/trip-form/trip-form.compone
     TermsAndConditionsComponent,
     ApplicationTableComponent,
     TripLoadComponent,
-    TripFormComponent
+    TripFormComponent,
+    TripForecastComponent,
+    MaxPipe,
+    MinPipe
   ],
   imports: [
     BrowserModule,
@@ -63,7 +70,8 @@ import { TripFormComponent } from './components/trip/trip-form/trip-form.compone
     NgxDatatableModule,
     provideFirebaseApp(() => initializeApp(environment.firebaseConfig)),
     provideAuth(() => getAuth()),
-    provideFirestore(() => getFirestore())
+    provideFirestore(() => getFirestore()),
+    CommonModule,
   ],
   providers: [AuthGuard],
   bootstrap: [AppComponent]

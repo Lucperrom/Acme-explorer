@@ -100,6 +100,27 @@
       </ngb-carousel>
     </div>
 
+    <div class="form-group">
+      <label for="location">Location:</label>
+      <div class="d-flex mb-2">
+        <input type="text" id="search" class="form-control me-2"
+               placeholder="Search for a location"
+               formControlName="searchQuery"
+               (keydown.enter)="onSearch($event)" />
+        <button type="button" class="btn btn-primary" (click)="handleSearch()">Search</button>
+      </div>
+      <div id="map-container" style="position: relative; height: 300px; overflow: hidden; margin-bottom: 10px;">
+        <div id="map" style="height: 100%; width: 100%;"></div>
+      </div>
+      <div [formGroupName]="'location'" class="d-flex flex-column">
+        <label for="address">Address:</label>
+        <input type="text" formControlName="address" readonly class="form-control"/>
+        <input type="hidden" formControlName="latitude" />
+        <input type="hidden" formControlName="longitude" />
+      </div>
+    </div>
+    
+
     <br />
     <button type="submit" class="btn btn-primary mb-3">{{ isEditMode ? 'Update' : 'Create' }}</button>
     <button *ngIf="isEditMode" type="button" class="btn btn-danger mb-3 ms-2" (click)="deleteTrip()">Delete</button>

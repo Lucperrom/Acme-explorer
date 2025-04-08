@@ -1,0 +1,35 @@
+<div class="container mt-5">
+  <div *ngIf="errorMessage" class="alert alert-danger text-center">
+    {{ errorMessage }}
+  </div>
+
+  <div *ngIf="forecastData" class="card shadow-lg">
+    <div class="card-header bg-primary text-white">
+      <h3 class="card-title">7-Day Weather Forecast</h3>
+    </div>
+    <div class="card-body">
+      <div class="table-responsive">
+        <table class="table table-bordered">
+          <thead class="thead-dark">
+            <tr>
+              <th>Date</th>
+              <th>Max Temp (°C)</th>
+              <th>Min Temp (°C)</th>
+              <th>Rain Sum (mm)</th>
+              <th>Precipitation Probability (%)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let day of forecastData">
+              <td>{{ day.date | date: 'MMM d, yyyy' }}</td>
+              <td>{{ day.maxTemp }}°C</td>
+              <td>{{ day.minTemp }}°C</td>
+              <td>{{ day.rainSum }} mm</td>
+              <td>{{ day.precipProb }}%</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

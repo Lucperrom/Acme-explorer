@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { AuthService } from 'src/app/services/auth.service'
 import { Actor } from 'src/app/models/actor.model';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
+import { TripService } from 'src/app/services/trip.service';
 
 @Component({
   selector: 'app-navbar',
@@ -11,11 +12,19 @@ import { Observable } from 'rxjs';
 })
 export class NavbarComponent implements OnInit { 
   protected currentActor: Actor | null = null;
-  protected activeRole: string = 'anonymous'
+  protected activeRole: string = 'anonymous';
+  @Output() search = new EventEmitter<string>();
+  searchTerm: string = '';
 
-  constructor(private authService: AuthService, private router: Router) {
+  constructor(private authService: AuthService, private tripService : TripService, private router: Router) {
    }
-
+   onSearch(event: Event): void {
+    event.preventDefault();
+    this.tripService.setSearchTerm(this.searchTerm.trim());
+    this.tripService.searchTerm$.subscribe((term) => {
+      this.searchTerm = term;
+    });
+  }
    ngOnInit(): void {
     this.authService.loggedInUserSubject.asObservable().subscribe((loggedIn: boolean) => {
       if (loggedIn) {

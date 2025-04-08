@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Trip } from 'src/app/models/trip.model';
 import { TripService } from 'src/app/services/trip.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import { Actor } from 'src/app/models/actor.model';
 import { AuthService } from 'src/app/services/auth.service'
@@ -18,12 +18,12 @@ export class TripDisplayComponent implements OnInit {
   protected tripId: string | null = null;
   protected currentActor: Actor | null = null;
 
-  constructor(private tripService: TripService, private route: ActivatedRoute, private authService: AuthService) { 
-    this.trip = new Trip();
-    this.trip.pictures = ["/assets/images/playa3.jpg"]
-    this.trip.title = "megusta"
-    console.log("inicializando trip", this.trip);    
-  }
+  constructor(private tripService: TripService, private route: ActivatedRoute, private authService: AuthService, private router: Router) { 
+      this.trip = new Trip();
+      this.trip.pictures = ["/assets/images/playa3.jpg"]
+      this.trip.title = "megusta"
+      console.log("inicializando trip", this.trip);    
+    }
 
   async ngOnInit(): Promise<void> {
     this.tripId = this.route.snapshot.paramMap.get('id');
@@ -49,6 +49,11 @@ export class TripDisplayComponent implements OnInit {
     return this.trip.price >= 100 ? 'red' : 'black';
   }
 
+  
+  editTrip(tripId: string) {
+    this.router.navigate(['/trips/edit', tripId]);
+  }
+
   getCurrentStyles() {
     let deal = this.trip.price <= 100
     let currentStyles = {
@@ -58,6 +63,11 @@ export class TripDisplayComponent implements OnInit {
     };
     return currentStyles;
   }
+
+  seeForecast(tripId: string) {
+    this.router.navigate(['/forecast', tripId]);
+  }
+
 
   onPriceChange() {
     this.isSpecial = Number(this.trip.price) >= 0

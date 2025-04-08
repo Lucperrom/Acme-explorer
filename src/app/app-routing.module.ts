@@ -14,10 +14,16 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { TermsAndConditionsComponent } from './components/terms-and-conditions/terms-and-conditions.component';
 import { TripLoadComponent } from './components/trip/trip-load/trip-load.component';
 import { TripFormComponent } from './components/trip/trip-form/trip-form.component';
+import { TripForecastComponent } from './components/trip/trip-forecast/trip-forecast.component';
 const routes: Routes = [
   { path: 'profile/:id', component: ProfileEditComponent, canActivate: [AuthGuard] },
   { path: 'login', component: LoginComponent, canActivate: [ActorRoleGuard], data: {expectedRole: 'anonymous'} },
   { path: 'register', component: RegisterComponent, canActivate: [ActorRoleGuard], data: {expectedRole: 'anonymous' }},
+  {
+    path: 'forecast', children: [
+      { path: ':id', component: TripForecastComponent },
+    ]
+  },
   { path: 'trips', children:[
     { path: 'load', component: TripLoadComponent, canActivate: [AuthGuard,ActorRoleGuard], data: {expectedRole: 'administrator' }},
     {path: 'create', component: TripFormComponent, canActivate: [AuthGuard,ActorRoleGuard], data: {expectedRole: 'manager', mode: 'post' }},
@@ -36,9 +42,9 @@ const routes: Routes = [
   // ]},
   //PENDIENTE
   { path: 'terms-and-conditions', component: TermsAndConditionsComponent },
-  { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard,ActorRoleGuard], data: {expectedRole: 'administrator'} },
+  { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard, ActorRoleGuard], data: { expectedRole: 'administrator' } },
   { path: 'home', component: HomeComponent },
-  { path: 'denied-access', component: DeniedAccessComponent},
+  { path: 'denied-access', component: DeniedAccessComponent },
   { path: '', redirectTo: '/trips', pathMatch: 'full' },
   { path: '**', component: NotFoundComponent },
 ];
