@@ -3,6 +3,8 @@ import { Trip } from 'src/app/models/trip.model';
 import { TripService } from 'src/app/services/trip.service';
 import { ActivatedRoute } from '@angular/router';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
+import { Actor } from 'src/app/models/actor.model';
+import { AuthService } from 'src/app/services/auth.service'
 
 @Component({
   selector: 'app-trip-display',
@@ -14,12 +16,13 @@ export class TripDisplayComponent implements OnInit {
   protected isSpecial = false;
   protected trash = faTrash;
   protected tripId: string | null = null;
+  protected currentActor: Actor | null = null;
 
-  constructor(private tripService: TripService, private route: ActivatedRoute) { 
+  constructor(private tripService: TripService, private route: ActivatedRoute, private authService: AuthService) { 
     this.trip = new Trip();
     this.trip.pictures = ["/assets/images/playa3.jpg"]
     this.trip.title = "megusta"
-    console.log("inicializando trip", this.trip);
+    console.log("inicializando trip", this.trip);    
   }
 
   async ngOnInit(): Promise<void> {
@@ -30,6 +33,7 @@ export class TripDisplayComponent implements OnInit {
       this.trip.endDate = new Date(this.trip.endDate);
       console.log("Trip loaded", this.trip);
       this.isSpecial = this.trip.price < 100;
+      this.currentActor = this.authService.getCurrentActor();
     }
   }
 

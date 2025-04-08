@@ -27,6 +27,10 @@ export class TripListComponent implements OnInit {
     return trip.cancelledReason != "";
   }
 
+  isCancelable(trip: Trip) {
+    return trip.startDate.getTime() - new Date().getTime() > 7 * 24 * 60 * 60 * 1000;
+  }
+
   async ngOnInit(): Promise<void> {
     console.log("Loading trips...");
     this.trips = await this.tripService.getAllTrips();
