@@ -29,6 +29,7 @@ import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 import { ApplicationTableComponent } from './components/application-table/application-table.component';
 import { TripLoadComponent } from './components/trip/trip-load/trip-load.component';
 import { TripFormComponent } from './components/trip/trip-form/trip-form.component';
+import { ApplicationListComponent } from './components/application-list/application-list.component';
 
 @NgModule({
   declarations: [
@@ -48,7 +49,8 @@ import { TripFormComponent } from './components/trip/trip-form/trip-form.compone
     TermsAndConditionsComponent,
     ApplicationTableComponent,
     TripLoadComponent,
-    TripFormComponent
+    TripFormComponent,
+    ApplicationListComponent
   ],
   imports: [
     BrowserModule,

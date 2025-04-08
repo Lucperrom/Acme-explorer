@@ -1,12 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { Trip } from 'src/app/models/trip.model';
 import { TripService } from 'src/app/services/trip.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import { ApplicationService } from 'src/app/services/application.service';
 import { FormControl, FormGroup, NgForm } from '@angular/forms';
 import { AuthService } from 'src/app/services/auth.service';
 import { MessageService } from 'src/app/services/message.service';
+import { has } from 'cypress/types/lodash';
 
 @Component({
   selector: 'app-trip-display',
@@ -27,7 +28,8 @@ export class TripDisplayComponent implements OnInit {
     private route: ActivatedRoute, 
     private applicationService: ApplicationService, 
     private authService: AuthService,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private router: Router
   ) { 
     this.trip = new Trip();
     this.trip.pictures = ["/assets/images/playa3.jpg"]
@@ -114,7 +116,7 @@ export class TripDisplayComponent implements OnInit {
 
       this.applicationService.createApplication({ managerId: this.trip.managerId, explorerId: this.actor?.email, tripId: this.tripId, status: "pending", creationDate: new Date(), rejectionReason: "", comments})
         .then((response) => {
-          console.log('Application created successfully:', response);
+          this.hasAppliedFlag = true;
           this.messageService.notifyMessage('Application created successfully', 'alert-success');
         })
         .catch((error) => {

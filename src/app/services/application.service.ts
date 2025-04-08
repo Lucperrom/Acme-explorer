@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Firestore, collection, getDocs, getDoc,addDoc, doc } from '@angular/fire/firestore';
+import { Firestore, collection, getDocs, getDoc,addDoc, doc, setDoc } from '@angular/fire/firestore';
 
 @Injectable({
   providedIn: 'root'
@@ -26,7 +26,9 @@ export class ApplicationService {
       let applications: any[] = [];
       querySnapshot.forEach((doc) => {
         let application = doc.data();
+        console.log("Application data: ", application);
         if (application['managerId'] === managerId) {
+          application['id'] = doc.id;
           applications.push(application);
         }
       });
@@ -57,6 +59,18 @@ export class ApplicationService {
     } catch (error) {
       console.error("Error checking application: ", error);
       return false;
+    }
+  }
+
+  async updateApplicationStatus(application: any, status: string): Promise<void> {
+    try {
+      console.log("Updating application status: ", application);
+      console.log("New status: ", status);
+      const applicationRef = doc(this.firestore, 'applications', application.id);
+      await setDoc(applicationRef, { status: status, rejectReason: application.rejectReason }, { merge: true });
+    } catch (error) {
+      console.error("Error updating application status: ", error);
+      throw error;
     }
   }
   

@@ -14,6 +14,7 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { TermsAndConditionsComponent } from './components/terms-and-conditions/terms-and-conditions.component';
 import { TripLoadComponent } from './components/trip/trip-load/trip-load.component';
 import { TripFormComponent } from './components/trip/trip-form/trip-form.component';
+import { ApplicationListComponent } from './components/application-list/application-list.component';
 const routes: Routes = [
   { path: 'profile/:id', component: ProfileEditComponent, canActivate: [AuthGuard] },
   { path: 'login', component: LoginComponent, canActivate: [ActorRoleGuard], data: {expectedRole: 'anonymous'} },
@@ -24,7 +25,7 @@ const routes: Routes = [
     {path: ':id', component: TripDisplayComponent, canActivate: [AuthGuard]},
     {path: '', component: TripListComponent}
    ]},
-
+  { path: 'applications', component: ApplicationListComponent, canActivate: [AuthGuard,ActorRoleGuard], data: {expectedRole: 'manager'} },
    //Crear ApplicationListComponent
   // { path: 'applications', component: ApplicationListComponent, children: [
   //   {path:'list-pending', component: ApplicationListComponent},
