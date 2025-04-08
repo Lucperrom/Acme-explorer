@@ -1,9 +1,9 @@
 <div class="container mt-4">
   <div class="row">
     <ng-container *ngFor="let trip of trips; let i = index">
-      <div class="col-md-4 mb-4" *ngIf="trip.deleted === false">
+      <div class="col-md-4 mb-4" *ngIf="trip.deleted === false && currentActor?.email === trip.managerId">
 
-        <div *ngIf="currentActor?.role === 'MANAGER' && isCancelable(trip); else normalUserCard"
+        <div *ngIf="currentActor?.role === 'MANAGER' && isCancelable(trip) && currentActor?.email === trip.managerId; else normalUserCard"
              class="card h-100"
              (click)="editTrip(trip.id)"
              style="cursor: pointer;">
