@@ -26,6 +26,7 @@ const routes: Routes = [
     {path: '', component: TripListComponent}
    ]},
   { path: 'applications', component: ApplicationListComponent, canActivate: [AuthGuard,ActorRoleGuard], data: {expectedRole: 'manager'} },
+  { path: 'my-applications', component: ApplicationListComponent, canActivate: [AuthGuard,ActorRoleGuard], data: {expectedRole: 'explorer'} },
    //Crear ApplicationListComponent
   // { path: 'applications', component: ApplicationListComponent, children: [
   //   {path:'list-pending', component: ApplicationListComponent},

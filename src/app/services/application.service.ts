@@ -26,8 +26,26 @@ export class ApplicationService {
       let applications: any[] = [];
       querySnapshot.forEach((doc) => {
         let application = doc.data();
-        console.log("Application data: ", application);
         if (application['managerId'] === managerId) {
+          application['id'] = doc.id;
+          applications.push(application);
+        }
+      });
+      return applications;
+    } catch (error) {
+      console.error("Error fetching applications: ", error);
+      return [];
+    }
+  }
+
+  async getAllApplicationsByExplorerId(explorerId: string): Promise<any[]> {
+    try {
+      const applicationsRef = collection(this.firestore, 'applications');
+      const querySnapshot = await getDocs(applicationsRef);
+      let applications: any[] = [];
+      querySnapshot.forEach((doc) => {
+        let application = doc.data();
+        if (application['explorerId'] === explorerId) {
           application['id'] = doc.id;
           applications.push(application);
         }
@@ -66,8 +84,16 @@ export class ApplicationService {
     try {
       console.log("Updating application status: ", application);
       console.log("New status: ", status);
+
       const applicationRef = doc(this.firestore, 'applications', application.id);
-      await setDoc(applicationRef, { status: status, rejectReason: application.rejectReason }, { merge: true });
+
+      // Construye el objeto de actualización dinámicamente
+      const updateData: any = { status: status };
+      if (application.rejectReason) {
+        updateData.rejectReason = application.rejectReason;
+      }
+
+      await setDoc(applicationRef, updateData, { merge: true });
     } catch (error) {
       console.error("Error updating application status: ", error);
       throw error;

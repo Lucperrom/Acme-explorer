@@ -22,7 +22,11 @@ export class ApplicationListComponent implements OnInit {
     this.actor = this.authService.getCurrentActor();
     console.log("Actor: ", this.actor);
     if (this.actor) {
-      this.applicationService.getAllApplicationsByManagerId(this.actor.email).then(applications => {
+      const fetchApplications = this.actor.role.toLowerCase() === 'explorer'
+        ? this.applicationService.getAllApplicationsByExplorerId(this.actor.email)
+        : this.applicationService.getAllApplicationsByManagerId(this.actor.email);
+
+      fetchApplications.then(applications => {
         this.applications = applications;
         this.filteredApplications = applications; // Inicializa con todas las aplicaciones
         for (let application of this.applications) {
@@ -32,7 +36,6 @@ export class ApplicationListComponent implements OnInit {
             console.error("Error fetching trip: ", error);
           });
         }
-        console.log("Applications: ", this.applications);
       }).catch(error => {
         console.error("Error fetching applications: ", error);
       });
@@ -70,9 +73,27 @@ export class ApplicationListComponent implements OnInit {
     });
   }
 
+  payForApplication(application: any): void {
+    if (this.actor.role.toLowerCase() !== 'explorer') {
+      console.error("Only explorers can pay for applications.");
+      return;
+    }
+
+    this.applicationService.updateApplicationStatus(application, 'accepted').then(() => {
+      this.messageService.notifyMessage("Application successfully paid and accepted!", "alert-success");
+      this.refreshApplications();
+    }).catch(error => {
+      console.error(`Error paying for application:`, error);
+    });
+  }
+
   private refreshApplications(): void {
     if (this.actor) {
-      this.applicationService.getAllApplicationsByManagerId(this.actor.email).then(applications => {
+      const fetchApplications = this.actor.role.toLowerCase() === 'explorer'
+        ? this.applicationService.getAllApplicationsByExplorerId(this.actor.email)
+        : this.applicationService.getAllApplicationsByManagerId(this.actor.email);
+
+      fetchApplications.then(applications => {
         this.applications = applications;
         this.filteredApplications = applications; // Asegura que también se actualicen las aplicaciones filtradas
         for (let application of this.applications) {

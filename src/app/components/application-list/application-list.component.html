@@ -10,15 +10,24 @@
   <div *ngFor="let application of filteredApplications" class="card">
     <div class="card-body">
       <h5 class="card-title">Explorer: {{ application.explorerId }}</h5>
-      <p class="card-text">Status: {{ application.status }}</p>
+      <p class="card-text">Status: {{ application.status.toUpperCase() }}</p>
       <p class="card-text">Trip: {{ application.trip.title }}</p>
       <p *ngIf="application.comments" class="card-text">Comments: {{ application.comments }}</p>
       <p *ngIf="application.rejectReason" class="card-text">Reject Reason: {{ application.rejectReason }}</p>
-      <button *ngIf="application.status?.trim().toLowerCase() === 'pending'" class="btn btn-success" (click)="acceptApplication(application)">Due</button>
-      <div class="reject-section" *ngIf="application.status?.trim().toLowerCase() === 'pending'">
-        <input type="text" [(ngModel)]="rejectReason" placeholder="Enter reject reason" class="form-control mb-2" />
-        <button class="btn btn-danger" (click)="rejectApplication(application)">Reject</button>
-      </div>
+
+      <!-- Botones para el rol manager -->
+      <ng-container *ngIf="actor.role.toLowerCase() === 'manager'">
+        <button *ngIf="application.status?.trim().toLowerCase() === 'pending'" class="btn btn-success" (click)="acceptApplication(application)">Due</button>
+        <div class="reject-section" *ngIf="application.status?.trim().toLowerCase() === 'pending'">
+          <input type="text" [(ngModel)]="rejectReason" placeholder="Enter reject reason" class="form-control mb-2" />
+          <button class="btn btn-danger" (click)="rejectApplication(application)">Reject</button>
+        </div>
+      </ng-container>
+
+      <!-- Botón para el rol explorer -->
+      <ng-container *ngIf="actor.role.toLowerCase() === 'explorer'">
+        <button *ngIf="application.status?.trim().toLowerCase() === 'due'" class="btn btn-warning" (click)="payForApplication(application)">Pay</button>
+      </ng-container>
     </div>
   </div>
 </div>
