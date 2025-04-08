@@ -283,7 +283,7 @@ export class TripFormComponent implements OnInit {
       } else {
         tripId = await this.tripService.createTrip({
           ...tripData, 
-          createdAt: new Date(),
+          createdAt: new Date().toISOString(),
           cancelledReason: "",
           deleted: false // Al crear un nuevo viaje, deleted siempre es false
         });
