@@ -17,15 +17,27 @@ export class TripListComponent implements OnInit {
   protected filteredTrips: Trip[];
   protected currentActor: Actor | null = null;
   protected activeRole: string = 'anonymous';
+  selectedFilter: string = 'all';
+
 
 
   constructor(private tripService: TripService, private router: Router, private messageService: MessageService, private authService: AuthService) {
     this.trips = [];
     this.filteredTrips = [];
+
   }
   
   isCancelled(trip: Trip) {
     return trip.cancelledReason != "";
+  }
+
+  isVisible(trip: Trip) {
+    if(this.activeRole === 'MANAGER'){
+      return !trip.deleted;
+    }else{
+      return !trip.deleted && trip.cancelledReason === "";
+    }
+
   }
 
   async ngOnInit(): Promise<void> {
@@ -36,6 +48,7 @@ export class TripListComponent implements OnInit {
     if (this.activeRole === 'MANAGER') {
       //Se usa con el email temporalmente
       this.trips = await this.tripService.getAllTripsByManager(this.currentActor?.email || '');
+      console.log("tripsssss: " + this.trips);
     } else {
       this.trips = await this.tripService.getAllTrips();
     }
@@ -45,15 +58,22 @@ export class TripListComponent implements OnInit {
     this.tripService.searchTerm$.subscribe(term => {
       if (this.activeRole === 'MANAGER') {
         this.tripService.getAllTripsFilteredByManager(term, this.currentActor?.email || '').then((trips: Trip[]) => {
-          this.filteredTrips = trips;
+          this.filteredTrips = trips.filter(trip => trip.cancelledReason === "");
         });
       } else {
         this.tripService.getAllTripsFiltered(term).then((trips: Trip[]) => {
-          this.filteredTrips = trips;
+          this.filteredTrips = trips.filter(trip => trip.cancelledReason === "");
         });
       }
     });
-    
+  }
+
+  onFilterChange(): void {
+    if (this.selectedFilter === 'all') {
+      this.filteredTrips = this.trips.filter(trip => !trip.deleted && trip.cancelledReason === "");
+    } else if (this.selectedFilter === 'cancelled') {
+      this.filteredTrips = this.trips.filter(trip => trip.cancelledReason && !trip.deleted);
+    }
   }
 
   goToTrip(tripId: string) {
