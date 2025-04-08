@@ -18,7 +18,7 @@ export class ApplicationListComponent implements OnInit {
   public filteredApplications: any[] = [];
   public rejectReason: string = '';
   public tripTitles: string[] = [];
-  public selectedTripTitle: string = '';
+  public selectedTripTitle: string = 'all';
   public selectedStatus: string = 'all'; // Agrega una propiedad para almacenar el estado seleccionado
 
   ngOnInit(): void {
