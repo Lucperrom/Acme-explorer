@@ -1,9 +1,9 @@
 <form [formGroup]="tripForm" (ngSubmit)="onSubmit()">
   <fieldset>
-    <legend>Create new Trip</legend>
+    <legend>{{ isEditMode ? 'Edit this trip' : 'Create new Trip' }}</legend>
 
-    <!-- Prefill Button -->
-    <button type="button" class="btn btn-secondary mb-3" (click)="prefillForm()">Prefill Form</button>
+    <!-- Prefill Button solo en modo creación -->
+    <button *ngIf="!isEditMode" type="button" class="btn btn-secondary mb-3" (click)="prefillForm()">Prefill Form</button>
 
     <div class="form-group" *ngFor="let field of ['title', 'description', 'startDate', 'endDate']">
       <label [for]="field">{{ field | titlecase }}:</label>
@@ -11,6 +11,16 @@
         [formControlName]="field" />
       <div class="text-danger" *ngIf="tripForm.get(field)?.invalid && tripForm.get(field)?.touched">
         <div *ngFor="let err of tripForm.get(field)?.errors | keyvalue">
+          {{ err.key }} error.
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="isEditMode" class="form-group">
+      <label for="cancelledReason">Cancel Reason:</label>
+      <input id="cancelledReason" type="text" class="form-control" formControlName="cancelledReason" />
+      <div class="text-danger" *ngIf="tripForm.get('cancelledReason')?.invalid && tripForm.get('cancelledReason')?.touched">
+        <div *ngFor="let err of tripForm.get('cancelledReason')?.errors | keyvalue">
           {{ err.key }} error.
         </div>
       </div>
@@ -53,28 +63,24 @@
       <label>Requirements:</label>
       <div formArrayName="requirements">
         <div *ngFor="let req of requirements.controls; let i = index" class="d-flex flex-column mb-2">
-          
           <input [formControlName]="i" type="text" class="form-control" />
           <div class="text-danger" *ngIf="req.invalid && req.touched">
             <div *ngFor="let err of req.errors | keyvalue">
               {{ err.key }} error.
             </div>
           </div>
-          
           <div class="mt-1 d-flex">
-            <button type="button" class="btn btn-danger me-2" (click)="removeRequirement(i)"
-            *ngIf="requirements.length > 1">-</button>
+            <button type="button" class="btn btn-danger me-2" (click)="removeRequirement(i)" *ngIf="requirements.length > 1">-</button>
           </div>
-          
         </div>
-        <button type="button" class="btn btn-success" (click)="addRequirement()"
-          >+</button>
+        <button type="button" class="btn btn-success" (click)="addRequirement()">+</button>
       </div>
       <div class="text-danger"
         *ngIf="tripForm.get('requirements')?.hasError('emptyArray') && tripForm.get('requirements')?.touched">
         At least one requirement is required.
       </div>
     </div>
+
     <br />
     <div class="custom-file-upload">
       <input type="file" id="pictures" (change)="onFileSelected($event)" class="file-input" multiple hidden />
@@ -116,6 +122,8 @@
     
 
     <br />
-    <button type="submit" class="btn btn-primary mb-3">Create</button>
+    <button type="submit" class="btn btn-primary mb-3">{{ isEditMode ? 'Update' : 'Create' }}</button>
+    <button *ngIf="isEditMode" type="button" class="btn btn-danger mb-3 ms-2" (click)="deleteTrip()">Delete</button>
+
   </fieldset>
 </form>

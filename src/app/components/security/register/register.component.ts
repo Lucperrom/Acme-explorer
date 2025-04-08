@@ -41,7 +41,7 @@ export class RegisterComponent implements OnInit {
       .then(res => {
         console.log('Registration successful', res);
         this.messageService.removeMessage();
-        this.router.navigate(['/login']); // Navigate after successful registration
+        this.router.navigate(['/trips']); // Navigate after successful registration
       })
       .catch(err => {
         console.error('Registration failed', err);
