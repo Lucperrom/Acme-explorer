@@ -57,7 +57,7 @@ export class ApplicationService {
     }
   }
 
-  async hasApplied(explorerId: string, tripId: string): Promise<boolean> {
+  async hasApplied(explorerId: (string | undefined), tripId: (string | null)): Promise<boolean> {
     try {
       const applicationsRef = collection(this.firestore, 'applications');
       const querySnapshot = await getDocs(applicationsRef);

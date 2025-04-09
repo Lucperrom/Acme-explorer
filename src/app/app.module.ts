@@ -12,7 +12,7 @@ import { TripListComponent } from './components/trip/trip-list/trip-list.compone
 import { RegisterComponent } from './components/security/register/register.component';
 import { LoginComponent } from './components/security/login/login.component';
 import { environment } from 'src/environments/environment';
-import {provideAuth, getAuth} from '@angular/fire/auth';
+import { provideAuth, getAuth } from '@angular/fire/auth';
 import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
 import { NotFoundComponent } from './components/not-found/not-found.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
@@ -30,6 +30,10 @@ import { ApplicationTableComponent } from './components/application-table/applic
 import { TripLoadComponent } from './components/trip/trip-load/trip-load.component';
 import { TripFormComponent } from './components/trip/trip-form/trip-form.component';
 import { ApplicationListComponent } from './components/application-list/application-list.component';
+import { CommonModule } from '@angular/common';
+import { TripForecastComponent } from './components/trip/trip-forecast/trip-forecast.component';
+import { MaxPipe } from './pipes/max.pipe';
+import { MinPipe } from './pipes/min.pipe';
 
 @NgModule({
   declarations: [
@@ -50,7 +54,10 @@ import { ApplicationListComponent } from './components/application-list/applicat
     ApplicationTableComponent,
     TripLoadComponent,
     TripFormComponent,
-    ApplicationListComponent
+    ApplicationListComponent,
+    TripForecastComponent,
+    MaxPipe,
+    MinPipe
   ],
   imports: [
     BrowserModule,
@@ -65,7 +72,8 @@ import { ApplicationListComponent } from './components/application-list/applicat
     NgxDatatableModule,
     provideFirebaseApp(() => initializeApp(environment.firebaseConfig)),
     provideAuth(() => getAuth()),
-    provideFirestore(() => getFirestore())
+    provideFirestore(() => getFirestore()),
+    CommonModule,
   ],
   providers: [AuthGuard],
   bootstrap: [AppComponent]

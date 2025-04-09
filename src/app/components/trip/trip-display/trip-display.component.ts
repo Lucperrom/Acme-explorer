@@ -3,6 +3,7 @@ import { Trip } from 'src/app/models/trip.model';
 import { TripService } from 'src/app/services/trip.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
+import { Actor } from 'src/app/models/actor.model';
 import { ApplicationService } from 'src/app/services/application.service';
 import { FormControl, FormGroup, NgForm } from '@angular/forms';
 import { AuthService } from 'src/app/services/auth.service';
@@ -18,8 +19,8 @@ export class TripDisplayComponent implements OnInit {
   protected trip: Trip;
   protected isSpecial = false;
   protected trash = faTrash;
-  protected tripId: string = '';
-  protected actor: any;
+  protected tripId: string | null = null;
+  protected currentActor: Actor | null = null;
   hasAppliedFlag = false;
   isManager = false;
 
@@ -45,15 +46,13 @@ export class TripDisplayComponent implements OnInit {
       this.trip.endDate = new Date(this.trip.endDate);
       console.log("Trip loaded", this.trip);
       this.isSpecial = this.trip.price < 100;
+      this.currentActor = this.authService.getCurrentActor();
       
-    }
-
-    this.actor = this.authService.getCurrentActor();
-
-    if (this.actor?.email && this.tripId) {
-      this.hasAppliedFlag = await this.applicationService.hasApplied(this.actor.email, this.tripId);
-      this.isManager = this.actor.role.toLowerCase() === 'manager';
-    }
+      if (this.currentActor?.email && this.tripId) {
+        this.hasAppliedFlag = await this.applicationService.hasApplied(this.currentActor.email, this.tripId);
+        this.isManager = this.currentActor.role.toLowerCase() === 'manager';
+      }
+  }
   }
 
   cancelTrip() {
@@ -68,6 +67,11 @@ export class TripDisplayComponent implements OnInit {
     return this.trip.price >= 100 ? 'red' : 'black';
   }
 
+  
+  editTrip(tripId: string) {
+    this.router.navigate(['/trips/edit', tripId]);
+  }
+
   getCurrentStyles() {
     let deal = this.trip.price <= 100
     let currentStyles = {
@@ -77,6 +81,11 @@ export class TripDisplayComponent implements OnInit {
     };
     return currentStyles;
   }
+
+  seeForecast(tripId: string) {
+    this.router.navigate(['/forecast', tripId]);
+  }
+
 
   onPriceChange() {
     this.isSpecial = Number(this.trip.price) >= 0
@@ -107,14 +116,14 @@ export class TripDisplayComponent implements OnInit {
   }
 
   hasApplied() {
-    return this.applicationService.hasApplied(this.actor?.email, this.tripId);
+    return this.applicationService.hasApplied(this.currentActor?.email, this.tripId);
   }
 
   onApplicationSubmit(f: NgForm) {
     try {
       const comments = f.value.comments;
 
-      this.applicationService.createApplication({ managerId: this.trip.managerId, explorerId: this.actor?.email, tripId: this.tripId, status: "pending", creationDate: new Date(), rejectionReason: "", comments})
+      this.applicationService.createApplication({ managerId: this.trip.managerId, explorerId: this.currentActor?.email, tripId: this.tripId, status: "pending", creationDate: new Date(), rejectionReason: "", comments})
         .then((response) => {
           this.hasAppliedFlag = true;
           this.messageService.notifyMessage('Application created successfully', 'alert-success');
