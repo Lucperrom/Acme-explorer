@@ -25,13 +25,13 @@ export class DashboardComponent implements OnInit {
     this.tripsStats = await this.dashboardService.getTripStatistics();
   }
   private async loadApplicationStatistics(): Promise<void> {
-    //this.applicationsStats = await this.dashboardService.getApplicationStatistics();
+    this.applicationsStats = await this.dashboardService.getApplicationStatistics();
   }
   private async loadPriceStatistics(): Promise<void> {
     this.priceStats = await this.dashboardService.getPriceStatistics();
   }
   private async loadApplicationsByStatus(): Promise<void> {
-    //this.applicationsByStatus = await this.dashboardService.getApplicationsByStatus();
+    this.applicationsByStatus = await this.dashboardService.getApplicationsByStatus();
   }
 
 }

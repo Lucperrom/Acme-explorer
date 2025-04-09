@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { TripService } from './trip.service';
+import { ApplicationService } from './application.service';
 
 
 @Injectable({
@@ -7,7 +8,7 @@ import { TripService } from './trip.service';
 })
 export class DashboardService {
 
-  constructor(private tripService: TripService) { }
+  constructor(private tripService: TripService, private applicationService: ApplicationService) { }
 
   async getTripStatistics(): Promise<any> {
     const trips = await this.tripService.getAllTrips();
@@ -33,7 +34,7 @@ export class DashboardService {
     };
   }
 
-  /*
+  
   async getApplicationStatistics(): Promise<any> {
     const applications = await this.applicationService.getAllApplications();
     const applicationsPerTrip = applications.reduce((acc: { [key: string]: number }, application) => {
@@ -57,7 +58,7 @@ export class DashboardService {
       stdDeviation,
     };
   }
-    */
+    
 
   async getPriceStatistics(): Promise<any> {
     const trips = await this.tripService.getAllTrips();
@@ -77,18 +78,18 @@ export class DashboardService {
     };
   }
 
-  /*
+  
   async getApplicationsByStatus(): Promise<any> {
     const applications = await this.applicationService.getAllApplications();
 
     const applicationsByStatus = applications.reduce((acc: { [key: string]: number }, application) => {
-      const status = application.status || 'UNKNOWN';
+      const status = application.status.toLowerCase() || 'UNKNOWN';
       acc[status] = (acc[status] || 0) + 1;
       return acc;
     }, {});
 
     return applicationsByStatus;
   }
-  */
+  
   
 }
