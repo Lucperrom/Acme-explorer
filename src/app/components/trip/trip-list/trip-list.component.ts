@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
 import { MessageService } from 'src/app/services/message.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { Actor } from 'src/app/models/actor.model';
+import { ApplicationService } from 'src/app/services/application.service';
 
 @Component({
   selector: 'app-trip-list',
@@ -19,10 +20,11 @@ export class TripListComponent implements OnInit {
   protected filteredTrips: Trip[];
   protected activeRole: string = 'anonymous';
   selectedFilter: string = 'all';
+  tripCancelableMap: Map<string, boolean> = new Map();
 
 
 
-  constructor(private tripService: TripService, private router: Router, private messageService: MessageService, private authService: AuthService) {
+  constructor(private tripService: TripService, private router: Router, private messageService: MessageService, private authService: AuthService, private applicationService: ApplicationService) {
     this.trips = [];
     this.filteredTrips = [];
 
@@ -41,8 +43,31 @@ export class TripListComponent implements OnInit {
 
   }
 
-  isCancelable(trip: Trip) {
-    return trip.startDate.getTime() - new Date().getTime() > 7 * 24 * 60 * 60 * 1000;
+  isTripCancelable(tripId: string): boolean {
+    return this.tripCancelableMap.get(tripId) || false;
+  }
+
+  async checkIfTripIsCancelable(trip: Trip) {
+    const isCancelable = await this.isCancelable(trip);
+    this.tripCancelableMap.set(trip.id, isCancelable);
+    return isCancelable;
+  }
+
+  async isCancelable(trip: Trip) {
+    const timeReason = trip.startDate.getTime() - new Date().getTime() > 7 * 24 * 60 * 60 * 1000
+    if (!timeReason) return false;
+
+    try {
+      const applications = await this.applicationService.getAllApplicationsByTripId(trip.id);
+      const hasAccepted = applications.some(app => 
+        app.status.toLowerCase() === 'accepted'
+      );
+      console.log("hasAccepted: ", hasAccepted);
+      return !hasAccepted;
+    } catch (error) {
+      console.error('Error checking cancelability:', error);
+      return false;
+    }
   }
 
   async ngOnInit(): Promise<void> {
@@ -59,6 +84,10 @@ export class TripListComponent implements OnInit {
     }
   
     this.filteredTrips = [...this.trips]; 
+
+    for (const trip of this.trips) {
+      await this.checkIfTripIsCancelable(trip);
+    }
   
     this.tripService.searchTerm$.subscribe(term => {
       if(this.selectedFilter === 'all'){
@@ -85,6 +114,7 @@ export class TripListComponent implements OnInit {
       }
       
     });
+
   }
 
   onFilterChange(): void {

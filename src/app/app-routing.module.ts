@@ -16,6 +16,7 @@ import { TripLoadComponent } from './components/trip/trip-load/trip-load.compone
 import { TripFormComponent } from './components/trip/trip-form/trip-form.component';
 import { TripForecastComponent } from './components/trip/trip-forecast/trip-forecast.component';
 import { ApplicationListComponent } from './components/application-list/application-list.component';
+import { SponsorshipListComponent } from './components/sponsorship/sponsorship-list/sponsorship-list.component';
 const routes: Routes = [
   { path: 'profile/:id', component: ProfileEditComponent, canActivate: [AuthGuard] },
   { path: 'login', component: LoginComponent, canActivate: [ActorRoleGuard], data: {expectedRole: 'anonymous'} },
@@ -43,6 +44,7 @@ const routes: Routes = [
   //   {path:'list-accepted',component: ApplicationListComponent}
   // ]},
   //PENDIENTE
+  { path: 'sponsorships', component: SponsorshipListComponent, canActivate: [AuthGuard,ActorRoleGuard], data: {expectedRole: 'sponsor'} },
   { path: 'terms-and-conditions', component: TermsAndConditionsComponent },
   { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard, ActorRoleGuard], data: { expectedRole: 'administrator' } },
   { path: 'home', component: HomeComponent },

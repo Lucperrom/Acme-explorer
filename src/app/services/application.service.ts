@@ -57,6 +57,25 @@ export class ApplicationService {
     }
   }
 
+  async getAllApplicationsByTripId(tripId: string): Promise<any[]> {
+    try {
+      const applicationsRef = collection(this.firestore, 'applications');
+      const querySnapshot = await getDocs(applicationsRef);
+      let applications: any[] = [];
+      querySnapshot.forEach((doc) => {
+        let application = doc.data();
+        if (application['tripId'] === tripId) {
+          application['id'] = doc.id;
+          applications.push(application);
+        }
+      });
+      return applications;
+    } catch (error) {
+      console.error("Error fetching applications: ", error);
+      return [];
+    }
+  }
+
   async hasApplied(explorerId: (string | undefined), tripId: (string | null)): Promise<boolean> {
     try {
       const applicationsRef = collection(this.firestore, 'applications');
