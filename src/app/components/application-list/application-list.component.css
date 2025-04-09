@@ -1,0 +1,43 @@
+.application-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-top: 20px;
+}
+
+.card {
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 1rem;
+  width: 300px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.card-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.btn {
+  margin-top: 0.5rem;
+}
+
+.filter-buttons {
+  margin-bottom: 1rem;
+  display: flex;
+  gap: 0.5rem;
+}
+
+.filter-buttons .btn {
+  flex: 1;
+}
+
+.reject-section {
+  margin-top: 1rem;
+}
+
+.reject-section .form-control {
+  width: 100%;
+  margin-bottom: 0.5rem;
+}

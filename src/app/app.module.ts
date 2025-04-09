@@ -29,6 +29,7 @@ import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 import { ApplicationTableComponent } from './components/application-table/application-table.component';
 import { TripLoadComponent } from './components/trip/trip-load/trip-load.component';
 import { TripFormComponent } from './components/trip/trip-form/trip-form.component';
+import { ApplicationListComponent } from './components/application-list/application-list.component';
 import { CommonModule } from '@angular/common';
 import { TripForecastComponent } from './components/trip/trip-forecast/trip-forecast.component';
 import { MaxPipe } from './pipes/max.pipe';
@@ -53,6 +54,7 @@ import { MinPipe } from './pipes/min.pipe';
     ApplicationTableComponent,
     TripLoadComponent,
     TripFormComponent,
+    ApplicationListComponent,
     TripForecastComponent,
     MaxPipe,
     MinPipe
