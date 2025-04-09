@@ -3,36 +3,41 @@
     padding: 15px;
     border-radius: 8px;
     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-    position: relative; /* Necesario para posicionar el botón relativo al contenedor */
+    position: fixed; /* Fija la alerta en la pantalla */
+    top: 90%; /* Centra verticalmente */
+    left: 50%; /* Centra horizontalmente */
+    transform: translate(-50%, -50%); /* Ajusta para centrar completamente */
+    z-index: 1050; /* Asegura que esté por encima de otros elementos */
+    width: 90%; /* Ajusta el ancho para pantallas pequeñas */
+    max-width: 600px; /* Ancho máximo para pantallas grandes */
     padding-left: 40px;
-  }
-  
-  .alert-dismissible .close {
+}
+
+.alert-dismissible .close {
     font-size: 20px;
     color: #000;
-  }
-  
-  .alert-success {
+}
+
+.alert-success {
     background-color: #28a745;
     color: white;
-  }
-  
-  .alert-danger {
+}
+
+.alert-danger {
     background-color: #dc3545;
     color: white;
-  }
-  
-  .alert-warning {
+}
+
+.alert-warning {
     background-color: #ffc107;
     color: white;
-  }
+}
 
-  .close-left {
+.close-left {
     position: absolute;
-    left: 10px; /* Ajusta la distancia desde la izquierda */
-    top: 50%; /* Centra el botón verticalmente */
-    transform: translateY(-50%); /* Ajusta para que quede perfectamente centrado */
-    font-size: 1.5rem; /* Ajusta el tamaño del botón */
-    color: inherit; /* Mantiene el color del texto */
-  }
-  
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 1.5rem;
+    color: inherit;
+}

@@ -21,6 +21,9 @@ export class NavbarComponent implements OnInit {
    onSearch(event: Event): void {
     event.preventDefault();
     this.tripService.setSearchTerm(this.searchTerm.trim());
+    this.tripService.searchTerm$.subscribe((term) => {
+      this.searchTerm = term;
+    });
   }
    ngOnInit(): void {
     this.authService.loggedInUserSubject.asObservable().subscribe((loggedIn: boolean) => {

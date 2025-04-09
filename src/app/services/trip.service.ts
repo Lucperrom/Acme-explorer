@@ -1,15 +1,16 @@
 import { Injectable } from '@angular/core';
 import { Trip } from '../models/trip.model';
 import { Location } from '../models/location.model';
-import { Firestore, collection, getDocs, getDoc, addDoc, doc } from '@angular/fire/firestore';
+import { Firestore, collection, getDocs, getDoc, addDoc, doc, updateDoc } from '@angular/fire/firestore';
 import { BehaviorSubject } from 'rxjs';
 import { MeteoService } from './meteo.service';
+import { setDoc } from 'firebase/firestore';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TripService {
-  private searchTermSubject = new BehaviorSubject<string>('');
+  public searchTermSubject = new BehaviorSubject<string>('');
   searchTerm$ = this.searchTermSubject.asObservable();
 
   constructor(private firestore: Firestore, private meteoService: MeteoService) { }
@@ -87,6 +88,10 @@ export class TripService {
 
       let trip = this.getCurrentTripFromDoc(tripDocSnap);
       console.log("Trip found:", trip);
+
+    if (tripDocSnap.data()?.['stages']) {
+      trip.stages = tripDocSnap.data()?.['stages'];
+    }
       return trip;
     } catch (error) {
       console.error("Error fetching trip:", error);
@@ -203,4 +208,17 @@ export class TripService {
       return [];
     }
   }
+
+  async updateTrip(tripId: string, trip: Partial<Trip>): Promise<void> {
+    try {
+      const tripDocRef = doc(this.firestore, 'trips', tripId);
+      console.log("Updating trip with ID:", tripId);
+      await updateDoc(tripDocRef, trip);
+      console.log("Trip updated successfully with ID:", tripId);
+    } catch (error) {
+      console.error("Error updating trip:", error);
+      throw error;
+    }
+  }
+
 }

@@ -15,24 +15,26 @@ import { TermsAndConditionsComponent } from './components/terms-and-conditions/t
 import { TripLoadComponent } from './components/trip/trip-load/trip-load.component';
 import { TripFormComponent } from './components/trip/trip-form/trip-form.component';
 import { TripForecastComponent } from './components/trip/trip-forecast/trip-forecast.component';
+import { ApplicationListComponent } from './components/application-list/application-list.component';
 const routes: Routes = [
   { path: 'profile/:id', component: ProfileEditComponent, canActivate: [AuthGuard] },
-  { path: 'login', component: LoginComponent, canActivate: [ActorRoleGuard], data: { expectedRole: 'anonymous' } },
-  { path: 'register', component: RegisterComponent, canActivate: [ActorRoleGuard], data: { expectedRole: 'anonymous' } },
+  { path: 'login', component: LoginComponent, canActivate: [ActorRoleGuard], data: {expectedRole: 'anonymous'} },
+  { path: 'register', component: RegisterComponent, canActivate: [ActorRoleGuard], data: {expectedRole: 'anonymous' }},
   {
     path: 'forecast', children: [
       { path: ':id', component: TripForecastComponent },
     ]
   },
-  {
-    path: 'trips', children: [
-      { path: 'load', component: TripLoadComponent, canActivate: [AuthGuard, ActorRoleGuard], data: { expectedRole: 'administrator' } },
-      { path: 'create', component: TripFormComponent, canActivate: [AuthGuard, ActorRoleGuard], data: { expectedRole: 'manager', mode: 'post' } },
-      { path: ':id', component: TripDisplayComponent, canActivate: [AuthGuard] },
-      { path: '', component: TripListComponent }
-    ]
-  },
+  { path: 'trips', children:[
+    { path: 'load', component: TripLoadComponent, canActivate: [AuthGuard,ActorRoleGuard], data: {expectedRole: 'administrator' }},
+    {path: 'create', component: TripFormComponent, canActivate: [AuthGuard,ActorRoleGuard], data: {expectedRole: 'manager', mode: 'post' }},
+    {path: ':id', component: TripDisplayComponent},
+    {path: '', component: TripListComponent},
+    {path: 'edit/:id', component: TripFormComponent, canActivate: [AuthGuard,ActorRoleGuard], data: {expectedRole: 'manager', mode: 'put' }},
 
+   ]},
+  { path: 'applications', component: ApplicationListComponent, canActivate: [AuthGuard,ActorRoleGuard], data: {expectedRole: 'manager'} },
+  { path: 'my-applications', component: ApplicationListComponent, canActivate: [AuthGuard,ActorRoleGuard], data: {expectedRole: 'explorer'} },
    //Crear ApplicationListComponent
   // { path: 'applications', component: ApplicationListComponent, children: [
   //   {path:'list-pending', component: ApplicationListComponent},
