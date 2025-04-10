@@ -27,6 +27,9 @@
                         <p><strong>Date:</strong> {{ trip.startDate | date:'d MMMM yyyy'}} - {{ trip.endDate | date:'d MMMM yyyy' }}</p>
                         <p *ngIf="trip.cancelledReason"><strong>Cancelled Reason:</strong> {{ trip.cancelledReason }}</p>
                         <p *ngIf="trip.managerName"><strong>Created by</strong> {{ trip.managerName }}<span *ngIf="trip.createdAt"></span></p>
+                        <p class="text-danger" *ngIf="currentActor?.role === 'MANAGER' && !isTripCancelable(trip.id)">
+                            This trip is NOT editable/cancelable
+                          </p>
                     </div>
                 </div>
             </div>

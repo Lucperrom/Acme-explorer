@@ -34,6 +34,7 @@ import { CommonModule } from '@angular/common';
 import { TripForecastComponent } from './components/trip/trip-forecast/trip-forecast.component';
 import { MaxPipe } from './pipes/max.pipe';
 import { MinPipe } from './pipes/min.pipe';
+import { SponsorshipListComponent } from './components/sponsorship/sponsorship-list/sponsorship-list.component';
 
 @NgModule({
   declarations: [
@@ -57,7 +58,8 @@ import { MinPipe } from './pipes/min.pipe';
     ApplicationListComponent,
     TripForecastComponent,
     MaxPipe,
-    MinPipe
+    MinPipe,
+    SponsorshipListComponent
   ],
   imports: [
     BrowserModule,

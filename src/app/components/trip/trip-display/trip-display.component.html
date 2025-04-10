@@ -25,9 +25,9 @@
             <span [ngStyle]="getCurrentStyles()">&nbsp;{{trip.price}}&nbsp;</span>{{' EUR'}}
             <span *ngIf=" isSpecial">Deal!</span>
         </p>
-        <p class="text-danger" *ngIf="currentActor?.role === 'MANAGER' && !isCancelable()">
+        <p class="text-danger" *ngIf="currentActor?.role === 'MANAGER' && !tripCancelable">
             This trip is NOT editable/cancelable
-        </p>
+          </p>
     </div>
 
     <div class="card-body" *ngIf="trip.stages?.length">
@@ -46,7 +46,7 @@
             See Forecast
         </button>
     </div>
-    <button class="btn btn-primary" *ngIf="currentActor?.role =='MANAGER' && isCancelable()" (click)="editTrip(trip.id)">
+    <button class="btn btn-primary" *ngIf="currentActor?.role =='MANAGER' && tripCancelable" (click)="editTrip(trip.id)">
         Edit
     </button>
     <div class="card-body">

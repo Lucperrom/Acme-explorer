@@ -27,7 +27,7 @@
           </ul>
         </li>
 
-        <li class="nav-item dropdown" *ngIf="currentActor && (currentActor.role==='MANAGER' || currentActor.role === 'ADMINISTRATOR' || currentActor.role === 'EXPLORER')">
+        <li class="nav-item dropdown" *ngIf="currentActor && (currentActor.role==='MANAGER' || currentActor.role === 'ADMINISTRATOR' || currentActor.role === 'EXPLORER' || currentActor.role === 'SPONSOR')">
           <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             {{ currentActor.role }}
           </a>
@@ -35,6 +35,7 @@
             <li *ngIf="currentActor.role === 'ADMINISTRATOR'"><a class="dropdown-item" [routerLink]="['/dashboard']">Dashboard</a></li>
             <li *ngIf="currentActor.role === 'ADMINISTRATOR'"><a class="dropdown-item" [routerLink]="['/register']">Create New Manager</a></li>
             <li *ngIf="currentActor.role === 'MANAGER'"><a class="dropdown-item" [routerLink]="['/applications']">Applications</a></li>
+            <li *ngIf="currentActor.role === 'SPONSOR'"><a class="dropdown-item" [routerLink]="['/sponsorships']">Sponsorships</a></li>
             <li *ngIf="currentActor.role === 'EXPLORER'"><a class="dropdown-item" [routerLink]="['/my-applications']">My Applications</a></li>
           </ul>
         </li>
