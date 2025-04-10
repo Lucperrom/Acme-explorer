@@ -18,6 +18,21 @@ export class ApplicationService {
       throw error;
     }
   }
+  async getAllApplications(): Promise<any[]> {
+    try {
+      const applicationsRef = collection(this.firestore, 'applications');
+      const querySnapshot = await getDocs(applicationsRef);
+      let applications: any[] = [];
+      querySnapshot.forEach((doc) => {
+        let application = doc.data();
+        applications.push(application);
+      });
+      return applications;
+    } catch (error) {
+      console.error("Error fetching applications: ", error);
+      return [];
+    }
+  }
 
   async getAllApplicationsByManagerId(managerId: string): Promise<any[]> {
     try {
