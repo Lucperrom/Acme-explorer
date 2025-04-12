@@ -13,7 +13,7 @@
                 <img class="d-block w-100" [src]="picture" alt="Slide {{ j + 1 }}">
             </ng-template>
         </ngb-carousel>
-        <img *ngIf="!trip.pictures?.length" class="d-block w-100" src="/assets/images/no-image.png" alt="No image available" style="height: 230px; object-fit: cover;">
+        <img *ngIf="!trip.pictures?.length" class="d-block w-100" src="/assets/images/no-image.png" alt="No image available" style="height: 230px; object-fit: cover; ">
 
         <p class="card-text ml-2">{{ trip.description }}</p>
         <p class="card-text ml-2">{{ trip.startDate | date:'d MMMM yyyy' }} - {{ trip.endDate | date:'d MMMM yyyy'}}</p>
@@ -28,6 +28,12 @@
         <p class="text-danger" *ngIf="currentActor?.role === 'MANAGER' && !tripCancelable">
             This trip is NOT editable/cancelable
           </p>
+
+          <ngb-carousel *ngIf="filteredSponsorships?.length" (click)="$event.stopPropagation()" style="height: 230px; overflow: hidden;">
+            <ng-template ngbSlide *ngFor="let sponsorship of filteredSponsorships; let j = index">
+                <img class="d-block w-100" [src]="sponsorship.url || '/assets/images/no-image.png'" alt="Slide {{ j + 1 }}" (click)="openLink(sponsorship.link)" style=" cursor: pointer;">
+            </ng-template>
+        </ngb-carousel>
     </div>
 
     <div class="card-body" *ngIf="trip.stages?.length">
@@ -48,6 +54,9 @@
     </div>
     <button class="btn btn-primary" *ngIf="currentActor?.role =='MANAGER' && tripCancelable" (click)="editTrip(trip.id)">
         Edit
+    </button>
+    <button class="btn btn-primary" *ngIf="currentActor?.role =='SPONSOR'" (click)="sponsorTrip(trip.ticker)">
+        Sponsor
     </button>
     <div class="card-body">
     </div>

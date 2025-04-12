@@ -1,0 +1,67 @@
+<form [formGroup]="sponsorshipForm" (ngSubmit)="onSubmit()" class="form-container">
+    <h2>{{ isEditMode ? 'Edit Sponsorship' : 'Create Sponsorship' }}</h2>
+    <div class="form-group">
+      <label for="sponsorId">Sponsor email</label>
+      <input type="text" id="sponsorId" formControlName="sponsorId" required readonly />
+    </div>
+  
+    <div class="form-group">
+      <label for="tripId">Ticket-trip</label>
+      <input type="text" id="tripId" formControlName="tripId" required readonly />
+    </div>
+  
+    <div class="form-group">
+        <label for="amount">Rate (€)</label>
+        <div *ngIf="sponsorshipForm.get('rate')?.value === 0 && currentActor?.role === 'SPONSOR'; else showRate">
+          <span>A definir por el administrador</span>
+        </div>     
+
+        <ng-template #showRate>
+          <div *ngIf="currentActor?.role === 'ADMINISTRATOR' && !sponsorshipForm.get('payed')?.value; else showInput">
+            <input type="number" id="amount" formControlName="rate"/>
+          </div>   
+          <ng-template #showInput>
+            <input type="number" id="amount" formControlName="rate" readonly />
+          </ng-template>
+        </ng-template>
+      </div>
+      
+
+    <div class="form-group">
+        <label for="payed">Payed</label>
+        <input type="text" id="payed" formControlName="payed" required readonly />
+    </div>
+  
+    <div class="form-group">
+        <label for="link">Additional information (link)</label>
+        <input type="text" id="link" formControlName="link" required />
+        <div *ngIf="sponsorshipForm.get('link')?.hasError('required') && sponsorshipForm.get('link')?.touched" class="text-danger">
+          This field is required 
+        </div>
+      </div>
+    
+      <div class="form-group">
+        <label for="url">Banner (Image or Video)</label>
+        <input type="file" (change)="onFileSelected($event)" hidden id="url" />
+        <button type="button" *ngIf= "currentActor?.role === 'SPONSOR'" (click)="triggerFileInput()">Select file</button>
+        <button type="button" *ngIf= "currentActor?.role === 'SPONSOR'"(click)="removeFile()">Remove file</button>
+        <div *ngIf="sponsorshipForm.get('url')?.hasError('required') && sponsorshipForm.get('url')?.touched" class="text-danger">
+            This field is required 
+        </div>
+      </div>
+
+  <!-- Previsualización del archivo (Imagen o Video) -->
+  <div *ngIf="sponsorshipForm.get('url')?.value" class="preview-container">
+    <div *ngIf="sponsorshipForm.get('url')?.value.startsWith('data:image')">
+      <img [src]="sponsorshipForm.get('url')?.value" alt="Vista previa" width="300" />
+    </div>
+    <div *ngIf="sponsorshipForm.get('url')?.value.startsWith('data:video')">
+      <video [src]="sponsorshipForm.get('url')?.value" controls width="300"></video>
+    </div>
+  </div>
+  
+    <br>
+    <button type="submit" [disabled]="sponsorshipForm.invalid">Save Sponsorship</button>
+  
+  </form>
+  

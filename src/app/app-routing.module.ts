@@ -17,6 +17,9 @@ import { TripFormComponent } from './components/trip/trip-form/trip-form.compone
 import { TripForecastComponent } from './components/trip/trip-forecast/trip-forecast.component';
 import { ApplicationListComponent } from './components/application-list/application-list.component';
 import { SponsorshipListComponent } from './components/sponsorship/sponsorship-list/sponsorship-list.component';
+import { SponsorshipEditComponent } from './components/sponsorship/sponsorship-edit/sponsorship-edit.component';
+import { CheckoutComponent } from './components/checkout/checkout.component';
+
 const routes: Routes = [
   { path: 'profile/:id', component: ProfileEditComponent, canActivate: [AuthGuard] },
   { path: 'login', component: LoginComponent, canActivate: [ActorRoleGuard], data: {expectedRole: 'anonymous'} },
@@ -44,7 +47,13 @@ const routes: Routes = [
   //   {path:'list-accepted',component: ApplicationListComponent}
   // ]},
   //PENDIENTE
-  { path: 'sponsorships', component: SponsorshipListComponent, canActivate: [AuthGuard,ActorRoleGuard], data: {expectedRole: 'sponsor'} },
+  {path: 'checkout', component: CheckoutComponent, canActivate: [AuthGuard,ActorRoleGuard], data: {expectedRole: 'sponsor'} },
+  { path: 'sponsorships', children:[
+    {path: 'create/:tripTicker', component: SponsorshipEditComponent, canActivate: [AuthGuard,ActorRoleGuard], data: {expectedRole: 'sponsor', mode: 'post' }},
+    // {path: ':id', component: TripDisplayComponent},
+    {path: '', component: SponsorshipListComponent, canActivate: [AuthGuard,ActorRoleGuard], data: {expectedRole: 'sponsor|administrator' }},
+    {path: 'edit/:id', component: SponsorshipEditComponent, canActivate: [AuthGuard,ActorRoleGuard], data: {expectedRole: 'sponsor|administrator', mode: 'put' }},
+   ]},
   { path: 'terms-and-conditions', component: TermsAndConditionsComponent },
   { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard, ActorRoleGuard], data: { expectedRole: 'administrator' } },
   { path: 'home', component: HomeComponent },
