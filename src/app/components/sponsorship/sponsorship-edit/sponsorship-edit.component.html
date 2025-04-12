@@ -45,9 +45,12 @@
         <input type="file" (change)="onFileSelected($event)" hidden id="url" />
         <button type="button" *ngIf= "currentActor?.role === 'SPONSOR'" (click)="triggerFileInput()">Select file</button>
         <button type="button" *ngIf= "currentActor?.role === 'SPONSOR'"(click)="removeFile()">Remove file</button>
-        <div *ngIf="sponsorshipForm.get('url')?.hasError('required') && sponsorshipForm.get('url')?.touched" class="text-danger">
+        <div *ngIf="sponsorshipForm.get('url')?.hasError('required')" class="text-danger">
             This field is required 
         </div>
+        <div *ngIf="message!==''" class="text-danger">
+          {{message}} 
+      </div>
       </div>
 
   <!-- Previsualización del archivo (Imagen o Video) -->

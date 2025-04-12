@@ -1,8 +1,6 @@
 import { Injectable } from '@angular/core';
-import { initializeApp } from 'firebase/app';
 import { Firestore, collection, getDocs,addDoc, doc, getDoc, updateDoc, deleteDoc } from '@angular/fire/firestore';
 import { Sponsorship } from '../models/sponsorship.model';
-import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 
 @Injectable({
   providedIn: 'root'
@@ -33,13 +31,6 @@ export class SponsorshipService {
       throw error;
     }
   }
-
-  // async uploadImage(file: File, path: string): Promise<string> {
-  //   const storage = getStorage();
-  //   const storageRef = ref(storage, `sponsorships/${path}`);
-  //   await uploadBytes(storageRef, file);
-  //   return await getDownloadURL(storageRef);
-  // }
 
   async getAllSponsorshipsBySponsorId(sponsorId: string): Promise<any[]> {
     try {

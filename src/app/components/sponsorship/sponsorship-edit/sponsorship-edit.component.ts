@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Type } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService } from 'src/app/services/message.service';
@@ -20,7 +20,7 @@ export class SponsorshipEditComponent implements OnInit {
   sponsorId: string = '';
   payed: boolean = false;
   rate: number = 0;
-  selectedImageFile: File | null = null;
+  message: string = '';
   protected currentActor: Actor | null = null;
 
   constructor(
@@ -89,7 +89,6 @@ export class SponsorshipEditComponent implements OnInit {
     if (!input.files || input.files.length === 0) return;
 
     const file = input.files[0];
-    this.selectedImageFile = file; // Almacena el archivo seleccionado
     const reader = new FileReader();
 
     reader.onload = () => {
@@ -105,6 +104,7 @@ export class SponsorshipEditComponent implements OnInit {
   // Abre el input de archivos cuando el usuario hace clic en el botón
   triggerFileInput(): void {
     const fileInput = document.getElementById('url') as HTMLInputElement;
+    this.message = '';
     if (fileInput) fileInput.click();
   }
 
@@ -128,18 +128,6 @@ export class SponsorshipEditComponent implements OnInit {
       rate: this.rate, // O el valor que se deba asignar
       sponsorId: this.sponsorId // Esto podría ser algo que se pueda editar, dependiendo de tus necesidades.
     };
-    // if (this.selectedImageFile) {
-    //   try {
-    //     const imageUrl = await this.sponsorshipService.uploadImage(
-    //       this.selectedImageFile,
-    //       `${Date.now()}-${this.selectedImageFile.name}`
-    //     );
-    //     formData.url = imageUrl;
-    //   } catch (err) {
-    //     console.error("Error uploading image:", err);
-    //     return;
-    //   }
-    // }
 
     try {
       if (this.sponsorshipId) {
@@ -153,8 +141,12 @@ export class SponsorshipEditComponent implements OnInit {
         this.messageService.notifyMessage('Sponsorship creada correctamente', 'alert-success');
       }
       this.router.navigate(['/sponsorships']);
-    } catch (error) {
+    } catch (error: unknown) {
       console.error('Error al guardar sponsorship:', error);
+      console.log(typeof(error as Error).message);
+      if(error instanceof Error && error.message.includes('url')){
+        this.message="The file is too large. Please select a smaller file.";
+      }
       this.messageService.notifyMessage('Error al guardar la sponsorship', 'alert-danger');
     }
   }
