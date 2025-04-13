@@ -1,85 +1,145 @@
-<h1 class="bg-blue">Trip Display</h1>
-<div class="card mx-auto mt-4" style="width: 18rem;">
-    <div class="card-body text-end">
-        <!-- <button [hidden]=!isCancelled() (click)="cancelTrip()">
-            <fa-icon [icon]="trash"></fa-icon>
-        </button> -->
-    </div>
-    
-    <div class="card-body mb-2">
-        <h5 class="card-title text-center">{{ trip.title }}</h5>
-        <ngb-carousel>
-            <ng-template ngbSlide *ngFor="let picture of trip.pictures; let j = index">
-                <img class="d-block w-100" [src]="picture" alt="Slide {{ j + 1 }}">
-            </ng-template>
-        </ngb-carousel>
-        <img *ngIf="!trip.pictures?.length" class="d-block w-100" src="/assets/images/no-image.png" alt="No image available" style="height: 230px; object-fit: cover; ">
+<h1 class="text-center my-4 text-primary">Trip Display</h1>
 
-        <p class="card-text ml-2">{{ trip.description }}</p>
-        <p class="card-text ml-2">{{ trip.startDate | date:'d MMMM yyyy' }} - {{ trip.endDate | date:'d MMMM yyyy'}}</p>
-    </div>
+<div class="card mx-auto shadow-lg mb-5" style="max-width: 28rem;">
+  <!-- Botón de eliminar (alineado a la derecha) -->
+  <div class="card-body text-end pt-2 pb-0">
+    <!-- Puedes descomentar esto si activas la lógica -->
+    <!-- <button class="btn btn-sm btn-outline-danger" (click)="cancelTrip()" [hidden]="!isEditled()">
+      <fa-icon [icon]="trash"></fa-icon>
+    </button> -->
+  </div>
 
-    <div class="card-body">
-        <p class="card-text text-right mr-1 mb-1" [ngClass]="isSpecial ? 'special': ''">
-            <strong>{{'Price: '}}</strong>
-            <span [ngStyle]="getCurrentStyles()">&nbsp;{{trip.price}}&nbsp;</span>{{' EUR'}}
-            <span *ngIf=" isSpecial">Deal!</span>
-        </p>
-        <p class="text-danger" *ngIf="currentActor?.role === 'MANAGER' && !tripCancelable">
-            This trip is NOT editable/cancelable
-          </p>
+  <!-- Contenido principal -->
+  <div class="card-body">
+    <h4 class="card-title text-center text-dark">{{ trip.title }}</h4>
 
-          <ngb-carousel *ngIf="filteredSponsorships?.length" (click)="$event.stopPropagation()" style="height: 230px; overflow: hidden;">
-            <ng-template ngbSlide *ngFor="let sponsorship of filteredSponsorships; let j = index">
-                <img class="d-block w-100" [src]="sponsorship.url || '/assets/images/no-image.png'" alt="Slide {{ j + 1 }}" (click)="openLink(sponsorship.link)" style=" cursor: pointer;">
-            </ng-template>
-        </ngb-carousel>
+    <!-- Carrusel de imágenes -->
+    <div class="mb-3">
+      <ngb-carousel *ngIf="trip.pictures?.length">
+        <ng-template ngbSlide *ngFor="let picture of trip.pictures; let j = index">
+          <img class="d-block w-100 rounded" [src]="picture" alt="Slide {{ j + 1 }}">
+        </ng-template>
+      </ngb-carousel>
+      <img *ngIf="!trip.pictures?.length" class="d-block w-100 rounded" 
+           src="/assets/images/no-image.png" 
+           alt="No image available"
+           style="height: 230px; object-fit: cover;">
     </div>
 
-    <div class="card-body" *ngIf="trip.stages?.length">
-        <h5 class="card-title text-center mt-3">Stages</h5>
-        <ul class="list-group list-group-flush">
-            <li class="list-group-item" *ngFor="let stage of trip.stages; let i = index">
-                <h6 class="mb-1">{{ stage.title || ('Stage ' + (i + 1)) }}</h6>
-                <p class="mb-1">{{ stage.description }}</p>
-                <small class="text-muted">{{ 'Price: ' + stage.price + ' EUR' }}</small>
-            </li>
-        </ul>
+    <!-- Información del viaje -->
+    <p class="text-muted">{{ trip.description }}</p>
+    <p><strong>Dates:</strong> {{ trip.startDate | date:'d MMMM yyyy' }} - {{ trip.endDate | date:'d MMMM yyyy' }}</p>
+    <p *ngIf="trip.cancelledReason">
+      <strong class="text-danger">Cancelled Reason:</strong> {{ trip.cancelledReason }}
+    </p>
+    <p *ngIf="trip.managerName">
+      <strong>Created by:</strong> {{ trip.managerName }}
+    </p>
+
+    <!-- Precio -->
+    <div class="d-flex justify-content-between align-items-center">
+      <span><strong>Price:</strong></span>
+      <span [ngStyle]="getCurrentStyles()" class="fw-bold">
+        {{ trip.price }} EUR <span *ngIf="isSpecial" class="badge bg-success ms-2">Deal!</span>
+      </span>
     </div>
-    
-    <div class="card-body" *ngIf="trip.location?.latitude && trip.location?.longitude">
-        <button class="btn btn-primary" (click)="seeForecast(trip.id)">
-            See Forecast
-        </button>
+
+    <!-- Mensajes de advertencia para el manager -->
+    <div *ngIf="currentActor?.role === 'MANAGER' && tripLoaded">
+      <p class="text-danger mt-2" *ngIf="!tripEditable">This trip can NOT be edited or deleted</p>
+      <p class="text-danger" *ngIf="!isCancelable()">This trip can NOT be cancelled</p>
     </div>
-    <button class="btn btn-primary" *ngIf="currentActor?.role =='MANAGER' && tripCancelable" (click)="editTrip(trip.id)">
-        Edit
+  </div>
+
+  <!-- Carrusel de sponsors -->
+  <div class="card-body" *ngIf="filteredSponsorships?.length">
+    <ngb-carousel style="height: 230px; overflow: hidden;" (click)="$event.stopPropagation()">
+      <ng-template ngbSlide *ngFor="let sponsorship of filteredSponsorships">
+        <img class="d-block w-100 rounded" [src]="sponsorship.url || '/assets/images/no-image.png'"
+             (click)="openLink(sponsorship.link)" alt="Sponsor image" style="cursor: pointer;">
+      </ng-template>
+    </ngb-carousel>
+  </div>
+
+  <!-- Etapas del viaje -->
+  <div class="card-body" *ngIf="trip.stages?.length">
+    <h5 class="text-center text-secondary">Stages</h5>
+    <ul class="list-group list-group-flush">
+      <li class="list-group-item" *ngFor="let stage of trip.stages; let i = index">
+        <h6>{{ stage.title || ('Stage ' + (i + 1)) }}</h6>
+        <p class="mb-1">{{ stage.description }}</p>
+        <small class="text-muted">Price: {{ stage.price }} EUR</small>
+      </li>
+    </ul>
+  </div>
+
+  <!-- Acciones -->
+  <div class="card-body text-center">
+    <button class="btn btn-outline-primary me-2" 
+            *ngIf="trip.location?.latitude && trip.location?.longitude"
+            (click)="seeForecast(trip.id)">
+      See Forecast
     </button>
-    <button class="btn btn-primary" *ngIf="currentActor?.role =='SPONSOR'" (click)="sponsorTrip(trip.ticker)">
-        Sponsor
+
+    <button class="btn btn-primary me-2"
+            *ngIf="currentActor?.role === 'MANAGER' && tripEditable && tripLoaded"
+            (click)="editTrip(trip.id)">
+      Edit
     </button>
-    <div class="card-body">
+
+    <button class="btn btn-success me-2"
+            *ngIf="currentActor?.role === 'SPONSOR'"
+            (click)="sponsorTrip(trip.ticker)">
+      Sponsor
+    </button>
+
+    <button class="btn btn-danger me-2"
+            *ngIf="currentActor?.role === 'MANAGER' && tripEditable && tripLoaded"
+            (click)="deleteTrip()">
+      Delete
+    </button>
+
+    <button class="btn btn-warning"
+            *ngIf="currentActor?.role === 'MANAGER' && isCancelable()"
+            (click)="showCancelInput = true">
+      Cancel
+    </button>
+
+    <!-- Input motivo de cancelación -->
+    <div *ngIf="showCancelInput" class="mt-3">
+      <input type="text" class="form-control mb-2" placeholder="Motivo de cancelación" [(ngModel)]="cancelReason" required>
+      <button class="btn btn-danger w-100"
+              [disabled]="!cancelReason || cancelReason.trim() === ''"
+              (click)="cancelTrip(trip, cancelReason)">
+        Confirmar Cancelación
+      </button>
     </div>
+  </div>
 </div>
 
-<!-- Formulario para aplicar al viaje (separado del card de trip) -->
+<!-- Formulario de aplicación -->
 <div class="container mt-5" *ngIf="!hasAppliedFlag && !isManager">
-    <h3 class="text-center">Aplica al viaje</h3>
-    <div class="card mx-auto" style="max-width: 30rem;">
-        <div class="card-body">
-            <form class="form-horizontal" (ngSubmit)="onApplicationSubmit(f)" #f="ngForm">
-                <div class="form-group mb-3">
-                    <label for="comments" class="form-label">Comentarios</label>
-                    <textarea name="comments" id="comments" class="form-control" rows="3" 
-                              ngModel></textarea>
-                </div>
-                <button type="submit" class="btn btn-primary">Aplicar</button>
-            </form>            
-        </div>
+  <div class="card mx-auto shadow-sm" style="max-width: 32rem;">
+    <div class="card-header text-center">
+      <h5 class="mb-0">Aplica al viaje</h5>
     </div>
+    <div class="card-body">
+      <form (ngSubmit)="onApplicationSubmit(f)" #f="ngForm">
+        <div class="mb-3">
+          <label for="comments" class="form-label">Comentarios</label>
+          <textarea name="comments" id="comments" class="form-control" rows="3" ngModel></textarea>
+        </div>
+        <div class="text-end">
+          <button type="submit" class="btn btn-primary">Aplicar</button>
+        </div>
+      </form>
+    </div>
+  </div>
 </div>
 
+<!-- Mensaje si ya aplicó -->
 <div class="container mt-5" *ngIf="hasAppliedFlag && !isManager">
-    <h3 class="text-center text-success">Ya has aplicado a este viaje</h3>
+  <div class="alert alert-success text-center">
+    Ya has aplicado a este viaje
+  </div>
 </div>
-

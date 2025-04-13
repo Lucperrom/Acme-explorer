@@ -1,38 +1,48 @@
-
-<div class="container mt-4">
-
-    <div *ngIf="activeRole === 'MANAGER'" class="mb-3">
-        <label for="tripFilter" class="form-label"><strong>Filter Trips:</strong></label>
-        <select id="tripFilter" class="form-select" [(ngModel)]="selectedFilter" (change)="onFilterChange()">
-          <option value="all">All Trips</option>
-          <option value="cancelled">Cancelled Trips</option>
-        </select>
-      </div>
-    <div class="row">        
-        <ng-container *ngFor="let trip of filteredTrips; let i = index">
-            <div class="col-md-4 mb-4" *ngIf="isVisible(trip)">
-                <div class="card h-100" (click)="goToTrip(trip.id)" style="cursor: pointer;">
-                    <div class="card-header">
-                        <ngb-carousel *ngIf="trip.pictures?.length" (click)="$event.stopPropagation()" style="height: 230px; overflow: hidden;">
-                            <ng-template ngbSlide *ngFor="let picture of trip.pictures; let j = index">
-                                <img class="d-block w-100" [src]="picture || '/assets/images/no-image.png'" alt="Slide {{ j + 1 }}">
-                            </ng-template>
-                        </ngb-carousel>
-                        <img *ngIf="!trip.pictures?.length" class="d-block w-100" src="/assets/images/no-image.png" alt="No image available" style="height: 230px; object-fit: cover;">
-                    </div>
-                    <div class="card-body">
-                        <h5 class="card-title">{{ trip.title }}</h5>
-                        <p class="card-text">{{ trip.description }}</p>
-                        <p><strong>Price:</strong> {{ trip.price }} EUR</p>
-                        <p><strong>Date:</strong> {{ trip.startDate | date:'d MMMM yyyy'}} - {{ trip.endDate | date:'d MMMM yyyy' }}</p>
-                        <p *ngIf="trip.cancelledReason"><strong>Cancelled Reason:</strong> {{ trip.cancelledReason }}</p>
-                        <p *ngIf="trip.managerName"><strong>Created by</strong> {{ trip.managerName }}<span *ngIf="trip.createdAt"></span></p>
-                        <p class="text-danger" *ngIf="currentActor?.role === 'MANAGER' && !isTripCancelable(trip.id)">
-                            This trip is NOT editable/cancelable
-                          </p>
-                    </div>
-                </div>
-            </div>
-        </ng-container>
+<div class="container mt-5">
+    <!-- Filtro de viajes -->
+    <div *ngIf="activeRole === 'MANAGER'" class="mb-4">
+      <label for="tripFilter" class="form-label fw-bold">Filtrar viajes:</label>
+      <select id="tripFilter" class="form-select shadow-sm" [(ngModel)]="selectedFilter" (change)="onFilterChange()">
+        <option value="all">Todos los viajes</option>
+        <option value="cancelled">Viajes cancelados</option>
+      </select>
     </div>
-</div>
+  
+    <!-- Lista de viajes -->
+    <div class="row">
+      <ng-container *ngFor="let trip of filteredTrips; let i = index">
+        <div class="col-md-6 col-lg-4 mb-4" *ngIf="isVisible(trip)">
+          <div class="card h-100 shadow-sm rounded overflow-hidden" (click)="goToTrip(trip.id)" style="cursor: pointer;">
+            <!-- Imágenes del viaje -->
+            <div class="card-img-top p-0">
+              <ngb-carousel *ngIf="trip.pictures?.length" (click)="$event.stopPropagation()">
+                <ng-template ngbSlide *ngFor="let picture of trip.pictures; let j = index">
+                  <img class="d-block w-100" [src]="picture || '/assets/images/no-image.png'" alt="Slide {{ j + 1 }}" style="height: 230px; object-fit: cover;">
+                </ng-template>
+              </ngb-carousel>
+              <img *ngIf="!trip.pictures?.length" class="d-block w-100" src="/assets/images/no-image.png" alt="No image available" style="height: 230px; object-fit: cover;">
+            </div>
+  
+            <!-- Detalles del viaje -->
+            <div class="card-body d-flex flex-column justify-content-between">
+              <h5 class="card-title fw-bold text-primary">{{ trip.title }}</h5>
+              <p class="card-text text-muted mb-2">{{ trip.description }}</p>
+              <p class="mb-1"><i class="bi bi-currency-euro text-success"></i> <strong>Precio:</strong> {{ trip.price }} EUR</p>
+              <p class="mb-2"><i class="bi bi-calendar-event"></i> <strong>Fechas:</strong> {{ trip.startDate | date:'d MMMM yyyy'}} - {{ trip.endDate | date:'d MMMM yyyy' }}</p>
+  
+              <!-- Mensajes para el MANAGER -->
+              <div *ngIf="currentActor?.role === 'MANAGER'">
+                <p class="text-danger mb-1" *ngIf="!isTripEditable(trip.id)">
+                  <i class="bi bi-exclamation-circle-fill"></i> Este viaje no se puede editar ni eliminar.
+                </p>
+                <p class="text-danger" *ngIf="!isCancelable(trip)">
+                  <i class="bi bi-x-circle-fill"></i> Este viaje no se puede cancelar.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </ng-container>
+    </div>
+  </div>
+  

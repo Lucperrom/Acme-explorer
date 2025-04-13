@@ -20,7 +20,7 @@ export class TripListComponent implements OnInit {
   protected filteredTrips: Trip[];
   protected activeRole: string = 'anonymous';
   selectedFilter: string = 'all';
-  tripCancelableMap: Map<string, boolean> = new Map();
+  tripEditableMap: Map<string, boolean> = new Map();
 
 
 
@@ -43,18 +43,23 @@ export class TripListComponent implements OnInit {
 
   }
 
-  isTripCancelable(tripId: string): boolean {
-    return this.tripCancelableMap.get(tripId) || false;
+  isTripEditable(tripId: string): boolean {
+    return this.tripEditableMap.get(tripId) || false;
   }
 
-  async checkIfTripIsCancelable(trip: Trip) {
-    const isCancelable = await this.isCancelable(trip);
-    this.tripCancelableMap.set(trip.id, isCancelable);
-    return isCancelable;
+  isCancelable(trip: Trip): boolean {
+    const timeReason = trip.startDate.getTime() - new Date().getTime() > 7 * 24 * 60 * 60 * 1000;
+    return trip.cancelledReason === "" && timeReason;
   }
 
-  async isCancelable(trip: Trip) {
-    const timeReason = trip.startDate.getTime() - new Date().getTime() > 7 * 24 * 60 * 60 * 1000
+  async checkIfTripIsEditable(trip: Trip) {
+    const isEditable = await this.isEditable(trip);
+    this.tripEditableMap.set(trip.id, isEditable);
+    return isEditable;
+  }
+
+  async isEditable(trip: Trip) {
+    const timeReason = trip.startDate.getTime() - new Date().getTime() > 10 * 24 * 60 * 60 * 1000
     if (!timeReason) return false;
 
     try {
@@ -65,7 +70,7 @@ export class TripListComponent implements OnInit {
       console.log("hasAccepted: ", hasAccepted);
       return !hasAccepted;
     } catch (error) {
-      console.error('Error checking cancelability:', error);
+      console.error('Error checking editability:', error);
       return false;
     }
   }
@@ -86,7 +91,7 @@ export class TripListComponent implements OnInit {
     this.filteredTrips = [...this.trips]; 
 
     for (const trip of this.trips) {
-      await this.checkIfTripIsCancelable(trip);
+      await this.checkIfTripIsEditable(trip);
     }
   
     this.tripService.searchTerm$.subscribe(term => {

@@ -25,9 +25,12 @@ export class TripDisplayComponent implements OnInit {
   protected currentActor: Actor | null = null;
   protected sponsorhips: Sponsorship[] = [];
   protected filteredSponsorships: Sponsorship[] = [];
+  showCancelInput = false;
   hasAppliedFlag = false;
   isManager = false;
-  tripCancelable: boolean = true; // Variable para almacenar el resultado de cancelabilidad
+  cancelReason = "";
+  tripEditable: boolean = true; // Variable para almacenar el resultado de cancelabilidad
+  tripLoaded: boolean = false;
 
   constructor(
     private tripService: TripService, 
@@ -62,21 +65,34 @@ export class TripDisplayComponent implements OnInit {
       }
       
       // Calcular si el viaje es cancelable al cargar la página
-      this.checkIfTripIsCancelable(this.trip);
+      this.checkIfTripIsEditable(this.trip);
+      this.tripLoaded = true; // Indica que el viaje ha sido cargado
     }
   }
 
-  // Método para verificar y actualizar la propiedad tripCancelable
-  async checkIfTripIsCancelable(trip: Trip) {
-    this.tripCancelable = await this.isCancelable(trip);
+  // Método para verificar y actualizar la propiedad tripEditable
+  async checkIfTripIsEditable(trip: Trip) {
+    this.tripEditable = await this.isEditable(trip);
   }
 
-  cancelTrip() {
-    this.trip.cancelledReason = "";
+  cancelTrip(trip: Trip, reason: string) {
+    const plainTrip = {
+      cancelledReason: reason
+    };
+  
+    this.tripService.updateTrip(trip.id, plainTrip).then(() => {
+      this.messageService.notifyMessage('Viaje cancelado correctamente', 'alert-success');
+      this.router.navigate(['/trips']);
+    }).catch((error) => {
+      this.messageService.notifyMessage('Error al cancelar el viaje', 'alert-danger');
+      console.error('Error canceling trip:', error);
+    });
   }
+  
 
-  isCancelled() {
-    return this.trip.cancelledReason != "";
+  isCancelable() {
+    const timeReason = this.trip.startDate.getTime() - new Date().getTime() > 7 * 24 * 60 * 60 * 1000;
+    return this.trip.cancelledReason === "" && timeReason;
   }
   
   getFontColor() {
@@ -112,8 +128,8 @@ export class TripDisplayComponent implements OnInit {
     && this.trip.price < 100;
   }
 
-  async isCancelable(trip: Trip): Promise<boolean> {
-    const timeReason = trip.startDate.getTime() - new Date().getTime() > 7 * 24 * 60 * 60 * 1000;
+  async isEditable(trip: Trip): Promise<boolean> {
+    const timeReason = trip.startDate.getTime() - new Date().getTime() > 10 * 24 * 60 * 60 * 1000;
     if (!timeReason) return false;
 
     try {
@@ -126,6 +142,30 @@ export class TripDisplayComponent implements OnInit {
     } catch (error) {
       console.error('Error checking cancelability:', error);
       return false;
+    }
+  }
+
+  async deleteTrip(): Promise<void> {
+    if (!this.tripId) {
+      this.messageService.notifyMessage('No se puede borrar un viaje que no existe', 'alert-danger');
+      return;
+    }
+
+    if (confirm('¿Está seguro de que desea eliminar este viaje?')) {
+      try {
+        // Establecer deleted a true
+        await this.tripService.updateTrip(this.tripId, {
+          deleted: true
+        });
+        
+        
+        this.messageService.notifyMessage('Viaje eliminado correctamente', 'alert-success');
+        // Redireccionar a la lista de viajes
+        this.router.navigate(['/trips']);
+      } catch (error) {
+        this.messageService.notifyMessage('Error al eliminar el viaje', 'alert-danger');
+        console.error('Error al eliminar el viaje:', error);
+      }
     }
   }
 
