@@ -31,7 +31,7 @@
 
       <!-- Botones para el rol manager -->
       <ng-container *ngIf="actor.role.toLowerCase() === 'manager'">
-        <button *ngIf="application.status?.trim().toLowerCase() === 'pending'" class="btn btn-success" (click)="acceptApplication(application)">Due</button>
+        <button *ngIf="application.status?.trim().toLowerCase() === 'pending'" class="btn btn-success" (click)="acceptApplication(application.id)">Due</button>
         <div class="reject-section" *ngIf="application.status?.trim().toLowerCase() === 'pending'">
           <input type="text" [(ngModel)]="rejectReason" placeholder="Enter reject reason" class="form-control mb-2" />
           <button class="btn btn-danger" (click)="rejectApplication(application)">Reject</button>

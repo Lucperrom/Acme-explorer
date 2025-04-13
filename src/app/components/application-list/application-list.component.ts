@@ -75,8 +75,8 @@ export class ApplicationListComponent implements OnInit {
     this.filterApplications(); // Aplica el filtro combinado
   }
 
-  acceptApplication(application: string): void {
-    this.applicationService.updateApplicationStatus(application, 'due').then(() => {
+  acceptApplication(applicationId: string): void {
+    this.applicationService.updateApplicationStatus(applicationId, 'due').then(() => {
       this.refreshApplications();
     }).catch(error => {
       console.error(`Error accepting application:`, error);
@@ -90,7 +90,7 @@ export class ApplicationListComponent implements OnInit {
     }
 
     const updatedApplication = { ...application, rejectReason: this.rejectReason };
-    this.applicationService.updateApplicationStatus(updatedApplication, 'rejected').then(() => {
+    this.applicationService.updateApplicationStatus(updatedApplication.id, 'rejected', updatedApplication).then(() => {
       this.rejectReason = ''; // Limpia el motivo después de rechazar
       this.refreshApplications();
     }).catch(error => {
@@ -107,7 +107,7 @@ export class ApplicationListComponent implements OnInit {
     const tripPrice = application.trip?.price || 0;
 
     // Redirige al usuario a la página de checkout con los parámetros necesarios
-    this.router.navigate(['/checkout-application'], { queryParams: { total: tripPrice, id: application.id } });
+    this.router.navigate(['/checkout-application'], { queryParams: { total: tripPrice, applicationId: application.id } });
   }
 
   public refreshApplications(): void {

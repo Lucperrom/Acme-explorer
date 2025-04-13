@@ -20,7 +20,7 @@ export class CheckoutComponent implements OnInit {
   }
   private initConfig(): void {
     const total = this.route.snapshot.queryParams['total'];
-    const application = this.route.snapshot.queryParams['application'];
+    const applicationId = this.route.snapshot.queryParams['applicationId'];
     const sponsorshipId = this.route.snapshot.queryParams['id'];
     this.payPalConfig = {
       currency: 'EUR',
@@ -52,9 +52,9 @@ export class CheckoutComponent implements OnInit {
         console.log('onClientAuthorization - inform your server at this point', data);
         let message = $localize `The order has been placed`;
         alert(message);
-        if (application) {
-          this.applicationService.updateApplicationStatus(application, 'accepted')
-          this.router.navigateByUrl('/applications');
+        if (applicationId) {
+          await this.applicationService.updateApplicationStatus(applicationId, 'accepted')
+          this.router.navigateByUrl('/my-applications');
         } else {
           await this.sponsorshipService.updateSponsorship(sponsorshipId, { payed: true })
           this.router.navigateByUrl('/sponsorships');
