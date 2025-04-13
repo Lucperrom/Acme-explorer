@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ICreateOrderRequest, IPayPalConfig } from 'ngx-paypal';
 import { NgxPayPalModule } from 'ngx-paypal';
+import { ApplicationService } from 'src/app/services/application.service';
 import { SponsorshipService } from 'src/app/services/sponsorship.service';
 
 @Component({
@@ -12,13 +13,14 @@ import { SponsorshipService } from 'src/app/services/sponsorship.service';
 export class CheckoutComponent implements OnInit {
   protected payPalConfig ?: IPayPalConfig;
 
-  constructor(private route: ActivatedRoute, private router: Router, private sponsorshipService: SponsorshipService) { }
+  constructor(private route: ActivatedRoute, private router: Router, private sponsorshipService: SponsorshipService, private applicationService: ApplicationService) { }
 
   ngOnInit(): void {
     this.initConfig();
   }
   private initConfig(): void {
     const total = this.route.snapshot.queryParams['total'];
+    const application = this.route.snapshot.queryParams['application'];
     const sponsorshipId = this.route.snapshot.queryParams['id'];
     this.payPalConfig = {
       currency: 'EUR',
@@ -50,8 +52,14 @@ export class CheckoutComponent implements OnInit {
         console.log('onClientAuthorization - inform your server at this point', data);
         let message = $localize `The order has been placed`;
         alert(message);
-        await this.sponsorshipService.updateSponsorship(sponsorshipId, { payed: true })
-        this.router.navigateByUrl('/sponsorships');
+        if (application) {
+          this.applicationService.updateApplicationStatus(application, 'accepted')
+          this.router.navigateByUrl('/applications');
+        } else {
+          await this.sponsorshipService.updateSponsorship(sponsorshipId, { payed: true })
+          this.router.navigateByUrl('/sponsorships');
+        }
+        
       },
       onCancel: (data, actions) => {
         console.log('OnCancel', data, actions);

@@ -25,6 +25,7 @@
       <h5 class="card-title">Explorer: {{ application.explorerId }}</h5>
       <p class="card-text">Status: {{ application.status.toUpperCase() }}</p>
       <p class="card-text">Trip: {{ application.trip.title }}</p>
+      <p class="card-text">Price: {{ application.trip.price }}</p>
       <p *ngIf="application.comments" class="card-text">Comments: {{ application.comments }}</p>
       <p *ngIf="application.rejectReason" class="card-text">Reject Reason: {{ application.rejectReason }}</p>
 
@@ -39,7 +40,7 @@
 
       <!-- Botón para el rol explorer -->
       <ng-container *ngIf="actor.role.toLowerCase() === 'explorer'">
-        <button *ngIf="application.status?.trim().toLowerCase() === 'due'" class="btn btn-warning" (click)="payForApplication(application)">Pay</button>
+        <button *ngIf="application.status?.trim().toLowerCase() === 'due'" class="btn btn-warning" (click)="payForApplication(application)">Pay with PayPal</button>
       </ng-container>
     </div>
   </div>

@@ -3,6 +3,7 @@ import { ApplicationService } from 'src/app/services/application.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { MessageService } from 'src/app/services/message.service';
 import { TripService } from 'src/app/services/trip.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-application-list',
@@ -11,7 +12,7 @@ import { TripService } from 'src/app/services/trip.service';
 })
 export class ApplicationListComponent implements OnInit {
 
-  constructor(private applicationService: ApplicationService, private authService: AuthService, private tripService: TripService, private messageService: MessageService) { }
+  constructor(private applicationService: ApplicationService, private authService: AuthService, private tripService: TripService, private messageService: MessageService, private router: Router) { }
 
   public actor: any;
   public applications: any[] = [];
@@ -103,12 +104,10 @@ export class ApplicationListComponent implements OnInit {
       return;
     }
 
-    this.applicationService.updateApplicationStatus(application, 'accepted').then(() => {
-      this.messageService.notifyMessage("Application successfully paid and accepted!", "alert-success");
-      this.refreshApplications();
-    }).catch(error => {
-      console.error(`Error paying for application:`, error);
-    });
+    const tripPrice = application.trip?.price || 0;
+
+    // Redirige al usuario a la página de checkout con los parámetros necesarios
+    this.router.navigate(['/checkout-application'], { queryParams: { total: tripPrice, id: application.id } });
   }
 
   public refreshApplications(): void {

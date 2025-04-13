@@ -48,6 +48,7 @@ const routes: Routes = [
   // ]},
   //PENDIENTE
   {path: 'checkout', component: CheckoutComponent, canActivate: [AuthGuard,ActorRoleGuard], data: {expectedRole: 'sponsor'} },
+  {path: 'checkout-application', component: CheckoutComponent, canActivate: [AuthGuard,ActorRoleGuard], data: {expectedRole: 'explorer'} },
   { path: 'sponsorships', children:[
     {path: 'create/:tripTicker', component: SponsorshipEditComponent, canActivate: [AuthGuard,ActorRoleGuard], data: {expectedRole: 'sponsor', mode: 'post' }},
     // {path: ':id', component: TripDisplayComponent},
