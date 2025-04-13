@@ -1,129 +1,136 @@
-<form [formGroup]="tripForm" (ngSubmit)="onSubmit()">
+<form [formGroup]="tripForm" (ngSubmit)="onSubmit()" class="container mt-4 shadow p-4 rounded bg-light">
   <fieldset>
-    <legend>{{ isEditMode ? 'Edit this trip' : 'Create new Trip' }}</legend>
+    <legend class="mb-4">{{ isEditMode ? 'Edit this Trip' : 'Create New Trip' }}</legend>
 
-    <!-- Prefill Button solo en modo creación -->
-    <button *ngIf="!isEditMode" type="button" class="btn btn-secondary mb-3" (click)="prefillForm()">Prefill Form</button>
+    <div class="mb-3 text-end" *ngIf="!isEditMode">
+      <button type="button" class="btn btn-outline-secondary" (click)="prefillForm()">Prefill Form</button>
+    </div>
 
-    <div class="form-group" *ngFor="let field of ['title', 'description', 'startDate', 'endDate']">
-      <label [for]="field">{{ field | titlecase }}:</label>
-      <input [id]="field" [type]="field.includes('Date') ? 'date' : 'text'" class="form-control"
-        [formControlName]="field" />
-      <div class="text-danger" *ngIf="tripForm.get(field)?.invalid && tripForm.get(field)?.touched">
-        <div *ngFor="let err of tripForm.get(field)?.errors | keyvalue">
-          {{ err.key }} error.
+    <div class="row g-3">
+      <div class="col-md-6" *ngFor="let field of ['title', 'description', 'startDate', 'endDate']">
+        <label [for]="field" class="form-label">{{ field | titlecase }}:</label>
+        <input [id]="field" [type]="field.includes('Date') ? 'date' : 'text'" class="form-control"
+          [formControlName]="field" />
+        <div class="text-danger small mt-1" *ngIf="tripForm.get(field)?.invalid && tripForm.get(field)?.touched">
+          <div *ngFor="let err of tripForm.get(field)?.errors | keyvalue">
+            {{ err.key }} error.
+          </div>
         </div>
       </div>
     </div>
 
-    <div *ngIf="isEditMode" class="form-group">
-      <label for="cancelledReason">Cancel Reason:</label>
+    <div *ngIf="isEditMode" class="mt-3">
+      <label for="cancelledReason" class="form-label">Cancel Reason:</label>
       <input id="cancelledReason" type="text" class="form-control" formControlName="cancelledReason" />
-      <div class="text-danger" *ngIf="tripForm.get('cancelledReason')?.invalid && tripForm.get('cancelledReason')?.touched">
+      <div class="text-danger small mt-1" *ngIf="tripForm.get('cancelledReason')?.invalid && tripForm.get('cancelledReason')?.touched">
         <div *ngFor="let err of tripForm.get('cancelledReason')?.errors | keyvalue">
           {{ err.key }} error.
         </div>
       </div>
     </div>
 
-    <div class="form-group col-12 col-md-4 mb-2">
-      <label for="totalPrice" class="form-control-label">Total Price:</label>
-      <div id="totalPrice" class="form-control" [class.disabled]="true">
+    <div class="mt-3">
+      <label class="form-label">Total Price:</label>
+      <div class="form-control bg-light">
         {{ tripForm.get('price')?.value | currency: 'EUR' }}
       </div>
     </div>
 
-    <div class="form-group">
-      <label>Stages:</label>
-      <div formArrayName="stages" class="d-flex flex-wrap">
-        <div *ngFor="let stage of stages.controls; let i = index" class="card m-2" style="width: 18rem;">
-          <div class="card-body" [formGroupName]="i">
-            <div *ngFor="let field of ['title', 'description', 'price']" class="mb-2">
-              <label [for]="field + i">{{ field | titlecase }}:</label>
-              <input [id]="field + i" [type]="field === 'price' ? 'number' : 'text'" class="form-control"
-                [formControlName]="field" />
-              <div class="text-danger" *ngIf="stage.get(field)?.invalid && stage.get(field)?.touched">
-                <div *ngFor="let err of stage.get(field)?.errors | keyvalue">
-                  {{ err.key }} error.
+    <!-- Stages -->
+    <div class="mt-4">
+      <label class="form-label">Stages:</label>
+      <div formArrayName="stages" class="row g-3">
+        <div *ngFor="let stage of stages.controls; let i = index" class="col-md-4">
+          <div class="card shadow-sm">
+            <div class="card-body" [formGroupName]="i">
+              <h6 class="card-title">Stage {{ i + 1 }}</h6>
+              <div *ngFor="let field of ['title', 'description', 'price']" class="mb-2">
+                <label [for]="field + i" class="form-label">{{ field | titlecase }}:</label>
+                <input [id]="field + i" [type]="field === 'price' ? 'number' : 'text'" class="form-control"
+                  [formControlName]="field" />
+                <div class="text-danger small mt-1" *ngIf="stage.get(field)?.invalid && stage.get(field)?.touched">
+                  <div *ngFor="let err of stage.get(field)?.errors | keyvalue">
+                    {{ err.key }} error.
+                  </div>
                 </div>
               </div>
+              <div class="text-end">
+                <button type="button" class="btn btn-sm btn-danger" (click)="removeStage(i)" *ngIf="stages.length > 1">Remove</button>
+              </div>
             </div>
-            <button type="button" class="btn btn-danger" (click)="removeStage(i)" *ngIf="stages.length > 1">-</button>
           </div>
         </div>
       </div>
-      <div class="text-danger"
+      <div class="text-danger mt-2"
         *ngIf="tripForm.get('stages')?.hasError('emptyArray') && tripForm.get('stages')?.touched">
         At least one stage is required.
       </div>
-      <button type="button" class="btn btn-success" (click)="addStage()">+</button>
+      <button type="button" class="btn btn-success mt-2" (click)="addStage()">Add Stage</button>
     </div>
 
-    <div class="form-group">
-      <label>Requirements:</label>
+    <!-- Requirements -->
+    <div class="mt-4">
+      <label class="form-label">Requirements:</label>
       <div formArrayName="requirements">
-        <div *ngFor="let req of requirements.controls; let i = index" class="d-flex flex-column mb-2">
+        <div *ngFor="let req of requirements.controls; let i = index" class="input-group mb-2">
           <input [formControlName]="i" type="text" class="form-control" />
-          <div class="text-danger" *ngIf="req.invalid && req.touched">
-            <div *ngFor="let err of req.errors | keyvalue">
-              {{ err.key }} error.
-            </div>
-          </div>
-          <div class="mt-1 d-flex">
-            <button type="button" class="btn btn-danger me-2" (click)="removeRequirement(i)" *ngIf="requirements.length > 1">-</button>
-          </div>
+          <button type="button" class="btn btn-danger" (click)="removeRequirement(i)" *ngIf="requirements.length > 1">-</button>
         </div>
-        <button type="button" class="btn btn-success" (click)="addRequirement()">+</button>
+        <div class="text-danger small"
+          *ngIf="tripForm.get('requirements')?.hasError('emptyArray') && tripForm.get('requirements')?.touched">
+          At least one requirement is required.
+        </div>
+        <button type="button" class="btn btn-success" (click)="addRequirement()">Add Requirement</button>
       </div>
-      <div class="text-danger"
-        *ngIf="tripForm.get('requirements')?.hasError('emptyArray') && tripForm.get('requirements')?.touched">
-        At least one requirement is required.
+    </div>
+
+    <!-- Pictures Upload -->
+    <div class="mt-4">
+      <label class="form-label">Pictures:</label>
+      <div class="mb-3">
+        <input type="file" id="pictures" (change)="onFileSelected($event)" class="d-none" multiple />
+        <button type="button" class="btn btn-primary" (click)="triggerFileInput()">Upload Pictures</button>
+      </div>
+
+      <div *ngIf="pictures.controls.length > 0" style="max-width: 300px;">
+        <ngb-carousel>
+          <ng-template ngbSlide *ngFor="let picture of pictures.controls; let j = index">
+            <div class="position-relative">
+              <img class="d-block w-100" [src]="picture.value" alt="Slide {{ j + 1 }}"
+                style="height: 200px; object-fit: cover;" />
+              <button type="button" class="btn btn-danger btn-sm position-absolute top-0 end-0 m-1"
+                style="z-index: 10;" (click)="removePicture(j)">❌</button>
+            </div>
+          </ng-template>
+        </ngb-carousel>
       </div>
     </div>
 
-    <br />
-    <div class="custom-file-upload">
-      <input type="file" id="pictures" (change)="onFileSelected($event)" class="file-input" multiple hidden />
-      <button type="button" class="btn btn-primary" (click)="triggerFileInput()">Upload Pictures</button>
-    </div>
-
-    <div *ngIf="pictures.controls.length > 0" style="max-width: 300px;">
-      <ngb-carousel>
-        <ng-template ngbSlide *ngFor="let picture of pictures.controls; let j = index">
-          <div class="position-relative">
-            <img class="d-block w-100" [src]="picture.value" alt="Slide {{ j + 1 }}"
-              style="height: 200px; object-fit: cover;" />
-            <button type="button" class="btn btn-danger btn-sm position-absolute top-0 end-0 m-1" style="z-index: 10;"
-              (click)="removePicture(j)">❌</button>
-          </div>
-        </ng-template>
-      </ngb-carousel>
-    </div>
-
-    <div class="form-group">
-      <label for="location">Location:</label>
+    <!-- Location -->
+    <div class="mt-4">
+      <label for="location" class="form-label">Location:</label>
       <div class="d-flex mb-2">
         <input type="text" id="search" class="form-control me-2"
-               placeholder="Search for a location"
-               formControlName="searchQuery"
-               (keydown.enter)="onSearch($event)" />
-        <button type="button" class="btn btn-primary" (click)="handleSearch()">Search</button>
+          placeholder="Search for a location"
+          formControlName="searchQuery"
+          (keydown.enter)="onSearch($event)" />
+        <button type="button" class="btn btn-outline-primary" (click)="handleSearch()">Search</button>
       </div>
-      <div id="map-container" style="position: relative; height: 300px; overflow: hidden; margin-bottom: 10px;">
+
+      <div id="map-container" class="rounded border" style="height: 300px; overflow: hidden; margin-bottom: 10px;">
         <div id="map" style="height: 100%; width: 100%;"></div>
       </div>
-      <div [formGroupName]="'location'" class="d-flex flex-column">
-        <label for="address">Address:</label>
-        <input type="text" formControlName="address" readonly class="form-control"/>
+
+      <div [formGroupName]="'location'" class="mb-3">
+        <label for="address" class="form-label">Address:</label>
+        <input type="text" formControlName="address" readonly class="form-control mb-2"/>
         <input type="hidden" formControlName="latitude" />
         <input type="hidden" formControlName="longitude" />
       </div>
     </div>
-    
 
-    <br />
-    <button type="submit" class="btn btn-primary mb-3">{{ isEditMode ? 'Update' : 'Create' }}</button>
-    <button *ngIf="isEditMode" type="button" class="btn btn-danger mb-3 ms-2" (click)="deleteTrip()">Delete</button>
-
+    <div class="text-end">
+      <button type="submit" class="btn btn-primary mt-3">{{ isEditMode ? 'Update Trip' : 'Create Trip' }}</button>
+    </div>
   </fieldset>
 </form>

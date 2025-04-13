@@ -94,6 +94,16 @@ export class TripFormComponent implements AfterViewInit, OnInit {
         deleted: this.trip.deleted || false  // Inicializamos el campo deleted
       });
 
+      // Setear localización si existe
+      if (this.trip.location) {
+        this.tripForm.get('location')?.patchValue({
+          latitude: this.trip.location.latitude,
+          longitude: this.trip.location.longitude,
+          address: this.trip.location.address || ''
+        });
+      }
+
+
       // Setear stages
       this.stages.clear();
       if (this.trip.stages && Array.isArray(this.trip.stages)) {
@@ -312,30 +322,6 @@ export class TripFormComponent implements AfterViewInit, OnInit {
       return sum + parseFloat(price);
     }, 0);
     this.tripForm.get('price')?.setValue(total);
-  }
-
-  async deleteTrip(): Promise<void> {
-    if (!this.tripId) {
-      this.messageService.notifyMessage('No se puede borrar un viaje que no existe', 'alert-danger');
-      return;
-    }
-
-    if (confirm('¿Está seguro de que desea eliminar este viaje?')) {
-      try {
-        // Establecer deleted a true
-        await this.tripService.updateTrip(this.tripId, {
-          deleted: true
-        });
-        
-        
-        this.messageService.notifyMessage('Viaje eliminado correctamente', 'alert-success');
-        // Redireccionar a la lista de viajes
-        this.router.navigate(['/trips']);
-      } catch (error) {
-        this.messageService.notifyMessage('Error al eliminar el viaje', 'alert-danger');
-        console.error('Error al eliminar el viaje:', error);
-      }
-    }
   }
 
   async onSubmit(): Promise<void> {
