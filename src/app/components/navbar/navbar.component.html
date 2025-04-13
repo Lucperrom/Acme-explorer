@@ -34,6 +34,7 @@
           <ul class="dropdown-menu">
             <li *ngIf="currentActor.role === 'ADMINISTRATOR'"><a class="dropdown-item" [routerLink]="['/dashboard']">Dashboard</a></li>
             <li *ngIf="currentActor.role === 'ADMINISTRATOR'"><a class="dropdown-item" [routerLink]="['/register']">Create New Manager</a></li>
+            <li *ngIf="currentActor.role === 'ADMINISTRATOR'"><a class="dropdown-item" [routerLink]="['/sponsorships']">Sponsorship</a></li>
             <li *ngIf="currentActor.role === 'MANAGER'"><a class="dropdown-item" [routerLink]="['/applications']">Applications</a></li>
             <li *ngIf="currentActor.role === 'SPONSOR'"><a class="dropdown-item" [routerLink]="['/sponsorships']">Sponsorships</a></li>
             <li *ngIf="currentActor.role === 'EXPLORER'"><a class="dropdown-item" [routerLink]="['/my-applications']">My Applications</a></li>
