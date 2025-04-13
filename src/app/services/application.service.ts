@@ -114,16 +114,15 @@ export class ApplicationService {
     }
   }
 
-  async updateApplicationStatus(application: any, status: string): Promise<void> {
+  async updateApplicationStatus(applicationId: string, status: string, application?: any): Promise<void> {
     try {
-      console.log("Updating application status: ", application);
       console.log("New status: ", status);
 
-      const applicationRef = doc(this.firestore, 'applications', application.id);
+      const applicationRef = doc(this.firestore, 'applications', applicationId);
 
       // Construye el objeto de actualización dinámicamente
       const updateData: any = { status: status };
-      if (application.rejectReason) {
+      if (application?.rejectReason) {
         updateData.rejectReason = application.rejectReason;
       }
 

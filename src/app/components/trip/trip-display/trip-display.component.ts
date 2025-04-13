@@ -9,6 +9,8 @@ import { FormControl, FormGroup, NgForm } from '@angular/forms';
 import { AuthService } from 'src/app/services/auth.service';
 import { MessageService } from 'src/app/services/message.service';
 import { has } from 'cypress/types/lodash';
+import { SponsorshipService } from 'src/app/services/sponsorship.service';
+import { Sponsorship } from 'src/app/models/sponsorship.model';
 
 @Component({
   selector: 'app-trip-display',
@@ -21,6 +23,8 @@ export class TripDisplayComponent implements OnInit {
   protected trash = faTrash;
   protected tripId: string | null = null;
   protected currentActor: Actor | null = null;
+  protected sponsorhips: Sponsorship[] = [];
+  protected filteredSponsorships: Sponsorship[] = [];
   hasAppliedFlag = false;
   isManager = false;
   tripCancelable: boolean = true; // Variable para almacenar el resultado de cancelabilidad
@@ -31,7 +35,8 @@ export class TripDisplayComponent implements OnInit {
     private applicationService: ApplicationService, 
     private authService: AuthService,
     private messageService: MessageService,
-    private router: Router
+    private router: Router,
+    private sponsorshipService: SponsorshipService
   ) { 
     this.trip = new Trip();
     this.trip.pictures = ["/assets/images/playa3.jpg"]
@@ -43,6 +48,8 @@ export class TripDisplayComponent implements OnInit {
     this.tripId = this.route.snapshot.paramMap.get('id') || '';
     if (this.tripId) {
       this.trip = await this.tripService.getTripById(this.tripId);
+      this.sponsorhips = await this.sponsorshipService.getAllSponsorshipsByTripId(this.trip.ticker);
+      this.filteredSponsorships = this.sponsorhips.filter(sponsorhip => sponsorhip.payed);
       this.trip.startDate = new Date(this.trip.startDate);
       this.trip.endDate = new Date(this.trip.endDate);
       console.log("Trip loaded", this.trip);
@@ -78,6 +85,12 @@ export class TripDisplayComponent implements OnInit {
 
   editTrip(tripId: string) {
     this.router.navigate(['/trips/edit', tripId]);
+  }
+
+  openLink(link: string): void {
+    if (link) {
+      window.open(link, '_blank');
+    }
   }
 
   getCurrentStyles() {
@@ -137,6 +150,10 @@ export class TripDisplayComponent implements OnInit {
 
   hasApplied() {
     return this.applicationService.hasApplied(this.currentActor?.email, this.tripId);
+  }
+
+  sponsorTrip(tripTicker: string) {
+    this.router.navigate(['/sponsorships/create', tripTicker]);  
   }
 
   onApplicationSubmit(f: NgForm) {

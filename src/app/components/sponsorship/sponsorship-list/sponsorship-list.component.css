@@ -1,0 +1,108 @@
+/* Contenedor principal */
+.container {
+    max-width: 1200px;
+  }
+  
+  /* Títulos */
+  h2 {
+    font-weight: 600;
+    color: #2c3e50;
+  }
+  
+  /* Tarjetas */
+  .card {
+    transition: transform 0.2s ease-in-out, box-shadow 0.3s ease;
+    border-radius: 12px;
+  }
+  
+  .card:hover {
+    transform: scale(1.02);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+  }
+  
+  .card-img-top {
+    height: 180px;
+    object-fit: cover;
+    border-radius: 12px 12px 0 0;
+  }
+  
+  /* Enlaces */
+  .card-title a {
+    color: #007bff;
+    font-weight: 500;
+    word-break: break-all;
+  }
+  
+  .card-title a:hover {
+    text-decoration: underline;
+  }
+  
+  /* Lista de detalles */
+  .list-group-item {
+    font-size: 0.95rem;
+    background-color: #f8f9fa;
+    border: none;
+  }
+  
+  /* Footer de tarjeta */
+  .card-footer {
+    background-color: #ffffff;
+    border-top: 1px solid #e9ecef;
+  }
+  
+  /* Botones */
+  .btn {
+    min-width: 80px;
+    font-weight: 500;
+  }
+  
+  .btn-outline-primary:hover {
+    background-color: #007bff;
+    color: white;
+  }
+  
+  .btn-outline-danger:hover {
+    background-color: #dc3545;
+    color: white;
+  }
+
+  .btn-success {
+    background-color: #ffffff;
+    border-color: #28a745;
+    color: #1e7e34;
+    font-weight: 500;
+  }
+  
+  .btn-success:hover {
+    background-color: #1e7e34;
+    border-color: #1e7e34;
+    color: #ffffff;
+  }
+  
+  
+  /* Indicadores de pago */
+  .text-success {
+    font-weight: 600;
+  }
+  
+  .text-danger {
+    font-weight: 600;
+  }
+
+  body.dark-mode .card {
+    background-color: #1f1f1f;
+    color: #f1f1f1;
+  }
+  
+  body.dark-mode .list-group-item {
+    background-color: #2c2c2c;
+    color: #ddd;
+  }
+  
+  body.dark-mode .btn-outline-primary,
+  body.dark-mode .btn-outline-danger {
+    border-color: #555;
+    color: #ddd;
+  }
+  
+  

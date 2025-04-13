@@ -35,6 +35,9 @@ import { TripForecastComponent } from './components/trip/trip-forecast/trip-fore
 import { MaxPipe } from './pipes/max.pipe';
 import { MinPipe } from './pipes/min.pipe';
 import { SponsorshipListComponent } from './components/sponsorship/sponsorship-list/sponsorship-list.component';
+import { SponsorshipEditComponent } from './components/sponsorship/sponsorship-edit/sponsorship-edit.component';
+import { CheckoutComponent } from './components/checkout/checkout.component';
+import { NgxPayPalModule } from 'ngx-paypal';
 
 @NgModule({
   declarations: [
@@ -59,7 +62,9 @@ import { SponsorshipListComponent } from './components/sponsorship/sponsorship-l
     TripForecastComponent,
     MaxPipe,
     MinPipe,
-    SponsorshipListComponent
+    SponsorshipListComponent,
+    SponsorshipEditComponent,
+    CheckoutComponent
   ],
   imports: [
     BrowserModule,
@@ -72,6 +77,7 @@ import { SponsorshipListComponent } from './components/sponsorship/sponsorship-l
     FontAwesomeModule,
     NgbCarouselModule,
     NgxDatatableModule,
+    NgxPayPalModule,
     provideFirebaseApp(() => initializeApp(environment.firebaseConfig)),
     provideAuth(() => getAuth()),
     provideFirestore(() => getFirestore()),

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AuthService } from 'src/app/services/auth.service'
 import { NgForm } from '@angular/forms'
 import { ActivatedRoute, Router } from '@angular/router';
+import { MessageService } from 'src/app/services/message.service';
 
 @Component({
   selector: 'app-login',
@@ -12,7 +13,7 @@ export class LoginComponent implements OnInit {
 
   private returnUrl!: string;
 
-  constructor(private authService: AuthService, private route: ActivatedRoute , private router: Router) { }
+  constructor(private authService: AuthService, private route: ActivatedRoute , private router: Router, private messageService: MessageService) { }
   ngOnInit(): void {
     this.route.queryParams.subscribe(params => {
       this.returnUrl = params['returnUrl'] || '/trips'; // Read returnUrl or default to '/trips'
@@ -28,7 +29,7 @@ export class LoginComponent implements OnInit {
       this.router.navigate([this.returnUrl]); // Redirect to the desired route
       form.reset();
     }).catch((error) => {
-      console.log(error);
+      this.messageService.notifyMessage("Invalid Credentials", "alert-danger")
     });
   }
 

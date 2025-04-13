@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Firestore, collection, getDocs,addDoc } from '@angular/fire/firestore';
+import { Firestore, collection, getDocs,addDoc, doc, getDoc, updateDoc, deleteDoc } from '@angular/fire/firestore';
+import { Sponsorship } from '../models/sponsorship.model';
 
 @Injectable({
   providedIn: 'root'
@@ -7,6 +8,18 @@ import { Firestore, collection, getDocs,addDoc } from '@angular/fire/firestore';
 export class SponsorshipService {
 
   constructor(private firestore: Firestore) { }
+    getCurrentSponsorshipFromDoc(doc: any): Sponsorship {
+      const data = doc.data();
+      let sponsorship = new Sponsorship();
+      sponsorship.id = doc.id;
+      sponsorship.url = data['url'];
+      sponsorship.link = data['link'];
+      sponsorship.tripId = data['tripId'];
+      sponsorship.sponsorId = data['sponsorId'];
+      sponsorship.rate = data['rate']; 
+      sponsorship.payed = data['payed']; 
+      return sponsorship;
+    }
 
   async createSponsorship(sponsorship: any): Promise<any> {
     try {
@@ -37,6 +50,23 @@ export class SponsorshipService {
       return [];
     }
   }
+    async getAllSponsorships(): Promise<Sponsorship[]> {
+      try {
+        const tripsRef = collection(this.firestore, 'sponsorships');
+        const querySnapshot = await getDocs(tripsRef);
+  
+        let sponsorships: Sponsorship[] = [];
+        querySnapshot.forEach((doc) => {
+          let sponsorship = this.getCurrentSponsorshipFromDoc(doc);
+            sponsorships.push(sponsorship);
+        });
+  
+        return sponsorships;
+      } catch (error) {
+        console.error("Error fetching trips:", error);
+        return [];
+      }
+    }
 
   async getAllSponsorshipsByTripId(tripId: string): Promise<any[]> {
     try {
@@ -56,5 +86,38 @@ export class SponsorshipService {
       return [];
     }
   }
-  
+  async getSponsorshipById(id: string): Promise<any> {
+    try {
+      const sponsorshipDocRef = doc(this.firestore, 'sponsorships', id);
+      const sponsorshipSnapshot = await getDoc(sponsorshipDocRef);
+      if (sponsorshipSnapshot.exists()) {
+        return { id: sponsorshipSnapshot.id, ...sponsorshipSnapshot.data() };
+      } else {
+        throw new Error('Sponsorship not found');
+      }
+    } catch (error) {
+      console.error("Error fetching sponsorship by ID: ", error);
+      throw error;
+    }
+  }
+
+  async updateSponsorship(id: string, updatedData: any): Promise<void> {
+    try {
+      const sponsorshipDocRef = doc(this.firestore, 'sponsorships', id);
+      await updateDoc(sponsorshipDocRef, updatedData);
+    } catch (error) {
+      console.error("Error updating sponsorship: ", error);
+      throw error;
+    }
+  }
+
+  async removeSponsorship(id: string): Promise<void> {
+    try {
+      const sponsorshipDocRef = doc(this.firestore, 'sponsorships', id);
+      await deleteDoc(sponsorshipDocRef);
+    } catch (error) {
+      console.error("Error deleting sponsorship: ", error);
+      throw error;
+    }
+  }
 }
