@@ -1,1 +1,43 @@
-<p>profile-edit works!</p>
+
+<div [ngClass]="{ 'dark-mode': isDarkMode }">
+<form [formGroup]="profileForm" (ngSubmit)="onUpdate()">
+    <fieldset>
+      <legend>Edit your Profile</legend>
+  
+      <!-- NAME -->
+      <div class="form-group has-danger">
+        <label for="name" class="form-control-label">Name:</label>
+        <input id="name" type="text" formControlName="name" class="form-control"
+               [ngClass]="{'is-invalid': profileForm.get('name')?.invalid && profileForm.get('name')?.touched}">
+        <div *ngIf="profileForm.get('name')?.invalid && profileForm.get('name')?.touched" class="text-danger mt-1">
+          Name is required.
+        </div>
+      </div>
+  
+      <!-- SURNAME -->
+      <div class="form-group has-danger">
+        <label for="surname" class="form-control-label">Surname:</label>
+        <input id="surname" type="text" formControlName="surname" class="form-control"
+               [ngClass]="{'is-invalid': profileForm.get('surname')?.invalid && profileForm.get('surname')?.touched}">
+        <div *ngIf="profileForm.get('surname')?.invalid && profileForm.get('surname')?.touched" class="text-danger mt-1">
+          Surname is required.
+        </div>
+      </div>
+  
+      <!-- PHONE -->
+      <div class="form-group has-danger">
+        <label for="phone" class="form-control-label">Phone (optional):</label>
+        <input id="phone" type="number" formControlName="phone" class="form-control">
+      </div>
+  
+      <!-- ADDRESS -->
+      <div class="form-group has-danger">
+        <label for="address" class="form-control-label">Address (optional):</label>
+        <input id="address" type="text" formControlName="address" class="form-control">
+      </div>
+  
+      <br>
+      <button type="submit" class="btn btn-primary">Update</button>
+    </fieldset>
+  </form>
+</div> 

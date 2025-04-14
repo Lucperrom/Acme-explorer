@@ -1,35 +1,91 @@
+/* Estilos para el modo oscuro */
+.dark-mode {
+  background-color: #1e1e1e; /* Fondo oscuro */
+  color: #d4d4d4; /* Texto claro */
+}
+
+.dark-mode .dashboard {
+  /* No es necesario cambiar el font-family, se hereda bien */
+  margin: 20px;
+}
+
+.dark-mode .dashboard-title {
+  color: #e0e0e0; /* Título más claro */
+  margin-bottom: 30px; /* Más espacio inferior */
+  border-bottom: 2px solid #444; /* Línea sutil inferior */
+  padding-bottom: 10px;
+}
+
+.dark-mode .dashboard-section {
+  margin-bottom: 25px; /* Más espacio entre secciones */
+  padding: 20px;
+  border: 1px solid #333; /* Borde más oscuro */
+  border-radius: 8px; /* Bordes más redondeados */
+  background-color: #2c2c2c; /* Fondo de sección más oscuro */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3); /* Sombra sutil */
+}
+
+.dark-mode .section-title {
+  color: #a0a0a0; /* Título de sección más claro */
+  margin-bottom: 15px;
+  border-bottom: 1px solid #444; /* Línea inferior sutil */
+  padding-bottom: 5px;
+}
+
+.dark-mode .section-item {
+  margin: 8px 0;
+  color: #c0c0c0; /* Texto de ítem más claro */
+}
+
+.dark-mode .status-list {
+  list-style-type: none;
+  padding: 0;
+}
+
+.dark-mode .status-item {
+  margin: 8px 0;
+  color: #b0b0b0; /* Texto de ítem de estado más claro */
+  padding: 8px;
+  border-bottom: 1px solid #333; /* Separador entre elementos de la lista */
+}
+
+.dark-mode .status-item:last-child {
+  border-bottom: none; /* Eliminar el borde inferior del último elemento */
+}
+
+/* Estilos para el modo claro (sin cambios significativos para mantenerlos como referencia) */
 .dashboard {
-    font-family: Arial, sans-serif;
-    margin: 20px;
-  }
-  
-  .dashboard-title {
-    color: #333;
-    margin-bottom: 20px;
-  }
-  
-  .dashboard-section {
-    margin-bottom: 20px;
-    padding: 15px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    background-color: #f9f9f9;
-  }
-  
-  .section-title {
-    color: #555;
-    margin-bottom: 10px;
-  }
-  
-  .section-item {
-    margin: 5px 0;
-  }
-  
-  .status-list {
-    list-style-type: none;
-    padding: 0;
-  }
-  
-  .status-item {
-    margin: 5px 0;
-  }
+  font-family: Arial, sans-serif;
+  margin: 20px;
+}
+
+.dashboard-title {
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.dashboard-section {
+  margin-bottom: 20px;
+  padding: 15px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+}
+
+.section-title {
+  color: #555;
+  margin-bottom: 10px;
+}
+
+.section-item {
+  margin: 5px 0;
+}
+
+.status-list {
+  list-style-type: none;
+  padding: 0;
+}
+
+.status-item {
+  margin: 5px 0;
+}

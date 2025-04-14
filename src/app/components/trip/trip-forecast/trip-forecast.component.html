@@ -1,3 +1,4 @@
+<div [ngClass]="{ 'dark-mode': isDarkMode }">
 <div class="container mt-5">
   <div *ngIf="errorMessage" class="alert alert-danger text-center">
     {{ errorMessage }}
@@ -32,4 +33,5 @@
       </div>
     </div>
   </div>
+</div>
 </div>

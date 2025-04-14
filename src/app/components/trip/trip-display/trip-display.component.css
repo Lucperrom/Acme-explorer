@@ -5,3 +5,178 @@ h1.bg-blue {
 .special {
   background-color: yellow;
 }
+
+.dark-mode {
+  background-color: #121212;
+  color: #e0e0e0;
+}
+
+/* =================== GENERAL =================== */
+
+.dark-mode h1,
+.dark-mode h4,
+.dark-mode h5,
+.dark-mode h6,
+.dark-mode strong {
+  color: #ffffff;
+}
+
+.dark-mode p,
+.dark-mode span,
+.dark-mode label,
+.dark-mode small {
+  color: #dddddd;
+}
+
+.dark-mode .text-muted {
+  color: #aaaaaa !important;
+}
+
+.dark-mode .text-info {
+  color: #ffffff !important;
+}
+
+.dark-mode .text-dark {
+  color: #ffff !important;
+}
+
+.dark-mode .text-primary {
+  color: #ffff !important;
+}
+
+.dark-mode .text-danger {
+  color: #ef5350 !important;
+}
+
+.dark-mode .text-secondary {
+  color: #b0bec5 !important;
+}
+
+/* =================== CARD =================== */
+
+.dark-mode .card {
+  background-color: #1f1f1f;
+  border: 1px solid #2c2c2c;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.6);
+}
+
+.dark-mode .card-body {
+  background-color: #242424;;
+}
+
+.dark-mode .container {
+  background-color: #242424;;
+}
+
+.dark-mode .card-header {
+  background-color: #242424;
+  border-bottom: 1px solid #3a3a3a;
+  color: #ffffff;
+}
+
+.dark-mode .card-title {
+  background-color: #242424;
+  border-bottom: 1px solid #3a3a3a;
+  color: #ffffff;
+}
+
+/* =================== LIST GROUP =================== */
+
+.dark-mode .list-group-item {
+  background-color: #262626;
+  border-color: #3a3a3a;
+  color: #dddddd;
+}
+
+/* =================== FORM CONTROLS =================== */
+
+.dark-mode .form-control {
+  background-color: #2a2a2a;
+  color: #f5f5f5;
+  border: 1px solid #444;
+}
+
+.dark-mode .form-control::placeholder {
+  color: #999;
+}
+
+/* =================== BUTTONS =================== */
+
+.dark-mode .btn {
+  border-radius: 0.4rem;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.dark-mode .btn-primary {
+  background-color: #1976d2;
+  border-color: #1976d2;
+  color: #fff;
+}
+
+.dark-mode .btn-primary:hover {
+  background-color: #1565c0;
+  border-color: #1565c0;
+}
+
+.dark-mode .btn-outline-primary {
+  color: #90caf9;
+  border-color: #2196f3;
+}
+
+.dark-mode .btn-outline-primary:hover {
+  background-color: #2196f3;
+  color: #fff;
+}
+
+.dark-mode .btn-success {
+  background-color: #388e3c;
+  border-color: #388e3c;
+  color: #fff;
+}
+
+.dark-mode .btn-danger {
+  background-color: #d32f2f;
+  border-color: #d32f2f;
+  color: #fff;
+}
+
+.dark-mode .btn-warning {
+  background-color: #ffa000;
+  border-color: #ffa000;
+  color: #212121;
+}
+
+/* =================== BADGES =================== */
+
+.dark-mode .badge.bg-success {
+  background-color: #43a047 !important;
+  color: #ffffff;
+}
+
+/* =================== ALERTS =================== */
+
+.dark-mode .alert-success {
+  background-color: #2e7d32;
+  color: #c8e6c9;
+  border: none;
+}
+
+/* =================== CAROUSELS =================== */
+
+.dark-mode ngb-carousel,
+.dark-mode .carousel-inner {
+  background-color: #1a1a1a;
+}
+
+/* =================== MISC =================== */
+
+.dark-mode img {
+  filter: brightness(0.95) contrast(1.1);
+}
+
+.dark-mode input:focus,
+.dark-mode textarea:focus {
+  outline: none;
+  border-color: #64b5f6;
+  box-shadow: 0 0 0 0.2rem rgba(100, 181, 246, 0.25);
+}

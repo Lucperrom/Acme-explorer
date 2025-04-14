@@ -1,3 +1,4 @@
+<div [ngClass]="{ 'dark-mode': isDarkMode }">
 <div class="container mt-5">
   <h2 class="mb-4 text-center">Sponsorships</h2>
 
@@ -28,11 +29,12 @@
         </div>
 
         <div class="card-footer bg-transparent border-top-0 d-flex justify-content-end gap-2">
-          <button class="btn btn-sm btn-outline-primary" (click)="editSponsorship(sponsorship.id)">Edit</button>
+          <button class="btn btn-sm btn-outline-primary" *ngIf="!sponsorship?.payed" (click)="editSponsorship(sponsorship.id)">Edit</button>
           <button class="btn btn-sm btn-outline-danger" (click)="removeSponsorship(sponsorship.id)">Delete</button>
           <button class="btn btn-sm btn-success me-2" *ngIf="sponsorship?.id && isPayable(sponsorship.id)" (click)="paySponsorship(sponsorship)">Pay</button>
         </div>
       </div>
     </div>
   </div>
+</div>
 </div>

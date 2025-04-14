@@ -1,3 +1,4 @@
+<div [ngClass]="{ 'dark-mode': isDarkMode }">
 <form [formGroup]="tripForm" (ngSubmit)="onSubmit()" class="container mt-4 shadow p-4 rounded bg-light">
   <fieldset>
     <legend class="mb-4">{{ isEditMode ? 'Edit this Trip' : 'Create New Trip' }}</legend>
@@ -134,3 +135,4 @@
     </div>
   </fieldset>
 </form>
+</div>

@@ -1,0 +1,110 @@
+/* Estilos CSS Normal (Modo Claro) */
+.form-horizontal {
+    background-color: #f8f9fa; /* Fondo claro */
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-top: 30px;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.control-label {
+    text-align: left !important; /* Alinea las etiquetas a la izquierda */
+    font-weight: bold;
+    color: #333; /* Texto oscuro para las etiquetas */
+}
+
+.form-control {
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    padding: 10px 12px;
+    font-size: 16px;
+    color: #495057; /* Texto oscuro para los inputs */
+    background-color: #fff;
+}
+
+.form-control:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+    outline: none;
+}
+
+.btn-primary {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.btn-primary:hover {
+    background-color: #0056b3;
+}
+
+.row {
+    margin-top: 20px;
+}
+
+p {
+    color: #6c757d; /* Texto gris para el párrafo */
+    font-size: 14px;
+}
+
+a {
+    color: #007bff;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+.col-md-offset-4 {
+    margin-left: 33.33333333%; /* Centra el bloque de "Do not have an account?" */
+}
+
+/* Estilos CSS para Dark Mode */
+.dark-mode .form-horizontal {
+    background-color: #343a40; /* Fondo oscuro */
+    color: #f8f9fa; /* Texto claro */
+    box-shadow: 0 2px 4px rgba(255, 255, 255, 0.1);
+}
+
+.dark-mode .control-label {
+    color: #f8f9fa; /* Texto claro para las etiquetas */
+}
+
+.dark-mode .form-control {
+    background-color: #495057;
+    color: #f8f9fa;
+    border-color: #6c757d;
+}
+
+.dark-mode .form-control:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+    outline: none;
+}
+
+.dark-mode .btn-primary {
+    background-color: #0056b3;
+    color: #fff;
+}
+
+.dark-mode .btn-primary:hover {
+    background-color: #007bff;
+}
+
+.dark-mode p {
+    color: #ced4da; /* Texto gris claro para el párrafo */
+}
+
+.dark-mode a {
+    color: #00bfff;
+}

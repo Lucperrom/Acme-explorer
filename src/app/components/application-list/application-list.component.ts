@@ -21,8 +21,10 @@ export class ApplicationListComponent implements OnInit {
   public tripTitles: string[] = [];
   public selectedTripTitle: string = 'all';
   public selectedStatus: string = 'all'; // Agrega una propiedad para almacenar el estado seleccionado
+  isDarkMode = false;
 
   ngOnInit(): void {
+    this.isDarkMode = localStorage.getItem('darkMode') === 'true';
     this.actor = this.authService.getCurrentActor();
     console.log("Actor: ", this.actor);
     if (this.actor) {

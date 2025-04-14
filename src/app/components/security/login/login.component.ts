@@ -12,9 +12,11 @@ import { MessageService } from 'src/app/services/message.service';
 export class LoginComponent implements OnInit {
 
   private returnUrl!: string;
+  isDarkMode = false;
 
   constructor(private authService: AuthService, private route: ActivatedRoute , private router: Router, private messageService: MessageService) { }
   ngOnInit(): void {
+    this.isDarkMode = localStorage.getItem('darkMode') === 'true';
     this.route.queryParams.subscribe(params => {
       this.returnUrl = params['returnUrl'] || '/trips'; // Read returnUrl or default to '/trips'
       console.log('Return URL:', this.returnUrl);

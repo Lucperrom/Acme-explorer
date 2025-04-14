@@ -1,0 +1,141 @@
+/* Estilos CSS Normales (Light Mode) */
+div {
+    font-family: sans-serif;
+  }
+  
+  form {
+    background-color: #f8f9fa; /* Fondo claro */
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Sombra suave */
+    margin-top: 20px;
+  }
+  
+  fieldset {
+    border: 1px solid #ced4da; /* Borde sutil */
+    padding: 20px;
+    border-radius: 6px;
+  }
+  
+  legend {
+    font-size: 1.5rem;
+    color: #007bff; /* Color primario */
+    padding: 0 10px;
+    margin-bottom: 20px;
+    display: inline-block;
+    border-bottom: 2px solid #007bff;
+  }
+  
+  .form-group {
+    margin-bottom: 15px;
+  }
+  
+  .form-control-label {
+    display: block;
+    margin-bottom: 5px;
+    color: #495057; /* Texto gris oscuro */
+    font-weight: bold;
+  }
+  
+  .form-control {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    box-sizing: border-box;
+    font-size: 1rem;
+    color: #495057;
+    background-color: #fff;
+  }
+  
+  .form-control:focus {
+    border-color: #007bff;
+    outline: none;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25); /* Sombra al enfocar */
+  }
+  
+  .is-invalid {
+    border-color: #dc3545; /* Rojo para indicar error */
+  }
+  
+  .text-danger {
+    color: #dc3545 !important;
+    font-size: 0.875rem;
+  }
+  
+  .btn-primary {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1rem;
+  }
+  
+  .btn-primary:hover {
+    background-color: #0056b3;
+  }
+  
+  .btn-primary:focus {
+    outline: none;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.5);
+  }
+  
+  /* Estilos CSS para Dark Mode */
+  .dark-mode {
+    background-color: #343a40; /* Fondo oscuro */
+    color: #f8f9fa; /* Texto claro */
+  }
+  
+  .dark-mode form {
+    background-color: #495057; /* Fondo oscuro para el formulario */
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.1); /* Sombra clara */
+  }
+  
+  .dark-mode fieldset {
+    border-color: #6c757d; /* Borde gris oscuro */
+  }
+  
+  .dark-mode legend {
+    color: #00bfff; /* Un azul más brillante para el modo oscuro */
+    border-bottom-color: #00bfff;
+  }
+  
+  .dark-mode .form-control-label {
+    color: #e9ecef; /* Texto gris claro */
+  }
+  
+  .dark-mode .form-control {
+    background-color: #6c757d;
+    color: #e9ecef;
+    border-color: #6c757d;
+  }
+  
+  .dark-mode .form-control:focus {
+    border-color: #00bfff;
+    box-shadow: 0 0 0 0.2rem rgba(0, 191, 255, 0.25);
+    background-color: #6c757d; /* Mantener el fondo oscuro al enfocar */
+    color: #e9ecef;
+  }
+  
+  .dark-mode .is-invalid {
+    border-color: #ff8a80; /* Rojo más claro para el modo oscuro */
+  }
+  
+  .dark-mode .text-danger {
+    color: #ff8a80 !important;
+  }
+  
+  .dark-mode .btn-primary {
+    background-color: #00bfff;
+    color: #212529; /* Texto oscuro para contrastar */
+  }
+  
+  .dark-mode .btn-primary:hover {
+    background-color: #0086b3;
+  }
+  
+  .dark-mode .btn-primary:focus {
+    box-shadow: 0 0 0 0.2rem rgba(0, 191, 255, 0.5);
+  }

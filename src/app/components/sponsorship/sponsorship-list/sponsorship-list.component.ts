@@ -17,6 +17,8 @@ export class SponsorshipListComponent implements OnInit {
   public sponsorships: any[] = [];
   public filteredSponsorships: any[] = [];
   sponsorshipPayable: Map<String, boolean> = new Map();
+  isDarkMode = false;
+
 
   constructor(
     private sponsorshipService: SponsorshipService,
@@ -39,6 +41,7 @@ export class SponsorshipListComponent implements OnInit {
 
 
   ngOnInit(): void {
+    this.isDarkMode = localStorage.getItem('darkMode') === 'true';
     this.actor = this.authService.getCurrentActor();
     console.log("Actor: ", this.actor);
 

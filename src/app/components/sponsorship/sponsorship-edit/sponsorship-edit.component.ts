@@ -22,6 +22,7 @@ export class SponsorshipEditComponent implements OnInit {
   rate: number = 0;
   message: string = '';
   protected currentActor: Actor | null = null;
+  isDarkMode = false;
 
   constructor(
     private sponsorshipService: SponsorshipService,
@@ -32,6 +33,7 @@ export class SponsorshipEditComponent implements OnInit {
   ) {}
 
   async ngOnInit(): Promise<void> {
+    this.isDarkMode = localStorage.getItem('darkMode') === 'true';
     this.currentActor = this.authService.getCurrentActor();
     this.isEditMode = this.route.snapshot.routeConfig?.path?.includes('edit') ?? false;
     

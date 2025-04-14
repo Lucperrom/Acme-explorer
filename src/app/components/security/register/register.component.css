@@ -1,0 +1,153 @@
+/* Estilos CSS Normales (Más Bonito) */
+form {
+    background-color: #f8f9fa; /* Fondo claro */
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1); /* Sombra suave */
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+fieldset {
+    border: none;
+    padding: 0;
+    margin: 0;
+}
+
+legend {
+    font-size: 1.5rem;
+    color: #333; /* Texto oscuro */
+    margin-bottom: 20px;
+    padding: 0;
+    border-bottom: 2px solid #007bff; /* Línea azul */
+    padding-bottom: 10px;
+    width: fit-content; /* Ajustar al contenido */
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-control-label {
+    display: block;
+    margin-bottom: 5px;
+    color: #555; /* Texto gris oscuro */
+    font-weight: bold;
+}
+
+.form-control {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ced4da; /* Borde gris claro */
+    border-radius: 4px;
+    font-size: 1rem;
+    color: #495057; /* Texto gris oscuro */
+    background-color: #fff;
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.form-control:focus {
+    border-color: #007bff; /* Borde azul al enfocar */
+    outline: 0;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25); /* Sombra azul al enfocar */
+}
+
+select.form-control {
+    appearance: none; /* Quitar estilos por defecto del navegador */
+    background-image: url('data:image/svg+xml;utf8,<svg fill="%23495057" viewBox="0 0 16 16"><path d="M7.247 11.14L2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z"/></svg>');
+    background-repeat: no-repeat;
+    background-position: right 0.75rem center;
+    background-size: 0.8rem 0.8rem;
+    padding-right: 2.25rem;
+}
+
+.btn-primary {
+    background-color: #007bff; /* Azul primario */
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background-color 0.15s ease-in-out;
+}
+
+.btn-primary:hover {
+    background-color: #0056b3; /* Azul más oscuro al pasar el ratón */
+}
+
+.row {
+    margin-top: 20px;
+}
+
+.col-md-2.col-md-offset-4 {
+    margin-left: 33.33333333%; /* Simula el offset */
+}
+
+p {
+    color: #6c757d; /* Texto gris */
+    font-size: 0.9rem;
+}
+
+a {
+    color: #007bff;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+/* Estilos CSS para Dark Mode */
+.dark-mode {
+    background-color: #343a40; /* Fondo oscuro */
+    color: #f8f9fa; /* Texto claro */
+}
+
+.dark-mode form {
+    background-color: #495057; /* Fondo oscuro para el formulario */
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.1); /* Sombra clara */
+}
+
+.dark-mode legend {
+    color: #f8f9fa; /* Texto claro */
+    border-bottom-color: #6c757d; /* Línea gris oscuro */
+}
+
+.dark-mode .form-control-label {
+    color: #e9ecef; /* Texto gris claro */
+}
+
+.dark-mode .form-control {
+    background-color: #444;
+    color: #e9ecef;
+    border-color: #6c757d;
+}
+
+.dark-mode .form-control:focus {
+    border-color: #adb5bd; /* Borde gris más claro al enfocar */
+    box-shadow: 0 0 0 0.2rem rgba(108, 117, 125, 0.25); /* Sombra gris al enfocar */
+}
+
+.dark-mode select.form-control {
+    background-image: url('data:image/svg+xml;utf8,<svg fill="%23e9ecef" viewBox="0 0 16 16"><path d="M7.247 11.14L2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z"/></svg>');
+}
+
+.dark-mode .btn-primary {
+    background-color: #007bff;
+    color: #fff;
+    border-color: #007bff;
+}
+
+.dark-mode .btn-primary:hover {
+    background-color: #0056b3;
+    border-color: #0056b3;
+}
+
+.dark-mode p {
+    color: #adb5bd; /* Texto gris claro */
+}
+
+.dark-mode a {
+    color: #66b1ff;
+}

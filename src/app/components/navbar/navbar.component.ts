@@ -13,6 +13,7 @@ import { TripService } from 'src/app/services/trip.service';
 export class NavbarComponent implements OnInit { 
   protected currentActor: Actor | null = null;
   protected activeRole: string = 'anonymous';
+  isDarkMode: boolean = false;
   @Output() search = new EventEmitter<string>();
   searchTerm: string = '';
 
@@ -26,6 +27,10 @@ export class NavbarComponent implements OnInit {
     });
   }
    ngOnInit(): void {
+    const alreadyReloaded = sessionStorage.getItem('reloaded');
+
+    this.isDarkMode = localStorage.getItem('darkMode') === 'true';
+    console.log(localStorage.getItem('darkMode'))
     this.authService.loggedInUserSubject.asObservable().subscribe((loggedIn: boolean) => {
       if (loggedIn) {
         this.currentActor = this.authService.getCurrentActor();
@@ -34,6 +39,11 @@ export class NavbarComponent implements OnInit {
       }
     });
     
+  }
+  toggleDarkMode() {
+    this.isDarkMode = !this.isDarkMode;
+    localStorage.setItem('darkMode', this.isDarkMode.toString());
+    location.reload();
   }
   
 

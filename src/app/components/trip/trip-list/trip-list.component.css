@@ -1,0 +1,179 @@
+.highlight-non-cancelable {
+    border: 2px solid #f7ff12;
+    background-color: #fff5f5;
+  }
+
+/* =================== GENERAL =================== */
+.dark-mode {
+  background-color: #121212;
+  color: #e0e0e0;
+}
+
+.dark-mode .container {
+  background-color: #1e1e1e;
+  padding: 2rem;
+  border-radius: 10px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.6);
+}
+
+/* =================== FORM SELECTOR =================== */
+.dark-mode .form-label {
+  color: #ffffff;
+}
+
+.dark-mode .form-select {
+  background-color: #2a2a2a;
+  color: #f1f1f1;
+  border: 1px solid #444;
+  border-radius: 0.4rem;
+}
+
+.dark-mode .form-select:focus {
+  background-color: #333;
+  border-color: #64b5f6;
+}
+
+.dark-mode .form-select option {
+  background-color: #121212;
+  color: #f1f1f1;
+}
+
+/* =================== CARD =================== */
+.dark-mode .card {
+  background-color: #1e1e1e;
+  border: 1px solid #333;
+  border-radius: 0.5rem;
+  transition: transform 0.3s ease;
+}
+
+.dark-mode .card:hover {
+  transform: translateY(-5px);
+}
+
+.dark-mode .card-body {
+  background-color: #2a2a2a;
+  padding: 1.5rem;
+}
+
+.dark-mode .card-title {
+  color: #f1f1f1;
+}
+
+.dark-mode .card-text {
+  color: #ccc;
+}
+
+.dark-mode .card-text.text-muted {
+  color: #999;
+}
+
+.dark-mode .bi {
+  color: #64b5f6;
+}
+
+/* =================== CAROUSEL =================== */
+.dark-mode .carousel-inner {
+  background-color: #222;
+}
+
+.dark-mode .carousel-item img {
+  filter: brightness(0.9);
+}
+
+/* =================== MANAGER MESSAGES =================== */
+.dark-mode .text-danger {
+  color: #e57373 !important;
+}
+.dark-mode .text-success {
+  color: #ffffff !important;
+}
+
+.dark-mode .text-secondary {
+  color: #ffffff !important;
+}
+
+.dark-mode .text-primary {
+  color: #ffffff !important;
+}
+
+.dark-mode .text-danger i {
+  color: #ff1744;
+}
+
+.dark-mode .highlight-non-cancelable {
+  border: 2px solid #ff1744;
+}
+
+/* =================== BUTTONS =================== */
+.dark-mode .btn {
+  border-radius: 0.4rem;
+  transition: background-color 0.3s, border-color 0.3s;
+}
+
+.dark-mode .btn-primary {
+  background-color: #1976d2;
+  border-color: #1976d2;
+  color: white;
+}
+
+.dark-mode .btn-primary:hover {
+  background-color: #1565c0;
+  border-color: #1565c0;
+}
+
+.dark-mode .btn-outline-primary {
+  color: #90caf9;
+  border-color: #2196f3;
+}
+
+.dark-mode .btn-outline-primary:hover {
+  background-color: #2196f3;
+  color: white;
+}
+
+.dark-mode .btn-danger {
+  background-color: #d32f2f;
+  border-color: #d32f2f;
+  color: white;
+}
+
+.dark-mode .btn-danger:hover {
+  background-color: #c62828;
+  border-color: #c62828;
+}
+
+/* =================== LINK & TEXT STYLES =================== */
+.dark-mode .text-muted {
+  color: #999 !important;
+}
+
+.dark-mode .text-info {
+  color: #64b5f6 !important;
+}
+
+/* =================== CARDS & GRID =================== */
+.dark-mode .col-md-6, .dark-mode .col-lg-4 {
+  margin-bottom: 20px;
+}
+
+.dark-mode .row {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+/* =================== RESPONSIVE DESIGN =================== */
+@media (max-width: 768px) {
+  .dark-mode .container {
+    padding: 1rem;
+  }
+
+  .dark-mode .card-body {
+    padding: 1rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .dark-mode .card-body {
+    padding: 0.5rem;
+  }
+}

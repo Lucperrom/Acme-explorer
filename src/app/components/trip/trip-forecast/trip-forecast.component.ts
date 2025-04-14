@@ -11,6 +11,7 @@ import { MeteoService } from 'src/app/services/meteo.service';
 export class TripForecastComponent implements OnInit {
   forecastData: any[] | null = null;
   errorMessage: string | null = null;
+  isDarkMode = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -19,6 +20,7 @@ export class TripForecastComponent implements OnInit {
   ) {}
 
   async ngOnInit(): Promise<void> {
+    this.isDarkMode = localStorage.getItem('darkMode') === 'true';
     const tripId = this.route.snapshot.paramMap.get('id');
     if (!tripId) {
       this.errorMessage = 'Invalid trip ID.';
