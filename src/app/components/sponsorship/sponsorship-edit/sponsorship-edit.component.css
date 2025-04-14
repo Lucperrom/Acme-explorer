@@ -36,4 +36,53 @@
     background-color: #dc3545;
     color: white;
 }
+
+/* Estilos para el modo oscuro */
+.dark-mode {
+  background-color: #333;
+  color: #f8f9fa;
+}
+
+.dark-mode .form-container {
+  background: #444;
+  color: #f8f9fa;
+  border-radius: 8px;
+}
+
+.dark-mode label {
+  color: #f8f9fa;
+  font-weight: bold;
+}
+
+.dark-mode input {
+  background-color: #555;
+  color: #f8f9fa;
+  border: 1px solid #666;
+}
+
+.dark-mode input:focus {
+  border-color: #aaa;
+  box-shadow: 0 0 0 0.2rem rgba(108, 117, 125, 0.25);
+}
+
+.dark-mode button {
+  background-color: #0056b3;
+  color: white;
+}
+
+.dark-mode button:hover {
+  background-color: #004494;
+}
+
+.dark-mode .alert-danger {
+  background-color: #721c24;
+  color: #f8d7da;
+}
+
+.dark-mode .preview-container {
+  border: 1px solid #666;
+  background-color: #555;
+  border-radius: 4px;
+  padding: 0.5rem;
+}
   

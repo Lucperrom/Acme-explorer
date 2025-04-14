@@ -1,1 +1,105 @@
-/* You can add global styles to this file, and also import other style files */
+/* Estilos generales para el modo oscuro */
+.dark-mode {
+    background-color: #222; /* Un fondo gris oscuro */
+    color: #eee; /* Texto en un tono gris claro */
+  }
+  
+  /* Estilos para elementos comunes */
+  .dark-mode body {
+    background-color: #222;
+    color: #eee;
+  }
+  
+  .dark-mode a {
+    color: #bb86fc; /* Un color morado/violeta para enlaces */
+  }
+  
+  .dark-mode a:hover {
+    color: #d1b2ff; /* Un tono más claro al pasar el ratón */
+  }
+  
+  /* Estilos para contenedores y tarjetas */
+  .dark-mode .container,
+  .dark-mode .card {
+    background-color: #333; /* Un tono de gris más claro para los contenedores */
+    border: 1px solid #555; /* Un borde sutil */
+  }
+  
+  .dark-mode .card-header {
+    background-color: #444;
+    color: #eee;
+    border-bottom: 1px solid #555;
+  }
+  
+  .dark-mode .card-body {
+    background-color: #333;
+    color: #eee;
+  }
+  
+  /* Estilos para formularios */
+  .dark-mode .form-control {
+    background-color: #444;
+    color: #eee;
+    border: 1px solid #666;
+  }
+  
+  .dark-mode .form-control:focus {
+    background-color: #555;
+    border-color: #bb86fc; /* Color de enfoque */
+    box-shadow: 0 0 0 0.2rem rgba(187, 134, 252, 0.25); /* Sombra de enfoque */
+    color: #eee;
+  }
+  
+  .dark-mode .form-label {
+    color: #ccc;
+  }
+  
+  /* Estilos para botones */
+  .dark-mode .btn-primary {
+    background-color: #bb86fc;
+    border-color: #bb86fc;
+    color: #000; /* Texto negro para mejor contraste */
+  }
+  
+  .dark-mode .btn-primary:hover {
+    background-color: #d1b2ff;
+    border-color: #d1b2ff;
+    color: #000;
+  }
+  
+  .dark-mode .btn-secondary {
+    background-color: #6c757d;
+    border-color: #6c757d;
+    color: #fff;
+  }
+  
+  .dark-mode .btn-secondary:hover {
+    background-color: #5a6268;
+    border-color: #5a6268;
+    color: #fff;
+  }
+  
+  /* Estilos para tablas */
+  .dark-mode .table {
+    color: #eee;
+  }
+  
+  .dark-mode .table thead th {
+    color: #ddd;
+    border-bottom-color: #555;
+  }
+  
+  .dark-mode .table tbody td {
+    border-color: #555;
+  }
+  
+  /* Otros elementos que puedas necesitar */
+  .dark-mode .text-muted {
+    color: #999 !important;
+  }
+  
+  .dark-mode .list-group-item {
+    background-color: #333;
+    color: #eee;
+    border-color: #555;
+  }

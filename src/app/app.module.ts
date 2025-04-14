@@ -38,6 +38,7 @@ import { SponsorshipListComponent } from './components/sponsorship/sponsorship-l
 import { SponsorshipEditComponent } from './components/sponsorship/sponsorship-edit/sponsorship-edit.component';
 import { CheckoutComponent } from './components/checkout/checkout.component';
 import { NgxPayPalModule } from 'ngx-paypal';
+import { CreateManagerComponent } from './components/security/create-manager/create-manager.component';
 
 @NgModule({
   declarations: [
@@ -64,7 +65,8 @@ import { NgxPayPalModule } from 'ngx-paypal';
     MinPipe,
     SponsorshipListComponent,
     SponsorshipEditComponent,
-    CheckoutComponent
+    CheckoutComponent,
+    CreateManagerComponent
   ],
   imports: [
     BrowserModule,

@@ -11,11 +11,13 @@ import { SponsorshipService } from 'src/app/services/sponsorship.service';
 })
 export class CheckoutComponent implements OnInit {
   protected payPalConfig ?: IPayPalConfig;
+  isDarkMode = false;
 
   constructor(private route: ActivatedRoute, private router: Router, private sponsorshipService: SponsorshipService) { }
 
   ngOnInit(): void {
     this.initConfig();
+    this.isDarkMode = localStorage.getItem('darkMode') === 'true';
   }
   private initConfig(): void {
     const total = this.route.snapshot.queryParams['total'];

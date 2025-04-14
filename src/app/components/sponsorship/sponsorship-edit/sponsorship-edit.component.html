@@ -1,3 +1,4 @@
+<div [ngClass]="{ 'dark-mode': isDarkMode }">
 <form [formGroup]="sponsorshipForm" (ngSubmit)="onSubmit()" class="form-container">
     <h2>{{ isEditMode ? 'Edit Sponsorship' : 'Create Sponsorship' }}</h2>
     <div class="form-group">
@@ -67,4 +68,4 @@
     <button type="submit" [disabled]="sponsorshipForm.invalid">Save Sponsorship</button>
   
   </form>
-  
+</div>

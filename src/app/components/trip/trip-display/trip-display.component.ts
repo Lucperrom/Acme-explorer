@@ -29,8 +29,10 @@ export class TripDisplayComponent implements OnInit {
   hasAppliedFlag = false;
   isManager = false;
   cancelReason = "";
+  countdown: string = '';
   tripEditable: boolean = true; // Variable para almacenar el resultado de cancelabilidad
   tripLoaded: boolean = false;
+  isDarkMode = false;
 
   constructor(
     private tripService: TripService, 
@@ -48,8 +50,10 @@ export class TripDisplayComponent implements OnInit {
   }
 
   async ngOnInit(): Promise<void> {
+    this.isDarkMode = localStorage.getItem('darkMode') === 'true';
     this.tripId = this.route.snapshot.paramMap.get('id') || '';
     if (this.tripId) {
+      this.startCountdown();
       this.trip = await this.tripService.getTripById(this.tripId);
       this.sponsorhips = await this.sponsorshipService.getAllSponsorshipsByTripId(this.trip.ticker);
       this.filteredSponsorships = this.sponsorhips.filter(sponsorhip => sponsorhip.payed);
@@ -68,6 +72,30 @@ export class TripDisplayComponent implements OnInit {
       this.checkIfTripIsEditable(this.trip);
       this.tripLoaded = true; // Indica que el viaje ha sido cargado
     }
+  }
+  startCountdown(): void {
+    const start = new Date(this.trip.startDate).getTime();
+  
+    const interval = setInterval(() => {
+      const now = new Date().getTime();
+      const distance =  this.trip.startDate.getTime() - new Date().getTime();
+      console.log("START",start)
+      console.log("NOW",now)
+      console.log("DISTANCE",distance)
+  
+      if (distance < 0) {
+        this.countdown = '¡El viaje ya ha comenzado!';
+        clearInterval(interval);
+        return;
+      }
+  
+      const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+  
+      this.countdown = `${days}d ${hours}h ${minutes}m ${seconds}s`;
+    }, 1000);
   }
 
   // Método para verificar y actualizar la propiedad tripEditable

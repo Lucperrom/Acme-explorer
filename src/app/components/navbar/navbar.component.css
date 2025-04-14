@@ -1,4 +1,124 @@
 .navbar {
   padding: 10px;
 }
-/* Add any custom styles for the navbar here */
+/* Estilos para el modo oscuro */
+.dark-mode .navbar {
+  background-color: #343a40 !important; /* Gris oscuro */
+  border-bottom: 1px solid #555; /* Borde sutil inferior */
+}
+
+.dark-mode .navbar-brand {
+  color: #f8f9fa !important; /* Texto blanco */
+}
+
+.dark-mode .navbar-brand:hover {
+  color: #e9ecef !important;
+}
+
+.dark-mode .navbar-toggler {
+  border-color: #6c757d;
+}
+
+.dark-mode .navbar-toggler-icon {
+  background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3e%3cpath stroke='rgba(248,249,250,0.5)' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+}
+
+.dark-mode .navbar-nav .nav-link {
+  color: #f8f9fa !important;
+}
+
+.dark-mode .navbar-nav .nav-link:hover,
+.dark-mode .navbar-nav .nav-link.active {
+  color: #e9ecef !important;
+}
+
+.dark-mode .dropdown-menu {
+  background-color: #444;
+  border: 1px solid #666;
+}
+
+.dark-mode .dropdown-item {
+  color: #f8f9fa;
+}
+
+.dark-mode .dropdown-item:hover,
+.dark-mode .dropdown-item.active {
+  background-color: #555;
+  color: #e9ecef;
+}
+
+.dark-mode .dropdown-divider {
+  border-top: 1px solid #666;
+}
+
+.dark-mode .form-control {
+  background-color: #444;
+  color: #f8f9fa;
+  border-color: #666;
+}
+
+.dark-mode .form-control::placeholder {
+  color: #ccc;
+}
+
+.dark-mode .form-control:focus {
+  background-color: #555;
+  border-color: #888;
+  box-shadow: 0 0 0 0.2rem rgba(108, 117, 125, 0.25);
+  color: #f8f9fa;
+}
+
+.dark-mode .btn-outline-success {
+  color: #28a745;
+  border-color: #28a745;
+}
+
+.dark-mode .btn-outline-success:hover {
+  background-color: #28a745;
+  border-color: #28a745;
+  color: #fff;
+}
+
+.dark-mode .btn-secondary {
+  background-color: #6c757d;
+  border-color: #6c757d;
+  color: #fff;
+}
+
+.dark-mode .btn-secondary:hover {
+  background-color: #5a6268;
+  border-color: #5a6268;
+  color: #fff;
+}
+
+.dark-mode .btn-dark {
+  background-color: #343a40;
+  border-color: #343a40;
+  color: #fff;
+}
+
+.dark-mode .btn-dark:hover {
+  background-color: #23272b;
+  border-color: #1d2124;
+  color: #fff;
+}
+
+.dark-mode .btn-light {
+  background-color: #f8f9fa;
+  border-color: #f8f9fa;
+  color: #343a40;
+}
+
+.dark-mode .btn-light:hover {
+  background-color: #e2e6ea;
+  border-color: #e2e6ea;
+  color: #343a40;
+}
+
+.dark-mode .link-dark {
+  color: #f8f9fa !important;
+}
+
+.dark-mode .link-dark:hover {
+  color: #e9ecef !important;
+}

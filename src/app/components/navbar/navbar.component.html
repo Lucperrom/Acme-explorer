@@ -1,3 +1,5 @@
+
+<div [ngClass]="{ 'dark-mode': isDarkMode }">
 <nav class="navbar navbar-expand-lg navbar-light bg-light" style="padding: 10px;">
   <div class="container-fluid">
     <!-- Logo + Nombre -->
@@ -33,7 +35,7 @@
           </a>
           <ul class="dropdown-menu">
             <li *ngIf="currentActor.role === 'ADMINISTRATOR'"><a class="dropdown-item" [routerLink]="['/dashboard']">Dashboard</a></li>
-            <li *ngIf="currentActor.role === 'ADMINISTRATOR'"><a class="dropdown-item" [routerLink]="['/register']">Create New Manager</a></li>
+            <li *ngIf="currentActor.role === 'ADMINISTRATOR'"><a class="dropdown-item" [routerLink]="['/create-manager']">Create New Manager</a></li>
             <li *ngIf="currentActor.role === 'ADMINISTRATOR'"><a class="dropdown-item" [routerLink]="['/sponsorships']">Sponsorship</a></li>
             <li *ngIf="currentActor.role === 'MANAGER'"><a class="dropdown-item" [routerLink]="['/applications']">Applications</a></li>
             <li *ngIf="currentActor.role === 'SPONSOR'"><a class="dropdown-item" [routerLink]="['/sponsorships']">Sponsorships</a></li>
@@ -52,6 +54,9 @@
     <!-- Botones de cambiar idioma -->
      <button class="btn btn-secondary me-2" (click)="changeLanguage('EN')">EN</button>
      <button class="btn btn-secondary me-2" (click)="changeLanguage('ES')">ES</button>
+     <button class="btn btn-sm" [ngClass]="isDarkMode ? 'btn-light' : 'btn-dark'" (click)="toggleDarkMode()">
+        <i class="bi bi-sun-fill" [ngStyle]="{ color: isDarkMode ? '#f1c40f' : '#fff' }"></i>
+     </button>
       
       <!-- Opciones de Login / Register / Logout -->
 
@@ -61,7 +66,7 @@
         </a>
         <ul class = "dropdown-menu text-small" data-popper-placement="bottom-end"
         style = "position:absolute; inset:0px 0px auto auto; margin: 0px; transform: translate3d(0.5px,34px,0px);">
-          <li><a class = "dropdown-item" [routerLink]="['/profile', currentActor.id]"> Profile </a></li>
+          <li><a class = "dropdown-item" [routerLink]="['/profile']"> Profile </a></li>
           <li><a class = "dropdown-item" (click)="logout()"> Logout </a></li>
 
         </ul>
@@ -86,3 +91,4 @@
     </div>
   </div>
 </nav>
+</div>

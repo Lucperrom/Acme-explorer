@@ -28,6 +28,7 @@ export class TripFormComponent implements AfterViewInit, OnInit {
   map!: L.Map;
   marker!: L.Marker;
   searchQuery: string = ''; // Add search query state
+  isDarkMode = false;
 
   constructor(
     private tripService: TripService,
@@ -39,6 +40,7 @@ export class TripFormComponent implements AfterViewInit, OnInit {
   }
 
   async ngOnInit(): Promise<void> {
+    this.isDarkMode = localStorage.getItem('darkMode') === 'true';
     this.isEditMode = this.route.snapshot.routeConfig?.path?.includes('edit') ?? false;
     this.tripForm = new FormGroup({
       title: new FormControl('', [Validators.required]),

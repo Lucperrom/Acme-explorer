@@ -21,7 +21,7 @@ export class TripListComponent implements OnInit {
   protected activeRole: string = 'anonymous';
   selectedFilter: string = 'all';
   tripEditableMap: Map<string, boolean> = new Map();
-
+  isDarkMode = false;
 
 
   constructor(private tripService: TripService, private router: Router, private messageService: MessageService, private authService: AuthService, private applicationService: ApplicationService) {
@@ -38,7 +38,7 @@ export class TripListComponent implements OnInit {
     if(this.activeRole === 'MANAGER'){
       return !trip.deleted;
     }else{
-      return !trip.deleted && trip.cancelledReason === "";
+      return !trip.deleted && trip.cancelledReason === "" && !trip.deleted && trip.startDate.getTime() - new Date().getTime() > 0;
     }
 
   }
@@ -46,6 +46,13 @@ export class TripListComponent implements OnInit {
   isTripEditable(tripId: string): boolean {
     return this.tripEditableMap.get(tripId) || false;
   }
+
+  
+  isHighlighted(trip: Trip): boolean {
+     return trip.startDate.getTime() - new Date().getTime() < 7 * 24 * 60 * 60 * 1000;
+  }
+
+
 
   isCancelable(trip: Trip): boolean {
     const timeReason = trip.startDate.getTime() - new Date().getTime() > 7 * 24 * 60 * 60 * 1000;
@@ -76,6 +83,7 @@ export class TripListComponent implements OnInit {
   }
 
   async ngOnInit(): Promise<void> {
+    this.isDarkMode = localStorage.getItem('darkMode') === 'true';
     console.log("Loading trips...");
     const actorData = localStorage.getItem('currentActor');
     this.currentActor = actorData ? JSON.parse(actorData) as Actor : null;

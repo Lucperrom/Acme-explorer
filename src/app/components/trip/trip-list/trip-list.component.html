@@ -1,3 +1,4 @@
+<div [ngClass]="{ 'dark-mode': isDarkMode }">
 <div class="container mt-5">
     <!-- Filtro de viajes -->
     <div *ngIf="activeRole === 'MANAGER'" class="mb-4">
@@ -12,7 +13,7 @@
     <div class="row">
       <ng-container *ngFor="let trip of filteredTrips; let i = index">
         <div class="col-md-6 col-lg-4 mb-4" *ngIf="isVisible(trip)">
-          <div class="card h-100 shadow-sm rounded overflow-hidden" (click)="goToTrip(trip.id)" style="cursor: pointer;">
+          <div class="card h-100 shadow-sm rounded overflow-hidden" (click)="goToTrip(trip.id)" style="cursor: pointer;"[ngClass]="{ 'highlight-non-cancelable': isHighlighted(trip) }">
             <!-- Imágenes del viaje -->
             <div class="card-img-top p-0">
               <ngb-carousel *ngIf="trip.pictures?.length" (click)="$event.stopPropagation()">
@@ -27,8 +28,8 @@
             <div class="card-body d-flex flex-column justify-content-between">
               <h5 class="card-title fw-bold text-primary">{{ trip.title }}</h5>
               <p class="card-text text-muted mb-2">{{ trip.description }}</p>
-              <p class="mb-1"><i class="bi bi-currency-euro text-success"></i> <strong>Precio:</strong> {{ trip.price }} EUR</p>
-              <p class="mb-2"><i class="bi bi-calendar-event"></i> <strong>Fechas:</strong> {{ trip.startDate | date:'d MMMM yyyy'}} - {{ trip.endDate | date:'d MMMM yyyy' }}</p>
+              <p class="mb-1 text-secondary"><i class="bi bi-currency-euro text-success"></i> <strong>Precio:</strong> {{ trip.price }} EUR</p>
+              <p class="mb-1s text-secondary"><i class="bi bi-calendar-event text-success"></i> <strong> Fechas:</strong> {{ trip.startDate | date:'d MMMM yyyy'}} - {{ trip.endDate | date:'d MMMM yyyy' }}</p>
   
               <!-- Mensajes para el MANAGER -->
               <div *ngIf="currentActor?.role === 'MANAGER'">
@@ -45,4 +46,5 @@
       </ng-container>
     </div>
   </div>
+</div>
   

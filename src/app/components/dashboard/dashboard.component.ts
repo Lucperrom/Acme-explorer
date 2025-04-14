@@ -11,10 +11,12 @@ export class DashboardComponent implements OnInit {
   applicationsStats: any = {};
   priceStats: any = {};
   applicationsByStatus: any = {};
+  isDarkMode = false;
 
   constructor(private dashboardService: DashboardService) { }
 
   ngOnInit(): void {
+    this.isDarkMode = localStorage.getItem('darkMode') === 'true';
     this.loadTripStatistics();
     this.loadApplicationStatistics();
     this.loadPriceStatistics();

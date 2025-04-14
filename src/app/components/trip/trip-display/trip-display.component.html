@@ -1,3 +1,4 @@
+<div [ngClass]="{ 'dark-mode': isDarkMode }">
 <h1 class="text-center my-4 text-primary">Trip Display</h1>
 
 <div class="card mx-auto shadow-lg mb-5" style="max-width: 28rem;">
@@ -12,6 +13,9 @@
   <!-- Contenido principal -->
   <div class="card-body">
     <h4 class="card-title text-center text-dark">{{ trip.title }}</h4>
+    <p *ngIf="trip.startDate" class="text-center text-info">
+      <strong>Comienza en:</strong> {{ countdown }}
+    </p>
 
     <!-- Carrusel de imágenes -->
     <div class="mb-3">
@@ -37,10 +41,11 @@
     </p>
 
     <!-- Precio -->
-    <div class="d-flex justify-content-between align-items-center">
-      <span><strong>Price:</strong></span>
+    <div class="d-flex align-items-center">
+      <span class="me-2"><strong>Price:</strong></span>
       <span [ngStyle]="getCurrentStyles()" class="fw-bold">
-        {{ trip.price }} EUR <span *ngIf="isSpecial" class="badge bg-success ms-2">Deal!</span>
+        {{ trip.price }} EUR
+        <span *ngIf="isSpecial" class="badge bg-success ms-2">Deal!</span>
       </span>
     </div>
 
@@ -142,4 +147,5 @@
   <div class="alert alert-success text-center">
     Ya has aplicado a este viaje
   </div>
+</div>
 </div>

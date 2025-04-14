@@ -4,7 +4,7 @@ import { Actor } from '../models/actor.model';
 import { Auth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged, User, authState, deleteUser } from '@angular/fire/auth';
 import { Observable, BehaviorSubject, Subject } from 'rxjs';
 import { Router } from '@angular/router';
-import { addDoc, collection, Firestore, query, where, getDocs } from '@angular/fire/firestore';
+import { addDoc, collection, Firestore, query, where, getDocs, doc, updateDoc } from '@angular/fire/firestore';
 
 const httpOptions = {
   headers: new HttpHeaders({
@@ -106,6 +106,7 @@ export class AuthService {
     actor.role = data['role'];
     actor.surname = data['surname'];
     actor.phone = data['phone'];
+    actor.address = data['address']
     return actor;
   }
 
@@ -150,6 +151,25 @@ export class AuthService {
       }
     });
   }
+
+    async updateUser(userEmail: string, user: Partial<User>): Promise<void> {
+      try {
+        const actorRef = collection(this.firestore, 'actors');
+        const userQuery = query(actorRef, where("email", "==", userEmail));
+        const querySnapshot = await getDocs(userQuery);
+        const updateActor = (querySnapshot.docs[0]);
+        const userDocRef = doc(this.firestore, 'actors', updateActor.id);
+        console.log("Updating user with ID:", userEmail);
+        await updateDoc(userDocRef, user);
+        const updatedQuery = await getDocs(userQuery);
+        const updatedActor = this.getCurrentActorFromDoc(updatedQuery.docs[0]);
+        console.log("Trip updated successfully with ID:", userEmail);
+        localStorage.setItem('currentActor', updatedActor.toJSON(true))
+      } catch (error) {
+        console.error("Error updating user:", error);
+        throw error;
+      }
+    }
 
   isLoggedIn(): boolean {
     return this.loggedInUserSubject.value; // Ensure this reflects the correct state

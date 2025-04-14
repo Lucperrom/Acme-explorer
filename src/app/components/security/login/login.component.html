@@ -1,3 +1,5 @@
+<div [ngClass]="{ 'dark-mode': isDarkMode }">
+
 <form class="form-horizontal"(ngSubmit)= "onLogin(f)" #f="ngForm">
     <div class="form-group">
         <label class="control-label col-sm-2" for="email">Email:</label>
@@ -17,10 +19,8 @@
             <button type="submit" class="btn btn-primary">Login</button>
         </div>
     </div>
-</form>
-
-<div class="row">
-    <div class="col-md-2 col-md-offset-4">
+    <div class="row">
         <p>Do not have an account?<a href="/register"> Register</a></p>
     </div>
+</form>
 </div>

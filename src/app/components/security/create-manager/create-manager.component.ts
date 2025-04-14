@@ -1,30 +1,33 @@
 import { Component, OnInit } from '@angular/core';
-import {AuthService} from '../../../services/auth.service';
-import { Router} from '@angular/router';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+import { Actor } from 'src/app/models/actor.model';
+import { AuthService } from 'src/app/services/auth.service';
 import { MessageService } from 'src/app/services/message.service';
 
 @Component({
-  selector: 'app-register',
-  templateUrl: './register.component.html',
-  styleUrls: ['./register.component.css']
+  selector: 'app-create-manager',
+  templateUrl: './create-manager.component.html',
+  styleUrls: ['./create-manager.component.css']
 })
-export class RegisterComponent implements OnInit {
-  registrationForm!: FormGroup;
-  roleList: string[];
+export class CreateManagerComponent implements OnInit {
+
+  registerForm!: FormGroup;
+  actor: Actor | null = null;
+  actorEmail: string ="";
   isDarkMode = false;
-
-
-  constructor(private authService: AuthService, private fb: FormBuilder, private router: Router, private messageService: MessageService) { // Inject Router
-    this.roleList = this.authService.getRoles();
+  
+  
+  constructor(private authService: AuthService, private fb: FormBuilder, private router: Router, private messageService: MessageService) {
     this.createForm();
-  }
+    this.actor = new Actor();
+   }
 
   createForm() {
-    this.registrationForm = this.fb.group({
+    this.registerForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
-      password: ['', Validators.required],
-      role: ['', Validators.required],
+      password: ['', [Validators.required, Validators.minLength(6)]],
+      role: ['MANAGER', Validators.required],
       name: ['', Validators.required],
       surname: ['', Validators.required],
       phone: [''],  // No validators, making it optional
@@ -33,12 +36,14 @@ export class RegisterComponent implements OnInit {
     });
   }
 
+
   onRegister() {
-    if (this.registrationForm.invalid) {
+    this.registerForm.markAllAsTouched();
+    if (this.registerForm.invalid) {
       this.messageService.notifyMessage('Form is invalid', 'alert-danger');
       return;
     } else {
-      this.authService.signUp(this.registrationForm.value)
+      this.authService.signUp(this.registerForm.value)
       .then(res => {
         console.log('Registration successful', res);
         this.messageService.removeMessage();
@@ -57,7 +62,6 @@ export class RegisterComponent implements OnInit {
         }
       });
     }
-    
   }
 
   ngOnInit(): void {
@@ -65,3 +69,4 @@ export class RegisterComponent implements OnInit {
   }
 
 }
+

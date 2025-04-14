@@ -20,3 +20,83 @@
   text-align: center;
   vertical-align: middle;
 }
+
+/* Estilos para el modo oscuro */
+.dark-mode {
+  background-color: #333;
+  color: #f8f9fa;
+}
+
+.dark-mode .alert-danger {
+  background-color: #5a1c1c;
+  color: #f8d7da;
+  border-color: #842029;
+}
+
+.dark-mode .card {
+  background-color: #444;
+  color: #f8f9fa;
+  border-color: #666;
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.3);
+}
+
+.dark-mode .card-header {
+  background-color: #0056b3; /* Un tono más oscuro del primario */
+  color: #fff;
+  border-bottom-color: #666;
+}
+
+.dark-mode .card-body {
+  background-color: #444;
+}
+
+.dark-mode .table {
+  color: #f8f9fa;
+  border-color: #ffff
+}
+
+.dark-mode .table th {
+  background-color: #555;
+  color: #fff;
+  border-color: #ffff;
+}
+
+.dark-mode .table td {
+  border-color: #ffff;
+  background-color: #555;
+  color: #ffff;
+}
+
+.dark-mode .table-bordered {
+  border: 1px solid #ffff;
+}
+
+.dark-mode .table-bordered th,
+.dark-mode .table-bordered td {
+  border: 1px solid #fff;
+}
+
+/* Mantener los estilos existentes que no dependen del color de fondo */
+.card-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.card-text {
+  font-size: 1rem;
+}
+
+.display-4 {
+  font-size: 2.5rem;
+  font-weight: bold;
+}
+
+.table {
+  margin-top: 20px;
+}
+
+.table th, .table td {
+  text-align: center;
+  vertical-align: middle;
+}
+

@@ -1,0 +1,82 @@
+/* Estilos para el modo oscuro */
+.dark-mode {
+    background-color: #1e1e1e; /* Fondo general oscuro */
+    color: #d4d4d4; /* Texto claro */
+  }
+  
+  .dark-mode .container {
+    /* No es necesario cambiar mucho el contenedor, pero podemos ajustar la sombra si la hubiera */
+  }
+  
+  .dark-mode .row {
+    /* Ajustes para la fila si es necesario para el layout en oscuro */
+  }
+  
+  .dark-mode ngx-paypal {
+    /* Estilos específicos para el componente ngx-paypal */
+    /* Esto dependerá de cómo esté estructurado internamente el componente */
+  
+    /* Ejemplo de posibles ajustes (puede que necesites inspeccionar el componente en el navegador) */
+    /* background-color: #333; */
+    /* border: 1px solid #555; */
+    /* color: #eee; */
+  }
+  
+  /* Estilos para hacerlo más bonito en modo oscuro */
+  .dark-mode {
+    /* Degradado sutil para el fondo */
+    background: linear-gradient(to bottom, #1e1e1e, #2a2a2a);
+  }
+  
+  .dark-mode .container {
+    /* Centrar el contenido verticalmente si no lo está ya */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-height: 300px; /* Asegurar la altura del contenedor */
+  }
+  
+  .dark-mode .row {
+    /* Centrar elementos horizontalmente dentro de la fila */
+    display: flex;
+    justify-content: center;
+    width: 100%; /* Ocupar todo el ancho del contenedor */
+  }
+  
+  .dark-mode ngx-paypal {
+    /* Estilizar el contenedor del botón de PayPal */
+    background-color: #333;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6); /* Sombra más pronunciada */
+    text-align: center; /* Centrar el botón */
+  }
+  
+  /* Si el botón de PayPal tiene elementos internos con estilos, podrías intentar esto */
+  .dark-mode ngx-paypal button {
+    /* Ejemplo de estilo para el botón en sí (puede que no sea directamente accesible) */
+    /* background-color: #007bff; */
+    /* color: #fff; */
+    /* border: none; */
+    /* padding: 10px 20px; */
+    /* border-radius: 5px; */
+    /* cursor: pointer; */
+  }
+  
+  .dark-mode ngx-paypal button:hover {
+    /* Ejemplo de estilo al pasar el ratón */
+    /* background-color: #0056b3; */
+  }
+  
+  /* Estilos adicionales para un toque extra */
+  .dark-mode::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0.1; /* Ligera superposición de ruido visual */
+    z-index: -1;
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAQAAAAECAYAAACg7YmNAAAAG0lEQVQIW2NkYAAAAANGBAjYAAAAcAAJcAgYAAAAASUVORK5CYII=');
+  }
