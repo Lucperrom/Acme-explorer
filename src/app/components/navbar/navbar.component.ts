@@ -56,6 +56,7 @@ export class NavbarComponent implements OnInit {
   }
 
   changeLanguage(language:string){
-    
+    localStorage.setItem('locale', language);
+    location.reload();
   }
 }

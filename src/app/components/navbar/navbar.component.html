@@ -52,8 +52,8 @@
       </form>
 
     <!-- Botones de cambiar idioma -->
-     <button class="btn btn-secondary me-2" (click)="changeLanguage('EN')">EN</button>
-     <button class="btn btn-secondary me-2" (click)="changeLanguage('ES')">ES</button>
+     <button class="btn btn-secondary me-2" (click)="changeLanguage('en')">EN</button>
+     <button class="btn btn-secondary me-2" (click)="changeLanguage('es')">ES</button>
      <button class="btn btn-sm" [ngClass]="isDarkMode ? 'btn-light' : 'btn-dark'" (click)="toggleDarkMode()">
         <i class="bi bi-sun-fill" [ngStyle]="{ color: isDarkMode ? '#f1c40f' : '#fff' }"></i>
      </button>

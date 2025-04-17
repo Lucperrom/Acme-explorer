@@ -22,7 +22,7 @@
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
             "outputPath": "dist/acme-explorer",
-            "localize": true,
+            "localize": false,
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
@@ -103,7 +103,7 @@
               "browserTarget": "acme-explorer:build:development,es"
             },
             "en-US": {
-              "browserTarget": "acme-explorer:build:en-US"
+              "browserTarget": "acme-explorer:build:development,en-US"
             }
           },
           "defaultConfiguration": "development"
