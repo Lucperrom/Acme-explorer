@@ -78,7 +78,8 @@ export class TripFormComponent implements AfterViewInit, OnInit {
       // Verifica que las fechas sean válidas
       if (isNaN(startDate.getTime()) || isNaN(endDate.getTime())) {
         console.error('Fechas inválidas recibidas:', this.trip.startDate, this.trip.endDate);
-        this.messageService.notifyMessage('Fechas inválidas en el viaje', 'alert-danger');
+        let msg = $localize `Invalid dates received`;
+        this.messageService.notifyMessage(msg, 'alert-danger');
         return;
       }
       
@@ -333,7 +334,8 @@ export class TripFormComponent implements AfterViewInit, OnInit {
   
     if (this.tripForm.invalid) {
       this.tripForm.markAllAsTouched();
-      this.messageService.notifyMessage('Invalid form, please fix the errors', 'alert-danger');
+      let msg = $localize `Invalid form`;
+      this.messageService.notifyMessage(msg, 'alert-danger');
       return;
     }
 
@@ -351,7 +353,8 @@ export class TripFormComponent implements AfterViewInit, OnInit {
           throw new Error('Fechas inválidas');
         }
       } catch (error) {
-        this.messageService.notifyMessage('Error en el formato de las fechas', 'alert-danger');
+        let msg = $localize `Error in date format`;
+        this.messageService.notifyMessage(msg, 'alert-danger');
         console.error('Error al procesar fechas:', error, formData.startDate, formData.endDate);
         return;
       }
@@ -375,7 +378,8 @@ export class TripFormComponent implements AfterViewInit, OnInit {
       if (this.tripId) {
         await this.tripService.updateTrip(this.tripId, tripData);
         tripId = this.tripId;
-        this.messageService.notifyMessage('Viaje actualizado correctamente', 'alert-success');
+        let msg = $localize `Trip updated successfully`;
+        this.messageService.notifyMessage(msg, 'alert-success');
       } else {
         tripId = await this.tripService.createTrip({
           ...tripData, 
@@ -383,15 +387,16 @@ export class TripFormComponent implements AfterViewInit, OnInit {
           cancelledReason: "",
           deleted: false // Al crear un nuevo viaje, deleted siempre es false
         });
-        this.messageService.notifyMessage('Viaje creado correctamente', 'alert-success');
+        let msg = $localize `Trip created successfully`;
+        this.messageService.notifyMessage(msg, 'alert-success');
       }
 
       this.router.navigate(['/trips', tripId]);
       this.tripForm.reset();
     } catch (error) {
-      const action = this.tripId ? 'updating' : 'creating';
-      this.messageService.notifyMessage(`Error ${action} trip`, 'alert-danger');
-      console.error(`Error ${action} trip:`, error);
+      let msg = this.tripId ? $localize `Error updating trip` : $localize `Error creating trip`;
+      this.messageService.notifyMessage(msg, 'alert-danger');
+      console.error(msg, error);
     }
   }
 

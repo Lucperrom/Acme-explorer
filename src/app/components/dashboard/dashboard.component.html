@@ -1,33 +1,33 @@
 <div [ngClass]="{ 'dark-mode': isDarkMode }">
 <div class="dashboard">
-    <h1 class="dashboard-title">Dashboard</h1>
+    <h1 i18n class="dashboard-title">Dashboard</h1>
   
     <section class="dashboard-section">
-      <h2 class="section-title">Trips Statistics</h2>
-      <p class="section-item">Average trips per manager: {{ tripsStats.average | number : '1.2-2' }}</p>
-      <p class="section-item">Minimum trips per manager: {{ tripsStats.minimum | number : '1.2-2'}}</p>
-      <p class="section-item">Maximum trips per manager: {{ tripsStats.maximum | number : '1.2-2'}}</p>
-      <p class="section-item">Standard deviation: {{ tripsStats.stdDeviation | number : '1.2-2' }}</p>
+      <h2 i18n class="section-title">Trips Statistics</h2>
+      <p class="section-item"><ng-container i18n>Average trips per manager:</ng-container> {{ tripsStats.average | number : '1.2-2' }}</p>
+      <p class="section-item"><ng-container i18n>Minimum trips per manager:</ng-container> {{ tripsStats.minimum | number : '1.2-2'}}</p>
+      <p class="section-item"><ng-container i18n>Maximum trips per manager:</ng-container> {{ tripsStats.maximum | number : '1.2-2'}}</p>
+      <p class="section-item"><ng-container i18n>Standard deviation:</ng-container> {{ tripsStats.stdDeviation | number : '1.2-2' }}</p>
     </section>
   
     <section class="dashboard-section">
-      <h2 class="section-title">Applications Statistics</h2>
-      <p class="section-item">Average applications per trip: {{ applicationsStats.average | number : '1.2-2' }}</p>
-      <p class="section-item">Minimum applications per trip: {{ applicationsStats.minimum | number : '1.2-2'}}</p>
-      <p class="section-item">Maximum applications per trip: {{ applicationsStats.maximum | number : '1.2-2'}}</p>
-      <p class="section-item">Standard deviation: {{ applicationsStats.stdDeviation | number : '1.2-2'}}</p>
+      <h2 i18n class="section-title">Applications Statistics</h2>
+      <p class="section-item"><ng-container i18n>Average applications per trip:</ng-container> {{ applicationsStats.average | number : '1.2-2' }}</p>
+      <p class="section-item"><ng-container i18n>Minimum applications per trip:</ng-container> {{ applicationsStats.minimum | number : '1.2-2'}}</p>
+      <p class="section-item"><ng-container i18n>Maximum applications per trip:</ng-container> {{ applicationsStats.maximum | number : '1.2-2'}}</p>
+      <p class="section-item"><ng-container i18n>Standard deviation:</ng-container> {{ applicationsStats.stdDeviation | number : '1.2-2'}}</p>
     </section>
   
     <section class="dashboard-section">
-      <h2 class="section-title">Price Statistics</h2>
-      <p class="section-item">Average price of trips: {{ priceStats.average | number : '1.2-2'}}</p>
-      <p class="section-item">Minimum price of trips: {{ priceStats.minimum | number : '1.2-2'}}</p>
-      <p class="section-item">Maximum price of trips: {{ priceStats.maximum | number : '1.2-2'}}</p>
-      <p class="section-item">Standard deviation: {{ priceStats.stdDeviation | number : '1.2-2'}}</p>
+      <h2 i18n class="section-title">Price Statistics</h2>
+      <p class="section-item"><ng-container i18n>Average price of trips:</ng-container> {{ priceStats.average | number : '1.2-2'}}</p>
+      <p class="section-item"><ng-container i18n>Minimum price of trips:</ng-container> {{ priceStats.minimum | number : '1.2-2'}}</p>
+      <p class="section-item"><ng-container i18n>Maximum price of trips:</ng-container> {{ priceStats.maximum | number : '1.2-2'}}</p>
+      <p class="section-item"><ng-container i18n>Standard deviation:</ng-container> {{ priceStats.stdDeviation | number : '1.2-2'}}</p>
     </section>
   
     <section class="dashboard-section">
-      <h2 class="section-title">Applications by Status</h2>
+      <h2 i18n class="section-title">Applications by Status</h2>
       <ul class="status-list">
         <li class="status-item" *ngFor="let status of applicationsByStatus | keyvalue">
           {{ status.key }}: {{ status.value }}

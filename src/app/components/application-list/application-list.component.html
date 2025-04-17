@@ -5,44 +5,44 @@
 <!-- Desplegable para managers -->
 <ng-container *ngIf="actor.role.toLowerCase() === 'manager'">
   <div class="form-group">
-    <label for="tripFilter">Filter by Trip:</label>
+    <label i18n for="tripFilter">Filter by Trip:</label>
     <select id="tripFilter" class="form-control mt-2" [(ngModel)]="selectedTripTitle" (change)="filterByTripTitle()">
-      <option value="all">All Trips</option>
+      <option i18n value="all">All Trips</option>
       <option *ngFor="let title of tripTitles" [value]="title">{{ title }}</option>
     </select>
   </div>
 </ng-container>
 
 <div class="filter-buttons">
-  <button class="btn btn-primary" (click)="filterByStatus('all')">All</button>
-  <button class="btn btn-secondary" (click)="filterByStatus('pending')">Pending</button>
-  <button class="btn btn-warning" (click)="filterByStatus('accepted')">Accepted</button>
-  <button class="btn btn-success" (click)="filterByStatus('due')">Due</button>
-  <button class="btn btn-danger" (click)="filterByStatus('rejected')">Rejected</button>
+  <button i18n class="btn btn-primary" (click)="filterByStatus('all')">All</button>
+  <button i18n class="btn btn-secondary" (click)="filterByStatus('pending')">Pending</button>
+  <button i18n class="btn btn-warning" (click)="filterByStatus('accepted')">Accepted</button>
+  <button i18n class="btn btn-success" (click)="filterByStatus('due')">Due</button>
+  <button i18n class="btn btn-danger" (click)="filterByStatus('rejected')">Rejected</button>
 </div>
 
 <div class="application-list">
   <div *ngFor="let application of filteredApplications" class="card">
     <div class="card-body">
-      <h5 class="card-title">Explorer: {{ application.explorerId }}</h5>
-      <p class="card-text">Status: {{ application.status.toUpperCase() }}</p>
-      <p class="card-text">Trip: {{ application.trip.title }}</p>
-      <p class="card-text">Price: {{ application.trip.price }}</p>
-      <p *ngIf="application.comments" class="card-text">Comments: {{ application.comments }}</p>
-      <p *ngIf="application.rejectReason" class="card-text">Reject Reason: {{ application.rejectReason }}</p>
+      <h5 class="card-title"><ng-container i18n>Explorer:</ng-container> {{ application.explorerId }}</h5>
+      <p class="card-text"><ng-container i18n>Status:</ng-container> {{ application.status.toUpperCase() }}</p>
+      <p class="card-text"><ng-container i18n>Trip:</ng-container> {{ application.trip.title }}</p>
+      <p  class="card-text"><ng-container i18n>Price:</ng-container> {{ application.trip.price }}</p>
+      <p *ngIf="application.comments" class="card-text"><ng-container i18n>Comments:</ng-container> {{ application.comments }}</p>
+      <p *ngIf="application.rejectReason" class="card-text"><ng-container i18n>Reject reason:</ng-container> {{ application.rejectReason }}</p>
 
       <!-- Botones para el rol manager -->
       <ng-container *ngIf="actor.role.toLowerCase() === 'manager'">
-        <button *ngIf="application.status?.trim().toLowerCase() === 'pending'" class="btn btn-success" (click)="acceptApplication(application.id)">Due</button>
+        <button i18n *ngIf="application.status?.trim().toLowerCase() === 'pending'" class="btn btn-success" (click)="acceptApplication(application.id)">Due</button>
         <div class="reject-section" *ngIf="application.status?.trim().toLowerCase() === 'pending'">
-          <input type="text" [(ngModel)]="rejectReason" placeholder="Enter reject reason" class="form-control mb-2" />
-          <button class="btn btn-danger" (click)="rejectApplication(application)">Reject</button>
+          <input i18n-placeholder type="text" [(ngModel)]="rejectReason" placeholder="Enter reject reason" class="form-control mb-2" />
+          <button i18n class="btn btn-danger" (click)="rejectApplication(application)">Reject</button>
         </div>
       </ng-container>
 
       <!-- Botón para el rol explorer -->
       <ng-container *ngIf="actor.role.toLowerCase() === 'explorer'">
-        <button *ngIf="application.status?.trim().toLowerCase() === 'due'" class="btn btn-warning" (click)="payForApplication(application)">Pay with PayPal</button>
+        <button i18n *ngIf="application.status?.trim().toLowerCase() === 'due'" class="btn btn-warning" (click)="payForApplication(application)">Pay with PayPal</button>
       </ng-container>
     </div>
   </div>
