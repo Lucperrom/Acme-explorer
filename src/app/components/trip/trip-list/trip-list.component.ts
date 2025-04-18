@@ -19,15 +19,13 @@ export class TripListComponent implements OnInit {
   protected trash = faTrash;
   protected filteredTrips: Trip[];
   protected activeRole: string = 'anonymous';
-  selectedFilter: string = 'all';
+  selectedFilter: string = 'myTrips'; // Default filter renamed to "My Trips"
   tripEditableMap: Map<string, boolean> = new Map();
   isDarkMode = false;
-
 
   constructor(private tripService: TripService, private router: Router, private messageService: MessageService, private authService: AuthService, private applicationService: ApplicationService) {
     this.trips = [];
     this.filteredTrips = [];
-
   }
   
   isCancelled(trip: Trip) {
@@ -40,19 +38,15 @@ export class TripListComponent implements OnInit {
     }else{
       return !trip.deleted && trip.cancelledReason === "" && !trip.deleted && trip.startDate.getTime() - new Date().getTime() > 0;
     }
-
   }
 
   isTripEditable(tripId: string): boolean {
     return this.tripEditableMap.get(tripId) || false;
   }
 
-  
   isHighlighted(trip: Trip): boolean {
      return trip.startDate.getTime() - new Date().getTime() < 7 * 24 * 60 * 60 * 1000;
   }
-
-
 
   isCancelable(trip: Trip): boolean {
     const timeReason = trip.startDate.getTime() - new Date().getTime() > 7 * 24 * 60 * 60 * 1000;
@@ -88,62 +82,57 @@ export class TripListComponent implements OnInit {
     const actorData = localStorage.getItem('currentActor');
     this.currentActor = actorData ? JSON.parse(actorData) as Actor : null;
     this.activeRole = this.currentActor?.role || '';
+
     if (this.activeRole === 'MANAGER') {
-      //Se usa con el email temporalmente
       this.trips = await this.tripService.getAllTripsByManager(this.currentActor?.email || '');
-      console.log("tripsssss: " + this.trips);
     } else {
       this.trips = await this.tripService.getAllTrips();
     }
-  
-    this.filteredTrips = [...this.trips]; 
+
+    this.filteredTrips = [...this.trips];
 
     for (const trip of this.trips) {
       await this.checkIfTripIsEditable(trip);
     }
-  
-    this.tripService.searchTerm$.subscribe(term => {
-      if(this.selectedFilter === 'all'){
-        if (this.activeRole === 'MANAGER') {
-          this.tripService.getAllTripsFilteredByManager(term, this.currentActor?.email || '').then((trips: Trip[]) => {
-            this.filteredTrips = trips.filter(trip => trip.cancelledReason === "" && !trip.deleted);
-          });
-        } else {
-          this.tripService.getAllTripsFiltered(term).then((trips: Trip[]) => {
-            this.filteredTrips = trips.filter(trip => trip.cancelledReason === "" && !trip.deleted);
-          });
-        }
-      }
-      else if(this.selectedFilter === 'cancelled'){
-        if (this.activeRole === 'MANAGER') {
-          this.tripService.getAllTripsFilteredByManager(term, this.currentActor?.email || '').then((trips: Trip[]) => {
-            this.filteredTrips = trips.filter(trip => trip.cancelledReason && !trip.deleted);
-          });
-        } else {
-          this.tripService.getAllTripsFiltered(term).then((trips: Trip[]) => {
-            this.filteredTrips = trips.filter(trip => trip.cancelledReason && !trip.deleted);
-          });
-        }
-      }
-      
-    });
 
+    this.tripService.searchTerm$.subscribe(term => {
+      if (this.selectedFilter === 'myTrips') {
+        if (this.activeRole === 'MANAGER') {
+          this.tripService.getAllTripsFilteredByManager(term, this.currentActor?.email || '').then((trips: Trip[]) => {
+            this.filteredTrips = trips.filter(trip => trip.cancelledReason === "" && !trip.deleted);
+          });
+        } else {
+          this.tripService.getAllTripsFiltered(term).then((trips: Trip[]) => {
+            this.filteredTrips = trips.filter(trip => trip.cancelledReason === "" && !trip.deleted);
+          });
+        }
+      } else if (this.selectedFilter === 'myCancelledTrips') {
+        if (this.activeRole === 'MANAGER') {
+          this.tripService.getAllTripsFilteredByManager(term, this.currentActor?.email || '').then((trips: Trip[]) => {
+            this.filteredTrips = trips.filter(trip => trip.cancelledReason && !trip.deleted);
+          });
+        } else {
+          this.tripService.getAllTripsFiltered(term).then((trips: Trip[]) => {
+            this.filteredTrips = trips.filter(trip => trip.cancelledReason && !trip.deleted);
+          });
+        }
+      } else if (this.selectedFilter === 'allTrips') {
+        this.tripService.getAllTripsFiltered(term).then((trips: Trip[]) => {
+          this.filteredTrips = trips.filter(trip => !trip.deleted);
+        });
+      }
+    });
   }
 
   onFilterChange(): void {
     this.tripService.searchTermSubject.next('');
-    if (this.selectedFilter === 'all') {
+    if (this.selectedFilter === 'myTrips') {
       this.filteredTrips = this.trips.filter(trip => !trip.deleted && trip.cancelledReason === "");
-    } else if (this.selectedFilter === 'cancelled') {
+    } else if (this.selectedFilter === 'myCancelledTrips') {
       this.filteredTrips = this.trips.filter(trip => trip.cancelledReason && !trip.deleted);
-      this.authService.loggedInUserSubject.asObservable().subscribe((loggedIn: boolean) => {
-      if (loggedIn) {
-        this.currentActor = this.authService.getCurrentActor();
-        this.activeRole = this.currentActor?.role || 'anonymous';
-        console.log(this.currentActor);
-      }
-    });
-  }
+    } else if (this.selectedFilter === 'allTrips') {
+      this.filteredTrips = this.trips.filter(trip => !trip.deleted);
+    }
   }
 
   goToTrip(tripId: string) {

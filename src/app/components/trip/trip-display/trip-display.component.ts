@@ -11,6 +11,8 @@ import { MessageService } from 'src/app/services/message.service';
 import { has } from 'cypress/types/lodash';
 import { SponsorshipService } from 'src/app/services/sponsorship.service';
 import { Sponsorship } from 'src/app/models/sponsorship.model';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { FavouriteListService } from 'src/app/services/favourite-list.service';
 
 @Component({
   selector: 'app-trip-display',
@@ -33,6 +35,12 @@ export class TripDisplayComponent implements OnInit {
   tripEditable: boolean = true; // Variable para almacenar el resultado de cancelabilidad
   tripLoaded: boolean = false;
   isDarkMode = false;
+  savedTrips: { name: string; tripIds: string[] }[] = [
+    { name: 'Favourite', tripIds: [] },
+    { name: 'Spain', tripIds: [] }
+  ];
+  newListName: string = '';
+  savedLists: { id: string; name: string; tripIds: string[] }[] = []; // Updated to load from service
 
   constructor(
     private tripService: TripService, 
@@ -41,7 +49,9 @@ export class TripDisplayComponent implements OnInit {
     private authService: AuthService,
     private messageService: MessageService,
     private router: Router,
-    private sponsorshipService: SponsorshipService
+    private sponsorshipService: SponsorshipService,
+    private modalService: NgbModal,
+    private favouriteListService: FavouriteListService
   ) { 
     this.trip = new Trip();
     this.trip.pictures = ["/assets/images/playa3.jpg"]
@@ -72,14 +82,14 @@ export class TripDisplayComponent implements OnInit {
       this.checkIfTripIsEditable(this.trip);
       this.tripLoaded = true; // Indica que el viaje ha sido cargado
     }
+    this.loadSavedLists(); // Load saved lists on initialization
   }
   startCountdown(): void {
     const start = new Date(this.trip.startDate).getTime();
   
     const interval = setInterval(() => {
-      const now = new Date().getTime();
       const distance =  this.trip.startDate.getTime() - new Date().getTime();
-
+  
       if (distance < 0) {
         this.countdown = '¡El viaje ya ha comenzado!';
         clearInterval(interval);
@@ -105,7 +115,7 @@ export class TripDisplayComponent implements OnInit {
       cancelledReason: reason
     };
   
-    this.tripService.updateTrip(trip.id, plainTrip).then(() => {
+    this.tripService.updateTrip(trip.ticker, plainTrip).then(() => {
       this.messageService.notifyMessage('Viaje cancelado correctamente', 'alert-success');
       this.router.navigate(['/trips']);
     }).catch((error) => {
@@ -238,6 +248,39 @@ export class TripDisplayComponent implements OnInit {
     catch (error) {
       console.error('Error submitting form:', error);
       // Handle error, e.g., show an error message
+    }
+  }
+
+  loadSavedLists(): void {
+    this.savedLists = this.favouriteListService.getAllLists();
+  }
+
+  openAddToListModal(content: any): void {
+    this.loadSavedLists(); // Ensure the latest lists are loaded before opening the modal
+    this.modalService.open(content, { centered: true });
+  }
+
+  addToExistingList(list: any): void {
+    if (!list.tripIds.includes(this.trip.ticker)) {
+      this.favouriteListService.addTripToList(list.id, this.trip.ticker);
+      this.messageService.notifyMessage(`Trip added to "${list.name}"`, 'alert-success');
+    } else {
+      this.messageService.notifyMessage(`Trip is already in "${list.name}"`, 'alert-warning');
+    }
+    this.modalService.dismissAll();
+    this.loadSavedLists(); // Reload lists after adding
+  }
+
+  createNewList(): void {
+    if (this.newListName.trim()) {
+      const newList = this.favouriteListService.createList(this.newListName.trim());
+      this.favouriteListService.addTripToList(newList.id, this.trip.ticker);
+      this.messageService.notifyMessage(`New list "${this.newListName}" created and trip added`, 'alert-success');
+      this.newListName = '';
+      this.modalService.dismissAll();
+      this.loadSavedLists(); // Reload lists after creating a new one
+    } else {
+      this.messageService.notifyMessage('List name cannot be empty', 'alert-danger');
     }
   }
 }

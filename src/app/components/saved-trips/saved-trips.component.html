@@ -1,0 +1,82 @@
+<div class="container mt-4">
+  <!-- Search Input -->
+  <div class="row mb-3">
+    <div class="col-12">
+      <input type="text" class="form-control" placeholder="Search saved lists..." [(ngModel)]="searchTerm" (input)="filterLists()">
+    </div>
+  </div>
+
+  <!-- No Saved Lists Message -->
+  <div *ngIf="!filteredLists.length" class="text-center">
+    <div class="alert alert-info">
+      <h5 class="alert-heading">No Saved Trip Lists</h5>
+      <p class="lead">You have no saved trip lists. You can add trips to lists or create new ones in the details of any trip.</p>
+    </div>
+  </div>
+
+  <!-- Saved Lists and Selected List Details -->
+  <div *ngIf="filteredLists.length" class="row">
+    <!-- List of saved lists -->
+    <div class="col-md-4 col-12 mb-3">
+      <h5>Saved Lists</h5>
+      <ul class="list-group">
+        <li 
+          class="list-group-item d-flex justify-content-between align-items-center" 
+          *ngFor="let list of filteredLists; trackBy: trackByListId" 
+          (click)="selectList(list)"
+          [class.active]="list === selectedList"
+          style="cursor: pointer;">
+          {{ list.name }}
+          <span class="badge bg-primary rounded-pill">{{ list.tripIds.length }}</span>
+        </li>
+      </ul>
+    </div>
+
+    <!-- Selected list details -->
+    <div class="col-md-8 col-12" *ngIf="selectedList">
+      <div class="d-flex justify-content-between align-items-center mb-3">
+        <h5>{{ selectedList.name }}</h5>
+        <button class="btn btn-sm btn-danger" (click)="deleteList()">Delete List</button>
+      </div>
+      <div class="input-group mb-3">
+        <input type="text" class="form-control" placeholder="Rename list" #newNameInput>
+        <button class="btn btn-primary" (click)="renameList(newNameInput.value)">Rename</button>
+      </div>
+      <div *ngIf="getTripsForSelectedList().length; else noTrips">
+        <ul class="list-group">
+          <li 
+            class="list-group-item d-flex justify-content-between align-items-center" 
+            *ngFor="let trip of getTripsForSelectedList(); trackBy: trackByTripTicker"
+            [ngClass]="{
+              'text-muted opacity-50': isTripUnavailable(trip),
+              'alert-warning border-warning': isTripStartingSoon(trip)
+            }"
+            [class.disabled]="isTripUnavailable(trip)"
+          >
+            <div>
+              <h6 
+                (click)="!isTripUnavailable(trip) && navigateToTrip(trip.ticker)" 
+                [style.cursor]="isTripUnavailable(trip) ? 'not-allowed' : 'pointer'" 
+                class="text-primary"
+              >
+                {{ trip.title }}
+              </h6>
+              <small class="text-muted">{{ trip.startDate | date:'d MMM yyyy' }} - {{ trip.endDate | date:'d MMM yyyy' }}</small>
+              <p *ngIf="trip.cancelledReason" class="text-danger mb-0">Cancelled: {{ trip.cancelledReason }}</p>
+            </div>
+            <button 
+              class="btn btn-sm btn-danger" 
+              (click)="removeTrip(trip.ticker)" 
+              [disabled]="isTripUnavailable(trip)"
+            >
+              X
+            </button>
+          </li>
+        </ul>
+      </div>
+      <ng-template #noTrips>
+        <p class="text-muted">No trips in this list.</p>
+      </ng-template>
+    </div>
+  </div>
+</div>

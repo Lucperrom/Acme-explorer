@@ -22,6 +22,7 @@ import { CheckoutComponent } from './components/checkout/checkout.component';
 import { CreateManagerComponent } from './components/security/create-manager/create-manager.component';
 import { FinderComponent } from './components/finder/finder.component';
 import { CubeComponent } from './components/cube/cube.component';
+import { SavedTripsComponent } from './components/saved-trips/saved-trips.component';
 
 const routes: Routes = [
   { path: 'profile', component: ProfileEditComponent, canActivate: [AuthGuard] },
@@ -67,6 +68,7 @@ const routes: Routes = [
 
   { path: 'home', component: HomeComponent },
   { path: 'denied-access', component: DeniedAccessComponent },
+  { path: 'saved-trips', component: SavedTripsComponent },
   { path: '', redirectTo: '/trips', pathMatch: 'full' },
   { path: '**', component: NotFoundComponent },
 ];
