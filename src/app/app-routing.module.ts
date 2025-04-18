@@ -20,6 +20,8 @@ import { SponsorshipListComponent } from './components/sponsorship/sponsorship-l
 import { SponsorshipEditComponent } from './components/sponsorship/sponsorship-edit/sponsorship-edit.component';
 import { CheckoutComponent } from './components/checkout/checkout.component';
 import { CreateManagerComponent } from './components/security/create-manager/create-manager.component';
+import { FinderComponent } from './components/finder/finder.component';
+import { CubeComponent } from './components/cube/cube.component';
 
 const routes: Routes = [
   { path: 'profile', component: ProfileEditComponent, canActivate: [AuthGuard] },
@@ -41,6 +43,8 @@ const routes: Routes = [
    ]},
   { path: 'applications', component: ApplicationListComponent, canActivate: [AuthGuard,ActorRoleGuard], data: {expectedRole: 'manager'} },
   { path: 'my-applications', component: ApplicationListComponent, canActivate: [AuthGuard,ActorRoleGuard], data: {expectedRole: 'explorer'} },
+  { path: 'my-finder', component: FinderComponent, canActivate: [AuthGuard,ActorRoleGuard], data: {expectedRole: 'explorer'} },
+
    //Crear ApplicationListComponent
   // { path: 'applications', component: ApplicationListComponent, children: [
   //   {path:'list-pending', component: ApplicationListComponent},
@@ -59,6 +63,8 @@ const routes: Routes = [
    ]},
   { path: 'terms-and-conditions', component: TermsAndConditionsComponent },
   { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard, ActorRoleGuard], data: { expectedRole: 'administrator' } },
+  { path: 'cube', component: CubeComponent, canActivate: [AuthGuard, ActorRoleGuard], data: { expectedRole: 'administrator' } },
+
   { path: 'home', component: HomeComponent },
   { path: 'denied-access', component: DeniedAccessComponent },
   { path: '', redirectTo: '/trips', pathMatch: 'full' },
