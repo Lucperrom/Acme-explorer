@@ -1,6 +1,6 @@
 <div [ngClass]="{ 'dark-mode': isDarkMode }">
-    <form [formGroup]="finderForm" (ngSubmit)="onSearch()" class="container mt-4 shadow p-4 rounded bg-light">
-      <fieldset>
+    <form [formGroup]="finderForm" (ngSubmit)="onSearch()" class="container mt-4 shadow p-4 rounded formularioFinder" >
+      <fieldset class="form">
         <legend class="mb-4">Trip Finder</legend>
   
         <div class="row g-3">
@@ -53,7 +53,7 @@
 
         <div class = "row" style = "padding-top: 3%">
           <div class="text-start col-md-8">
-            <button type="button" class="btn btn-secondary ms-2" (click)="resetFinder()">Reset Finder</button>
+            <button type="button" class="btn btn-secondary ms-2 " (click)="resetFinder()">Reset Finder</button>
           </div>
   
           <div class="text-end col-md-4">

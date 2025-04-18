@@ -10,6 +10,21 @@ import { TripService } from './trip.service';
 export class FinderService {
   constructor(private firestore: Firestore, private tripService : TripService) {}
 
+  getCurrentFinderFromDoc(doc: any): Finder {
+      const data = doc.data();
+      let finder = new Finder();
+      
+      finder.keyWord = data['keyWord'];
+      finder.minimumPrice = data['minimumPrice'];
+      finder.maximumPrice = data['maximumPrice'];
+      finder.startingDate = data['startingDate'];
+      finder.endDate = data['endDate'];
+      finder.cacheTTL = data['cacheTTL'];
+      finder.maxResults = data['maxResults'];
+      finder.actorId = data['actorId']
+      return finder;
+    }
+  
   private finderPath(actorId: string) {
     return doc(this.firestore, `finders/${actorId}`);
   }
@@ -46,6 +61,26 @@ export class FinderService {
     } else {
       return null;
     }
+  }
+
+  async getAllFinders(): Promise<Finder[]> {
+
+    try {
+      const findersRef = collection(this.firestore, 'finders');
+      const querySnapshot = await getDocs(findersRef);
+
+      let finders: Finder[] = [];
+      querySnapshot.forEach((doc) => {
+        let finder = this.getCurrentFinderFromDoc(doc);
+        finders.push(finder);
+      });
+
+      return finders;
+    } catch (error) {
+      console.error("Error fetching trips:", error);
+      return [];
+    }
+    
   }
 
   async searchTrips(finder: Finder): Promise<Trip[]> {

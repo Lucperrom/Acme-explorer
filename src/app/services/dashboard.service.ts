@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { TripService } from './trip.service';
 import { ApplicationService } from './application.service';
+import { FinderService } from './finder.service';
 
 
 @Injectable({
@@ -8,7 +9,7 @@ import { ApplicationService } from './application.service';
 })
 export class DashboardService {
 
-  constructor(private tripService: TripService, private applicationService: ApplicationService) { }
+  constructor(private tripService: TripService, private applicationService: ApplicationService, private finderService: FinderService) { }
 
   async getTripStatistics(): Promise<any> {
     const trips = await this.tripService.getAllTrips();
@@ -89,6 +90,43 @@ export class DashboardService {
     }, {});
 
     return applicationsByStatus;
+  }
+
+  async getAveragePriceRangeFromFinders(): Promise<{ averageMin: number, averageMax: number }> {
+    const finders = await this.finderService.getAllFinders();
+    const validFinders = finders.filter(f => f.minimumPrice != null && f.maximumPrice != null);
+
+    const totalMin = validFinders.reduce((sum, f) => sum + Number(f.minimumPrice), 0);
+    const totalMax = validFinders.reduce((sum, f) => sum + Number(f.maximumPrice), 0);
+
+    const count = validFinders.length || 1; // evitar división por cero
+
+    return {
+      averageMin: totalMin / count,
+      averageMax: totalMax / count
+    };
+  }
+
+  async getTopKeywordsFromFinders(): Promise<{ [key: string]: number }> {
+    const finders = await this.finderService.getAllFinders();
+    const keywordCounts: { [key: string]: number } = {};
+
+    finders.forEach(finder => {
+      if (finder.keyWord) {
+        const words = finder.keyWord.toLowerCase().split(/[\s,]+/);
+        words.forEach(word => {
+          if (word.trim()) {
+            keywordCounts[word] = (keywordCounts[word] || 0) + 1;
+          }
+        });
+      }
+    });
+
+    const sorted = Object.entries(keywordCounts)
+      .sort((a, b) => b[1] - a[1])
+      .slice(0, 10);
+
+    return Object.fromEntries(sorted);
   }
   
   

@@ -11,6 +11,7 @@ import { MessageService } from 'src/app/services/message.service';
   @Component({
     selector: 'app-finder',
     templateUrl: './finder.component.html',
+    styleUrls: ['./finder.component.css']
   })
   export class FinderComponent implements OnInit {
     protected currentActor: Actor | null = null;
@@ -41,6 +42,7 @@ import { MessageService } from 'src/app/services/message.service';
         cacheTTL: [1, [Validators.required, Validators.min(1), Validators.max(24)]],
         maxResults: [10, [Validators.required, Validators.min(1), Validators.max(50)]]
       });
+      this.isDarkMode = localStorage.getItem('darkMode') === 'true';
       const actorData = localStorage.getItem('currentActor');
       this.currentActor = actorData ? JSON.parse(actorData) as Actor : null;
       this.activeRole = this.currentActor?.role || '';
