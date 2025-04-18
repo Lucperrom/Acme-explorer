@@ -21,6 +21,7 @@ import { SponsorshipEditComponent } from './components/sponsorship/sponsorship-e
 import { CheckoutComponent } from './components/checkout/checkout.component';
 import { CreateManagerComponent } from './components/security/create-manager/create-manager.component';
 import { FinderComponent } from './components/finder/finder.component';
+import { CubeComponent } from './components/cube/cube.component';
 
 const routes: Routes = [
   { path: 'profile', component: ProfileEditComponent, canActivate: [AuthGuard] },
@@ -62,6 +63,8 @@ const routes: Routes = [
    ]},
   { path: 'terms-and-conditions', component: TermsAndConditionsComponent },
   { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard, ActorRoleGuard], data: { expectedRole: 'administrator' } },
+  { path: 'cube', component: CubeComponent, canActivate: [AuthGuard, ActorRoleGuard], data: { expectedRole: 'administrator' } },
+
   { path: 'home', component: HomeComponent },
   { path: 'denied-access', component: DeniedAccessComponent },
   { path: '', redirectTo: '/trips', pathMatch: 'full' },

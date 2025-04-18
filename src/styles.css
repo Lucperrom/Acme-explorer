@@ -24,6 +24,7 @@
     background-color: #333; /* Un tono de gris más claro para los contenedores */
     border: 1px solid #555; /* Un borde sutil */
   }
+
   
   .dark-mode .card-header {
     background-color: #444;
@@ -102,4 +103,17 @@
     background-color: #333;
     color: #eee;
     border-color: #555;
+  }
+
+  .dark-mode input::placeholder {
+    color: rgb(157, 157, 157); /* Cambiar el color del texto del placeholder */
+  }
+  .dark-mode select {
+    background-color:#444; /* Cambiar el color del texto del placeholder */
+    border-color: #555;
+    color: #eee;
+  }
+  .dark-mode select::scroll-marker {
+    background-color:#eee; /* Cambiar el color del texto del placeholder */
+    border-color: #eee;
   }

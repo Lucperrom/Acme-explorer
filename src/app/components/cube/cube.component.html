@@ -1,0 +1,128 @@
+<div [ngClass]="{ 'dark-mode': isDarkMode }">
+    <!-- Primer formulario: Explorer Spending -->
+    <form [formGroup]="spendingForm" class="container mt-4 shadow p-4 rounded formularioFinder" (ngSubmit)="getAmountSpent()">
+      <fieldset class="form">
+        <legend class="mb-4 text-center text-primary">Explorer Spending Cube</legend>
+  
+        <div class="row g-3">
+          <!-- Explorer ID Input -->
+          <div class="col-md-6">
+            <label for="selectedExplorer" class="form-label">Explorer ID (email):</label>
+            <input
+              id="selectedExplorer"
+              type="text"
+              class="form-control"
+              formControlName="selectedExplorer"
+              placeholder="Ej. explorer@example.com"
+            />
+            <!-- Mensaje de error -->
+            <div *ngIf="spendingForm.get('selectedExplorer')?.touched && spendingForm.get('selectedExplorer')?.invalid" class="text-danger">
+              <small>Explorer ID is required.</small>
+            </div>
+          </div>
+  
+          <!-- Period Input -->
+          <div class="col-md-6">
+            <label for="selectedPeriod" class="form-label">Period (M01 - M36, Y01 - Y03):</label>
+            <input
+              id="selectedPeriod"
+              type="text"
+              class="form-control"
+              formControlName="selectedPeriod"
+              placeholder="Ej. M01"
+            />
+            <!-- Mensaje de error -->
+            <div *ngIf="spendingForm.get('selectedPeriod')?.touched && spendingForm.get('selectedPeriod')?.invalid" class="text-danger">
+              <small>Period is required.</small>
+            </div>
+          </div>
+  
+          <!-- Search Button -->
+          <div class="col-md-12 text-end">
+            <button type="submit" class="btn btn-primary" >🔍 Search</button>
+          </div>
+        </div>
+  
+        <div class="result mt-4" *ngIf="amountResult !== null">
+          <h5>Total Amount:</h5>
+          <p>💰 {{ amountResult | currency:'EUR':'symbol':'1.2-2' }}</p>
+        </div>
+      </fieldset>
+    </form>
+  
+    <hr />
+  
+    <!-- Segundo formulario: Explorers Matching Criteria -->
+    <form [formGroup]="explorerQueryForm" class="container mt-4 shadow p-4 rounded formularioFinder" (ngSubmit)="getExplorersByCondition()">
+      <fieldset class="form">
+        <legend class="mb-4 text-center text-primary">Explorers Matching Spending Criteria</legend>
+  
+        <div class="row g-3">
+          <!-- Query Period Input -->
+          <div class="col-md-6">
+            <label for="queryPeriod" class="form-label">Period (M01 - M36, Y01 - Y03):</label>
+            <input
+              id="queryPeriod"
+              type="text"
+              class="form-control"
+              formControlName="queryPeriod"
+              placeholder="Ej. M03"
+            />
+            <!-- Mensaje de error -->
+            <div *ngIf="explorerQueryForm.get('queryPeriod')?.touched && explorerQueryForm.get('queryPeriod')?.invalid" class="text-danger">
+              <small>Period is required.</small>
+            </div>
+          </div>
+  
+          <!-- Operator Selection -->
+          <div class="col-md-6">
+            <label for="queryOperator" class="form-label">Operator:</label>
+            <select id="queryOperator" class="form-select" formControlName="queryOperator">
+              <option value="equal">Equal</option>
+              <option value="notEqual">Not Equal</option>
+              <option value="greaterThan">Greater Than</option>
+              <option value="greaterThanOrEqual">Greater Than or Equal</option>
+              <option value="smallerThan">Smaller Than</option>
+              <option value="smallerThanOrEqual">Smaller Than or Equal</option>
+            </select>
+            <!-- Mensaje de error -->
+            <div *ngIf="explorerQueryForm.get('queryOperator')?.touched && explorerQueryForm.get('queryOperator')?.invalid" class="text-danger">
+              <small>Operator is required.</small>
+            </div>
+          </div>
+  
+          <!-- Query Value Input -->
+          <div class="col-md-6">
+            <label for="queryValue" class="form-label">Value (€):</label>
+            <input
+              id="queryValue"
+              type="number"
+              class="form-control"
+              formControlName="queryValue"
+            />
+            <!-- Mensaje de error -->
+            <div *ngIf="explorerQueryForm.get('queryValue')?.touched && explorerQueryForm.get('queryValue')?.invalid" class="text-danger">
+              <small>Value is required and must be greater than 0.</small>
+            </div>
+          </div>
+  
+          <!-- Search Button for Query -->
+          <div class="col-md-12 text-end">
+            <button type="submit" class="btn btn-primary" >🔍 Search Explorers</button>
+          </div>
+        </div>
+  
+        <div class="result mt-4" *ngIf="explorerResults.length > 0">
+          <h5>Explorers Found:</h5>
+          <ul>
+            <li *ngFor="let id of explorerResults">{{ id }}</li>
+          </ul>
+        </div>
+  
+        <div *ngIf="explorerResults.length === 0" class="mt-3 text-center text-muted">
+          ❌ No explorers found with that criteria
+        </div>
+      </fieldset>
+    </form>
+  </div>
+  
