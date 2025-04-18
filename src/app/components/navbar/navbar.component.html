@@ -40,6 +40,8 @@
             <li *ngIf="currentActor.role === 'MANAGER'"><a class="dropdown-item" [routerLink]="['/applications']">Applications</a></li>
             <li *ngIf="currentActor.role === 'SPONSOR'"><a class="dropdown-item" [routerLink]="['/sponsorships']">Sponsorships</a></li>
             <li *ngIf="currentActor.role === 'EXPLORER'"><a class="dropdown-item" [routerLink]="['/my-applications']">My Applications</a></li>
+            <li *ngIf="currentActor.role === 'EXPLORER'"><a class="dropdown-item" [routerLink]="['/my-finder']">My Finder</a></li>
+
           </ul>
         </li>
       </ul>

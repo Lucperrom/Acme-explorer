@@ -39,6 +39,7 @@ import { SponsorshipEditComponent } from './components/sponsorship/sponsorship-e
 import { CheckoutComponent } from './components/checkout/checkout.component';
 import { NgxPayPalModule } from 'ngx-paypal';
 import { CreateManagerComponent } from './components/security/create-manager/create-manager.component';
+import { FinderComponent } from './components/finder/finder.component';
 
 @NgModule({
   declarations: [
@@ -66,7 +67,8 @@ import { CreateManagerComponent } from './components/security/create-manager/cre
     SponsorshipListComponent,
     SponsorshipEditComponent,
     CheckoutComponent,
-    CreateManagerComponent
+    CreateManagerComponent,
+    FinderComponent
   ],
   imports: [
     BrowserModule,

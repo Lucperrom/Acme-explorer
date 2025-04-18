@@ -32,4 +32,12 @@ export class Stage {
     public set price(value: number) {
         this._price = value;
     }
+
+    toPlainObject() {
+        return {
+          title: this.title,
+          description: this.description,
+          price: this.price,
+        };
+    }
 }

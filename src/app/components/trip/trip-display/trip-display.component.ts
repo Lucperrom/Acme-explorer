@@ -79,10 +79,7 @@ export class TripDisplayComponent implements OnInit {
     const interval = setInterval(() => {
       const now = new Date().getTime();
       const distance =  this.trip.startDate.getTime() - new Date().getTime();
-      console.log("START",start)
-      console.log("NOW",now)
-      console.log("DISTANCE",distance)
-  
+
       if (distance < 0) {
         this.countdown = '¡El viaje ya ha comenzado!';
         clearInterval(interval);
