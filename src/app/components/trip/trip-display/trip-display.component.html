@@ -1,5 +1,5 @@
 <div [ngClass]="{ 'dark-mode': isDarkMode }">
-<h1 class="text-center my-4 text-primary">Trip Display</h1>
+<h1 i18n class="text-center my-4 text-primary">Trip Display</h1>
 
 <div class="card mx-auto shadow-lg mb-5" style="max-width: 28rem;">
   <!-- Botón de eliminar (alineado a la derecha) -->
@@ -44,7 +44,7 @@
     <div class="d-flex align-items-center">
       <span class="me-2"><strong i18n>Price:</strong></span>
       <span [ngStyle]="getCurrentStyles()" class="fw-bold">
-        {{ trip.price }} <ng-container i18n>EUR</ng-container>
+        {{ trip.price | currencyChange }}
         <span *ngIf="isSpecial" class="badge bg-success ms-2" i18n>Deal!</span>
       </span>
     </div>
@@ -81,7 +81,7 @@
         <p class="mb-1">{{ stage.description }}</p>
       
         <small class="text-muted">
-          <ng-container i18n>Price:</ng-container> {{ stage.price }} EUR
+          <ng-container i18n>Price:</ng-container> {{ stage.price | currencyChange }}
         </small>
       </li>
       

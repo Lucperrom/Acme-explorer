@@ -114,7 +114,7 @@ export class TripFormComponent implements AfterViewInit, OnInit {
           this.stages.push(new FormGroup({
             title: new FormControl(stage.title, Validators.required),
             description: new FormControl(stage.description, Validators.required),
-            price: new FormControl(stage.price, [Validators.required, Validators.min(0)])
+            price: new FormControl(this.currencyCode === 'GBP' ? stage.price / 1.2 : stage.price, [Validators.required, Validators.min(0)])
           }));
         });
       }
@@ -359,6 +359,14 @@ export class TripFormComponent implements AfterViewInit, OnInit {
         return;
       }
 
+      if (this.currencyCode === 'GBP') {
+        formData.price = (formData.price * 1.2).toFixed(2); // Convertir a GBP
+        formData.stages.forEach((stage: any) => {
+          stage.price = (stage.price * 1.2) // Convertir a GBP
+        });
+      }
+
+
       const tripData = {
         ...formData,
         startDate: startDate.toISOString(),
@@ -427,5 +435,10 @@ export class TripFormComponent implements AfterViewInit, OnInit {
       const endDate = new Date(control.value);
       return endDate > startDate ? null : { endBeforeStart: true };
     };
+  }
+
+  get currencyCode(): string {
+    const locale = localStorage.getItem('locale');
+    return locale === 'es' ? 'EUR' : 'GBP';
   }
 }

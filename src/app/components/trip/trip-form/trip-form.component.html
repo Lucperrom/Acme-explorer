@@ -12,7 +12,7 @@
 
     <div class="row g-3">
       <div class="col-md-6" *ngFor="let field of ['title', 'description', 'startDate', 'endDate']">
-        <label [for]="field" class="form-label">{{ field | titlecase }}:</label>
+        <label [for]="field" class="form-label">{{ field | fieldTranslation }}:</label>
         <input [id]="field" [type]="field.includes('Date') ? 'date' : 'text'" class="form-control"
           [formControlName]="field" />
         <div class="text-danger small mt-1" *ngIf="tripForm.get(field)?.invalid && tripForm.get(field)?.touched">
@@ -36,7 +36,7 @@
     <div class="mt-3">
       <label i18n class="form-label">Total Price:</label>
       <div i18n class="form-control bg-light">
-        {{ tripForm.get('price')?.value | currency: 'EUR' }}
+        {{ tripForm.get('price')?.value | currency: currencyCode:'symbol':'1.2-2' }}
       </div>
     </div>
 
@@ -49,7 +49,7 @@
             <div class="card-body" [formGroupName]="i">
               <h6 class="card-title"><ng-container i18n>Stage</ng-container> {{ i + 1 }}</h6>
               <div *ngFor="let field of ['title', 'description', 'price']" class="mb-2">
-                <label [for]="field + i" class="form-label">{{ field | titlecase }}:</label>
+                <label [for]="field + i" class="form-label">{{ field | fieldTranslation }}:</label>
                 <input [id]="field + i" [type]="field === 'price' ? 'number' : 'text'" class="form-control"
                   [formControlName]="field" />
                 <div class="text-danger small mt-1" *ngIf="stage.get(field)?.invalid && stage.get(field)?.touched">

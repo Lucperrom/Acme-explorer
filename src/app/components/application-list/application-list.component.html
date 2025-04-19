@@ -27,7 +27,7 @@
       <h5 class="card-title"><ng-container i18n>Explorer:</ng-container> {{ application.explorerId }}</h5>
       <p class="card-text"><ng-container i18n>Status:</ng-container> {{ application.status.toLowerCase() | statusTranslate }}</p>
       <p class="card-text"><ng-container i18n>Trip:</ng-container> {{ application.trip.title }}</p>
-      <p  class="card-text"><ng-container i18n>Price:</ng-container> {{ application.trip.price }}</p>
+      <p  class="card-text"><ng-container i18n>Price:</ng-container> {{ application.trip.price |currencyChange }}</p>
       <p *ngIf="application.comments" class="card-text"><ng-container i18n>Comments:</ng-container> {{ application.comments }}</p>
       <p *ngIf="application.rejectReason" class="card-text"><ng-container i18n>Reject reason:</ng-container> {{ application.rejectReason }}</p>
 

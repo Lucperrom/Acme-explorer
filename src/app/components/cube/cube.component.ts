@@ -45,6 +45,12 @@ export class CubeComponent implements OnInit {
     } catch (error) {
       this.messageService.notifyMessage('Error al calcular el cubo', 'alert-danger');
     }
+    
+  }
+
+  get currencyCode(): string {
+    const locale = localStorage.getItem('locale');
+    return locale === 'es' ? 'EUR' : 'GBP';
   }
 
 
