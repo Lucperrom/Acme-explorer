@@ -34,5 +34,24 @@
         </li>
       </ul>
     </section>
+
+    <section class="dashboard-section">
+      <h2 class="section-title">Explorers' Finder Price Stats</h2>
+      <p class="section-item">
+        Average minimum price in finders: {{ averagePriceRange.averageMin | number:'1.2-2' }}
+      </p>
+      <p class="section-item">
+        Average maximum price in finders: {{ averagePriceRange.averageMax | number:'1.2-2' }}
+      </p>
+    </section>
+    
+    <section class="dashboard-section">
+      <h2 class="section-title">Top 10 Keywords in Finders</h2>
+      <ul class="status-list">
+        <li class="status-item" *ngFor="let keyword of topKeywords | keyvalue">
+          {{ keyword.key }}: {{ keyword.value }}
+        </li>
+      </ul>
+    </section>
   </div>
 </div>

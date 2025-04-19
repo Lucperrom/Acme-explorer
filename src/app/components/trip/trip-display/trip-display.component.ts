@@ -79,10 +79,7 @@ export class TripDisplayComponent implements OnInit {
     const interval = setInterval(() => {
       const now = new Date().getTime();
       const distance =  this.trip.startDate.getTime() - new Date().getTime();
-      console.log("START",start)
-      console.log("NOW",now)
-      console.log("DISTANCE",distance)
-  
+
       if (distance < 0) {
         let msg = $localize `The trip has already started`;
         this.countdown = msg;

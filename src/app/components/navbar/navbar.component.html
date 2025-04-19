@@ -34,12 +34,15 @@
             {{ currentActor.role }}
           </a>
           <ul class="dropdown-menu">
-            <li i18n *ngIf="currentActor.role === 'ADMINISTRATOR'"><a class="dropdown-item" [routerLink]="['/dashboard']">Dashboard</a></li>
-            <li i18n *ngIf="currentActor.role === 'ADMINISTRATOR'"><a class="dropdown-item" [routerLink]="['/create-manager']">Create New Manager</a></li>
-            <li i18n *ngIf="currentActor.role === 'ADMINISTRATOR'"><a class="dropdown-item" [routerLink]="['/sponsorships']">Sponsorship</a></li>
-            <li i18n *ngIf="currentActor.role === 'MANAGER'"><a class="dropdown-item" [routerLink]="['/applications']">Applications</a></li>
-            <li i18n *ngIf="currentActor.role === 'SPONSOR'"><a class="dropdown-item" [routerLink]="['/sponsorships']">Sponsorships</a></li>
-            <li i18n *ngIf="currentActor.role === 'EXPLORER'"><a class="dropdown-item" [routerLink]="['/my-applications']">My Applications</a></li>
+            <li *ngIf="currentActor.role === 'ADMINISTRATOR'"><a class="dropdown-item" [routerLink]="['/dashboard']">Dashboard</a></li>
+            <li *ngIf="currentActor.role === 'ADMINISTRATOR'"><a class="dropdown-item" [routerLink]="['/cube']">Cube</a></li>
+            <li *ngIf="currentActor.role === 'ADMINISTRATOR'"><a class="dropdown-item" [routerLink]="['/create-manager']">Create New Manager</a></li>
+            <li *ngIf="currentActor.role === 'ADMINISTRATOR'"><a class="dropdown-item" [routerLink]="['/sponsorships']">Sponsorship</a></li>
+            <li *ngIf="currentActor.role === 'MANAGER'"><a class="dropdown-item" [routerLink]="['/applications']">Applications</a></li>
+            <li *ngIf="currentActor.role === 'SPONSOR'"><a class="dropdown-item" [routerLink]="['/sponsorships']">Sponsorships</a></li>
+            <li *ngIf="currentActor.role === 'EXPLORER'"><a class="dropdown-item" [routerLink]="['/my-applications']">My Applications</a></li>
+            <li *ngIf="currentActor.role === 'EXPLORER'"><a class="dropdown-item" [routerLink]="['/my-finder']">My Finder</a></li>
+
           </ul>
         </li>
       </ul>
