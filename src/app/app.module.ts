@@ -40,6 +40,7 @@ import { CheckoutComponent } from './components/checkout/checkout.component';
 import { NgxPayPalModule } from 'ngx-paypal';
 import { CreateManagerComponent } from './components/security/create-manager/create-manager.component';
 import { I18nModule } from './i18n.module';
+import { StatusTranslatePipe } from './pipes/status-translate.pipe';
 
 @NgModule({
   declarations: [
@@ -67,7 +68,8 @@ import { I18nModule } from './i18n.module';
     SponsorshipListComponent,
     SponsorshipEditComponent,
     CheckoutComponent,
-    CreateManagerComponent
+    CreateManagerComponent,
+    StatusTranslatePipe,
   ],
   imports: [
     BrowserModule,

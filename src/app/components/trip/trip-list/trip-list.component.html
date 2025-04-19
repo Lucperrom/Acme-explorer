@@ -2,10 +2,10 @@
 <div class="container mt-5">
     <!-- Filtro de viajes -->
     <div *ngIf="activeRole === 'MANAGER'" class="mb-4">
-      <label i18n for="tripFilter" class="form-label fw-bold">Filtrar viajes:</label>
+      <label i18n for="tripFilter" class="form-label fw-bold">Filter trips:</label>
       <select id="tripFilter" class="form-select shadow-sm" [(ngModel)]="selectedFilter" (change)="onFilterChange()">
-        <option i18n value="all">Todos los viajes</option>
-        <option i18n value="cancelled">Viajes cancelados</option>
+        <option i18n value="all">All trips</option>
+        <option i18n value="cancelled">Cancelled trips</option>
       </select>
     </div>
   
