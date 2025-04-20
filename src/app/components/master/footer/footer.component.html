@@ -2,22 +2,22 @@
     <div class="footer-left">
         <h3>Acme <span>Explorer</span></h3>
         <p class="footer-links">
-            <a href="/term-and-conditions">
-                {{'Terms and conditions'}}
+            <a i18n href="/term-and-conditions">
+                Terms and conditions
             </a>
         </p>
         <p class="footer-company-name">
             Acme-Explorer &copy; {{ today | date:'medium'}}
         </p>
         <span class = "text-muted">
-            <b>{{'visitors'}}</b>
+            <b i18n>visitors</b>
             {{visitorsNumber}}
         </span>
     </div>
     <div class="footer-center">
         <div>
             <i class="fa fa-map-marker"></i>
-            <p><span>21 Revolution Street</span>City, Country</p>
+            <p><span i18n>21 Revolution Street</span><ng-container i18n>City, Country</ng-container></p>
         </div>
         <div>
             <i class="fa-solid fa-phone"></i>
@@ -32,8 +32,8 @@
     </div>
     <div class="footer-right">
         <p class = "footer-company-about">
-            <span>{{'About us'}}</span>
-            {{'This is a spot for your founding story, a place to show off your business winds, and a sales page that answers the most pressing question new customers '}}
+            <span i18n>About us</span>
+            <ng-container i18n>This is a spot for your founding story, a place to show off your business winds, and a sales page that answers the most pressing question new customers</ng-container>
         </p>
         <div class="footer-icons">
             <a><i class = "fa-brands fa-facebook"></i></a>

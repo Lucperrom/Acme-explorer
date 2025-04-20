@@ -119,7 +119,8 @@ export class SponsorshipEditComponent implements OnInit {
   async onSubmit(): Promise<void> {
     if (this.sponsorshipForm.invalid) {
       this.sponsorshipForm.markAllAsTouched();
-      this.messageService.notifyMessage('Formulario inválido', 'alert-danger');
+      let msg = $localize `Invalid form`;
+      this.messageService.notifyMessage(msg, 'alert-danger');
       return;
     }
 
@@ -137,19 +138,23 @@ export class SponsorshipEditComponent implements OnInit {
           formData.rate = this.sponsorshipForm.get('rate')?.value
         }
         await this.sponsorshipService.updateSponsorship(this.sponsorshipId, formData);
-        this.messageService.notifyMessage('Sponsorship actualizada correctamente', 'alert-success');
+        let msg = $localize `Sponsorship updated successfully`;
+        this.messageService.notifyMessage(msg, 'alert-success');
       } else {
         await this.sponsorshipService.createSponsorship(formData);
-        this.messageService.notifyMessage('Sponsorship creada correctamente', 'alert-success');
+        let msg = $localize `Sponsorship created successfully`;
+        this.messageService.notifyMessage(msg, 'alert-success');
       }
       this.router.navigate(['/sponsorships']);
     } catch (error: unknown) {
       console.error('Error al guardar sponsorship:', error);
       console.log(typeof(error as Error).message);
       if(error instanceof Error && error.message.includes('url')){
-        this.message="The file is too large. Please select a smaller file.";
+        let msg = $localize `The file is too large. Please select a smaller file.`;
+        this.message=msg;
       }
-      this.messageService.notifyMessage('Error al guardar la sponsorship', 'alert-danger');
+      let msg = $localize `Error saving sponsorship`;
+      this.messageService.notifyMessage(msg, 'alert-danger');
     }
   }
 }

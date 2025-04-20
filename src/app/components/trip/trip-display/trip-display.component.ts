@@ -81,7 +81,8 @@ export class TripDisplayComponent implements OnInit {
       const distance =  this.trip.startDate.getTime() - new Date().getTime();
 
       if (distance < 0) {
-        this.countdown = '¡El viaje ya ha comenzado!';
+        let msg = $localize `The trip has already started`;
+        this.countdown = msg;
         clearInterval(interval);
         return;
       }
@@ -106,10 +107,12 @@ export class TripDisplayComponent implements OnInit {
     };
   
     this.tripService.updateTrip(trip.id, plainTrip).then(() => {
-      this.messageService.notifyMessage('Viaje cancelado correctamente', 'alert-success');
+      let msg = $localize `Trip cancelled successfully`;
+      this.messageService.notifyMessage(msg, 'alert-success');
       this.router.navigate(['/trips']);
     }).catch((error) => {
-      this.messageService.notifyMessage('Error al cancelar el viaje', 'alert-danger');
+      let msg = $localize `Error cancelling trip`;
+      this.messageService.notifyMessage(msg, 'alert-danger');
       console.error('Error canceling trip:', error);
     });
   }
@@ -172,23 +175,26 @@ export class TripDisplayComponent implements OnInit {
 
   async deleteTrip(): Promise<void> {
     if (!this.tripId) {
-      this.messageService.notifyMessage('No se puede borrar un viaje que no existe', 'alert-danger');
+      let msg = $localize `You cannot delete a trip that does not exist`;
+      this.messageService.notifyMessage(msg, 'alert-danger');
       return;
     }
 
-    if (confirm('¿Está seguro de que desea eliminar este viaje?')) {
+    let msg = $localize `Are you sure you want to delete this trip?`;
+    if (confirm(msg)) {
       try {
         // Establecer deleted a true
         await this.tripService.updateTrip(this.tripId, {
           deleted: true
         });
         
-        
-        this.messageService.notifyMessage('Viaje eliminado correctamente', 'alert-success');
+        let msg = $localize `Trip deleted successfully`;
+        this.messageService.notifyMessage(msg, 'alert-success');
         // Redireccionar a la lista de viajes
         this.router.navigate(['/trips']);
       } catch (error) {
-        this.messageService.notifyMessage('Error al eliminar el viaje', 'alert-danger');
+        let msg = $localize `Error deleting trip`;
+        this.messageService.notifyMessage(msg, 'alert-danger');
         console.error('Error al eliminar el viaje:', error);
       }
     }
@@ -228,11 +234,13 @@ export class TripDisplayComponent implements OnInit {
       this.applicationService.createApplication({ managerId: this.trip.managerId, explorerId: this.currentActor?.email, tripId: this.tripId, status: "pending", creationDate: new Date(), rejectionReason: "", comments})
         .then((response) => {
           this.hasAppliedFlag = true;
-          this.messageService.notifyMessage('Application created successfully', 'alert-success');
+          let msg = $localize `Application created successfully`;
+          this.messageService.notifyMessage(msg, 'alert-success');
         })
         .catch((error) => {
           console.error('Error creating application:', error);
-          this.messageService.notifyMessage('Error creating application', 'alert-danger');
+          let msg = $localize `Error creating application`;
+          this.messageService.notifyMessage(msg, 'alert-danger');
         });
     }
     catch (error) {

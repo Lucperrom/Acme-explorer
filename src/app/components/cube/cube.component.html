@@ -2,50 +2,52 @@
     <!-- Primer formulario: Explorer Spending -->
     <form [formGroup]="spendingForm" class="container mt-4 shadow p-4 rounded formularioFinder" (ngSubmit)="getAmountSpent()">
       <fieldset class="form">
-        <legend class="mb-4 text-center text-primary">Explorer Spending Cube</legend>
+        <legend i18n class="mb-4 text-center text-primary">Explorer Spending Cube</legend>
   
         <div class="row g-3">
           <!-- Explorer ID Input -->
           <div class="col-md-6">
-            <label for="selectedExplorer" class="form-label">Explorer ID (email):</label>
+            <label i18n for="selectedExplorer" class="form-label">Explorer ID (email):</label>
             <input
+              i18n-placeholder
               id="selectedExplorer"
               type="text"
               class="form-control"
               formControlName="selectedExplorer"
-              placeholder="Ej. explorer@example.com"
+              placeholder="Ex. explorer@example.com"
             />
             <!-- Mensaje de error -->
             <div *ngIf="spendingForm.get('selectedExplorer')?.touched && spendingForm.get('selectedExplorer')?.invalid" class="text-danger">
-              <small>Explorer ID is required.</small>
+              <small i18n>Explorer ID is required.</small>
             </div>
           </div>
   
           <!-- Period Input -->
           <div class="col-md-6">
-            <label for="selectedPeriod" class="form-label">Period (M01 - M36, Y01 - Y03):</label>
+            <label i18n for="selectedPeriod" class="form-label">Period (M01 - M36, Y01 - Y03):</label>
             <input
+              i18n-placeholder
               id="selectedPeriod"
               type="text"
               class="form-control"
               formControlName="selectedPeriod"
-              placeholder="Ej. M01"
+              placeholder="Ex. M01"
             />
             <!-- Mensaje de error -->
             <div *ngIf="spendingForm.get('selectedPeriod')?.touched && spendingForm.get('selectedPeriod')?.invalid" class="text-danger">
-              <small>Period is required.</small>
+              <small i18n>Period is required.</small>
             </div>
           </div>
   
           <!-- Search Button -->
           <div class="col-md-12 text-end">
-            <button type="submit" class="btn btn-primary" >🔍 Search</button>
+            <button i18n type="submit" class="btn btn-primary" >🔍 Search</button>
           </div>
         </div>
   
         <div class="result mt-4" *ngIf="amountResult !== null">
-          <h5>Total Amount:</h5>
-          <p>💰 {{ amountResult | currency:'EUR':'symbol':'1.2-2' }}</p>
+          <h5 i18n>Total Amount:</h5>
+          <p>💰 {{ amountResult | currencyChange }}</p>
         </div>
       </fieldset>
     </form>
@@ -55,7 +57,7 @@
     <!-- Segundo formulario: Explorers Matching Criteria -->
     <form [formGroup]="explorerQueryForm" class="container mt-4 shadow p-4 rounded formularioFinder" (ngSubmit)="getExplorersByCondition()">
       <fieldset class="form">
-        <legend class="mb-4 text-center text-primary">Explorers Matching Spending Criteria</legend>
+        <legend i18n class="mb-4 text-center text-primary">Explorers Matching Spending Criteria</legend>
   
         <div class="row g-3">
           <!-- Query Period Input -->

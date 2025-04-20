@@ -1,5 +1,5 @@
 <div [ngClass]="{ 'dark-mode': isDarkMode }">
-<h1 class="text-center my-4 text-primary">Trip Display</h1>
+<h1 i18n class="text-center my-4 text-primary">Trip Display</h1>
 
 <div class="card mx-auto shadow-lg mb-5" style="max-width: 28rem;">
   <!-- Botón de eliminar (alineado a la derecha) -->
@@ -14,7 +14,7 @@
   <div class="card-body">
     <h4 class="card-title text-center text-dark">{{ trip.title }}</h4>
     <p *ngIf="trip.startDate" class="text-center text-info">
-      <strong>Comienza en:</strong> {{ countdown }}
+      <strong i18n>Starts in:</strong> {{ countdown }}
     </p>
 
     <!-- Carrusel de imágenes -->
@@ -32,27 +32,27 @@
 
     <!-- Información del viaje -->
     <p class="text-muted">{{ trip.description }}</p>
-    <p><strong>Dates:</strong> {{ trip.startDate | date:'d MMMM yyyy' }} - {{ trip.endDate | date:'d MMMM yyyy' }}</p>
+    <p><strong i18n>Dates:</strong> {{ trip.startDate | date:'d MMMM yyyy' }} - {{ trip.endDate | date:'d MMMM yyyy' }}</p>
     <p *ngIf="trip.cancelledReason">
-      <strong class="text-danger">Cancelled Reason:</strong> {{ trip.cancelledReason }}
+      <strong i18n class="text-danger">Cancelled Reason:</strong> {{ trip.cancelledReason }}
     </p>
     <p *ngIf="trip.managerName">
-      <strong>Created by:</strong> {{ trip.managerName }}
+      <strong i18n>Created by:</strong> {{ trip.managerName }}
     </p>
 
     <!-- Precio -->
     <div class="d-flex align-items-center">
-      <span class="me-2"><strong>Price:</strong></span>
+      <span class="me-2"><strong i18n>Price:</strong></span>
       <span [ngStyle]="getCurrentStyles()" class="fw-bold">
-        {{ trip.price }} EUR
-        <span *ngIf="isSpecial" class="badge bg-success ms-2">Deal!</span>
+        {{ trip.price | currencyChange }}
+        <span *ngIf="isSpecial" class="badge bg-success ms-2" i18n>Deal!</span>
       </span>
     </div>
 
     <!-- Mensajes de advertencia para el manager -->
     <div *ngIf="currentActor?.role === 'MANAGER' && tripLoaded">
-      <p class="text-danger mt-2" *ngIf="!tripEditable">This trip can NOT be edited or deleted</p>
-      <p class="text-danger" *ngIf="!isCancelable()">This trip can NOT be cancelled</p>
+      <p i18n class="text-danger mt-2" *ngIf="!tripEditable">This trip can NOT be edited or deleted</p>
+      <p i18n class="text-danger" *ngIf="!isCancelable()">This trip can NOT be cancelled</p>
     </div>
   </div>
 
@@ -68,43 +68,53 @@
 
   <!-- Etapas del viaje -->
   <div class="card-body" *ngIf="trip.stages?.length">
-    <h5 class="text-center text-secondary">Stages</h5>
+    <h5 i18n class="text-center text-secondary">Stages</h5>
     <ul class="list-group list-group-flush">
       <li class="list-group-item" *ngFor="let stage of trip.stages; let i = index">
-        <h6>{{ stage.title || ('Stage ' + (i + 1)) }}</h6>
+        <h6>
+          <ng-container *ngIf="stage.title; else defaultTitle">{{ stage.title }}</ng-container>
+          <ng-template #defaultTitle>
+            <span i18n>Stage</span> {{ i + 1 }}
+          </ng-template>
+        </h6>
+      
         <p class="mb-1">{{ stage.description }}</p>
-        <small class="text-muted">Price: {{ stage.price }} EUR</small>
+      
+        <small class="text-muted">
+          <ng-container i18n>Price:</ng-container> {{ stage.price | currencyChange }}
+        </small>
       </li>
+      
     </ul>
   </div>
 
   <!-- Acciones -->
   <div class="card-body text-center">
-    <button class="btn btn-outline-primary me-2" 
+    <button i18n class="btn btn-outline-primary me-2" 
             *ngIf="trip.location?.latitude && trip.location?.longitude"
             (click)="seeForecast(trip.id)">
       See Forecast
     </button>
 
-    <button class="btn btn-primary me-2"
+    <button i18n class="btn btn-primary me-2"
             *ngIf="currentActor?.role === 'MANAGER' && tripEditable && tripLoaded"
             (click)="editTrip(trip.id)">
       Edit
     </button>
 
-    <button class="btn btn-success me-2"
+    <button i18n class="btn btn-success me-2"
             *ngIf="currentActor?.role === 'SPONSOR'"
             (click)="sponsorTrip(trip.ticker)">
       Sponsor
     </button>
 
-    <button class="btn btn-danger me-2"
+    <button i18n class="btn btn-danger me-2"
             *ngIf="currentActor?.role === 'MANAGER' && tripEditable && tripLoaded"
             (click)="deleteTrip()">
       Delete
     </button>
 
-    <button class="btn btn-warning"
+    <button i18n class="btn btn-warning"
             *ngIf="currentActor?.role === 'MANAGER' && isCancelable()"
             (click)="showCancelInput = true">
       Cancel
@@ -113,10 +123,10 @@
     <!-- Input motivo de cancelación -->
     <div *ngIf="showCancelInput" class="mt-3">
       <input type="text" class="form-control mb-2" placeholder="Motivo de cancelación" [(ngModel)]="cancelReason" required>
-      <button class="btn btn-danger w-100"
+      <button i18n class="btn btn-danger w-100"
               [disabled]="!cancelReason || cancelReason.trim() === ''"
               (click)="cancelTrip(trip, cancelReason)">
-        Confirmar Cancelación
+        Confirm Cancelation
       </button>
     </div>
   </div>
@@ -126,16 +136,16 @@
 <div class="container mt-5" *ngIf="!hasAppliedFlag && !isManager">
   <div class="card mx-auto shadow-sm" style="max-width: 32rem;">
     <div class="card-header text-center">
-      <h5 class="mb-0">Aplica al viaje</h5>
+      <h5 i18n class="mb-0">Apply for this trip</h5>
     </div>
     <div class="card-body">
       <form (ngSubmit)="onApplicationSubmit(f)" #f="ngForm">
         <div class="mb-3">
-          <label for="comments" class="form-label">Comentarios</label>
+          <label i18n for="comments" class="form-label">Comments</label>
           <textarea name="comments" id="comments" class="form-control" rows="3" ngModel></textarea>
         </div>
         <div class="text-end">
-          <button type="submit" class="btn btn-primary">Aplicar</button>
+          <button i18n type="submit" class="btn btn-primary">Apply</button>
         </div>
       </form>
     </div>
@@ -144,8 +154,8 @@
 
 <!-- Mensaje si ya aplicó -->
 <div class="container mt-5" *ngIf="hasAppliedFlag && !isManager">
-  <div class="alert alert-success text-center">
-    Ya has aplicado a este viaje
+  <div i18n class="alert alert-success text-center">
+    You have already applied for this trip
   </div>
 </div>
 </div>

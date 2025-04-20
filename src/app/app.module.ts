@@ -41,6 +41,10 @@ import { NgxPayPalModule } from 'ngx-paypal';
 import { CreateManagerComponent } from './components/security/create-manager/create-manager.component';
 import { FinderComponent } from './components/finder/finder.component';
 import { CubeComponent } from './components/cube/cube.component';
+import { I18nModule } from './i18n.module';
+import { StatusTranslatePipe } from './pipes/status-translate.pipe';
+import { FieldTranslationPipe } from './pipes/field-translation.pipe';
+import { CurrencyChangePipe } from './pipes/currency-change.pipe';
 
 @NgModule({
   declarations: [
@@ -70,7 +74,10 @@ import { CubeComponent } from './components/cube/cube.component';
     CheckoutComponent,
     CreateManagerComponent,
     FinderComponent,
-    CubeComponent
+    CubeComponent,
+    StatusTranslatePipe,
+    FieldTranslationPipe,
+    CurrencyChangePipe,
   ],
   imports: [
     BrowserModule,
@@ -89,7 +96,7 @@ import { CubeComponent } from './components/cube/cube.component';
     provideFirestore(() => getFirestore()),
     CommonModule,
   ],
-  providers: [AuthGuard],
+  providers: [AuthGuard, I18nModule.setLocale(), I18nModule.setLocaleId()],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -1,20 +1,23 @@
 <div [ngClass]="{ 'dark-mode': isDarkMode }">
 <form [formGroup]="sponsorshipForm" (ngSubmit)="onSubmit()" class="form-container">
-    <h2>{{ isEditMode ? 'Edit Sponsorship' : 'Create Sponsorship' }}</h2>
-    <div class="form-group">
-      <label for="sponsorId">Sponsor email</label>
+      <h2>
+        <ng-container *ngIf="isEditMode" i18n>Edit Sponsorship</ng-container>
+        <ng-container *ngIf="!isEditMode" i18n>Create Sponsorship</ng-container>
+      </h2>
+      <div class="form-group">
+      <label i18n for="sponsorId">Sponsor email</label>
       <input type="text" id="sponsorId" formControlName="sponsorId" required readonly />
     </div>
   
     <div class="form-group">
-      <label for="tripId">Ticket-trip</label>
+      <label i18n for="tripId">Ticket-trip</label>
       <input type="text" id="tripId" formControlName="tripId" required readonly />
     </div>
   
     <div class="form-group">
-        <label for="amount">Rate (€)</label>
+        <label i18n for="amount">Rate (€)</label>
         <div *ngIf="sponsorshipForm.get('rate')?.value === 0 && currentActor?.role === 'SPONSOR'; else showRate">
-          <span>A definir por el administrador</span>
+          <span i18n>To define by the administrator</span>
         </div>     
 
         <ng-template #showRate>
@@ -29,24 +32,24 @@
       
 
     <div class="form-group">
-        <label for="payed">Payed</label>
+        <label i18n for="payed">Payed</label>
         <input type="text" id="payed" formControlName="payed" required readonly />
     </div>
   
     <div class="form-group">
-        <label for="link">Additional information (link)</label>
+        <label i18n for="link">Additional information (link)</label>
         <input type="text" id="link" formControlName="link" required />
-        <div *ngIf="sponsorshipForm.get('link')?.hasError('required') && sponsorshipForm.get('link')?.touched" class="text-danger">
+        <div i18n *ngIf="sponsorshipForm.get('link')?.hasError('required') && sponsorshipForm.get('link')?.touched" class="text-danger">
           This field is required 
         </div>
       </div>
     
       <div class="form-group">
-        <label for="url">Banner (Image or Video)</label>
+        <label i18n for="url">Banner (Image or Video)</label>
         <input type="file" (change)="onFileSelected($event)" hidden id="url" />
-        <button type="button" *ngIf= "currentActor?.role === 'SPONSOR'" (click)="triggerFileInput()">Select file</button>
-        <button type="button" *ngIf= "currentActor?.role === 'SPONSOR'"(click)="removeFile()">Remove file</button>
-        <div *ngIf="sponsorshipForm.get('url')?.hasError('required')" class="text-danger">
+        <button i18n type="button" *ngIf= "currentActor?.role === 'SPONSOR'" (click)="triggerFileInput()">Select file</button>
+        <button i18n type="button" *ngIf= "currentActor?.role === 'SPONSOR'"(click)="removeFile()">Remove file</button>
+        <div i18n *ngIf="sponsorshipForm.get('url')?.hasError('required')" class="text-danger">
             This field is required 
         </div>
         <div *ngIf="message!==''" class="text-danger">
@@ -65,7 +68,7 @@
   </div>
   
     <br>
-    <button type="submit" [disabled]="sponsorshipForm.invalid">Save Sponsorship</button>
+    <button i18n type="submit" [disabled]="sponsorshipForm.invalid">Save Sponsorship</button>
   
   </form>
 </div>

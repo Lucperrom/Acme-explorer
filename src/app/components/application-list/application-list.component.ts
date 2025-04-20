@@ -87,7 +87,8 @@ export class ApplicationListComponent implements OnInit {
 
   rejectApplication(application: any): void {
     if (!this.rejectReason.trim()) {
-      this.messageService.notifyMessage("Please provide a reason for rejection", "alert-danger");
+      let msg = $localize `Please provide a reason for rejection`;
+      this.messageService.notifyMessage(msg, "alert-danger");
       return;
     }
 

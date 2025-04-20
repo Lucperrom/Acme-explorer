@@ -36,7 +36,8 @@ export class ProfileEditComponent implements OnInit {
   onUpdate() {
     if (this.profileForm.invalid) {
       this.profileForm.markAllAsTouched();
-      this.messageService.notifyMessage('Form is invalid', 'alert-danger');
+      let msg = $localize `Form is invalid`;
+      this.messageService.notifyMessage(msg, 'alert-danger');
       return;
     } else {
       const formData = this.profileForm.getRawValue();
@@ -51,7 +52,8 @@ export class ProfileEditComponent implements OnInit {
       })
       .catch(err => {
         console.error('Update failed', err);
-        this.messageService.notifyMessage('Update failed', 'alert-danger');
+        let msg = $localize `Update failed`;
+        this.messageService.notifyMessage(msg, 'alert-danger');
       });
     } 
   }
