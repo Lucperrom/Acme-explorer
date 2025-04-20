@@ -110,6 +110,10 @@
       Cancel
     </button>
 
+    <app-add-to-list
+      [tripTicker]="trip.ticker"
+    ></app-add-to-list>
+
     <!-- Input motivo de cancelación -->
     <div *ngIf="showCancelInput" class="mt-3">
       <input type="text" class="form-control mb-2" placeholder="Motivo de cancelación" [(ngModel)]="cancelReason" required>
@@ -121,6 +125,7 @@
     </div>
   </div>
 </div>
+
 
 <!-- Formulario de aplicación -->
 <div class="container mt-5" *ngIf="!hasAppliedFlag && !isManager">

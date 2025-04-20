@@ -41,6 +41,9 @@ import { NgxPayPalModule } from 'ngx-paypal';
 import { CreateManagerComponent } from './components/security/create-manager/create-manager.component';
 import { FinderComponent } from './components/finder/finder.component';
 import { CubeComponent } from './components/cube/cube.component';
+import { SavedTripsComponent } from './components/saved-trips/saved-trips.component';
+import { AddToListComponent } from './components/saved-trips/add-to-list/add-to-list.component';
+import { ListManagerComponent } from './components/saved-trips/list-manager/list-manager.component';
 
 @NgModule({
   declarations: [
@@ -70,7 +73,10 @@ import { CubeComponent } from './components/cube/cube.component';
     CheckoutComponent,
     CreateManagerComponent,
     FinderComponent,
-    CubeComponent
+    CubeComponent,
+    SavedTripsComponent,
+    AddToListComponent,
+    ListManagerComponent
   ],
   imports: [
     BrowserModule,

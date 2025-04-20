@@ -3,8 +3,8 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
-    "json-server": "json-server --watch ./src/assets/json-server/acme-explorer.json routes ./src/assets/json-server/routes.json",
+    "start": "concurrently \"npm run ng serve\" \"npm run json-server\"",
+    "json-server": "json-server --watch ./src/assets/json-server/db.json",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test"
@@ -51,6 +51,7 @@
     "karma-coverage": "~2.2.0",
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.0.0",
-    "typescript": "^4.8.4"
+    "typescript": "^4.8.4",
+    "concurrently": "^8.2.0"
   }
 }

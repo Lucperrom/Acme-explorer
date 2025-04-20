@@ -1,9 +1,2 @@
 {
-    "/actors?email=:email": "/actors?email=:email",
-    "/trips/search?startFrom=:startFrom&pageSize&tripTitle=:keyword":
-    "/trips?q=:keyword&_page=startFrom&_limit=:pageSize",
-    "/trips/:tripId":
-    "/trips/:tripId",
-    "/trips/edit/:tripId":
-    "/trips/edit/:tripId"
 }

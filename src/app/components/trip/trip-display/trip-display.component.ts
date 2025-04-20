@@ -5,13 +5,13 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import { Actor } from 'src/app/models/actor.model';
 import { ApplicationService } from 'src/app/services/application.service';
-import { FormControl, FormGroup, NgForm } from '@angular/forms';
+import { NgForm } from '@angular/forms';
 import { AuthService } from 'src/app/services/auth.service';
 import { MessageService } from 'src/app/services/message.service';
-import { has } from 'cypress/types/lodash';
 import { SponsorshipService } from 'src/app/services/sponsorship.service';
 import { Sponsorship } from 'src/app/models/sponsorship.model';
-
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { SavedTripsService, SavedList } from 'src/app/services/saved-trips.service';
 @Component({
   selector: 'app-trip-display',
   templateUrl: './trip-display.component.html',
@@ -30,23 +30,24 @@ export class TripDisplayComponent implements OnInit {
   isManager = false;
   cancelReason = "";
   countdown: string = '';
-  tripEditable: boolean = true; // Variable para almacenar el resultado de cancelabilidad
+  tripEditable: boolean = true;
   tripLoaded: boolean = false;
   isDarkMode = false;
-
+  
   constructor(
     private tripService: TripService, 
+    private savedTripsService: SavedTripsService,
     private route: ActivatedRoute, 
     private applicationService: ApplicationService, 
     private authService: AuthService,
     private messageService: MessageService,
     private router: Router,
-    private sponsorshipService: SponsorshipService
+    private sponsorshipService: SponsorshipService,
+    private modalService: NgbModal
   ) { 
     this.trip = new Trip();
-    this.trip.pictures = ["/assets/images/playa3.jpg"]
-    this.trip.title = "megusta"
-    console.log("inicializando trip", this.trip);
+    this.trip.pictures = ["/assets/images/playa3.jpg"];
+    this.trip.title = "megusta";
   }
 
   async ngOnInit(): Promise<void> {
@@ -59,7 +60,6 @@ export class TripDisplayComponent implements OnInit {
       this.filteredSponsorships = this.sponsorhips.filter(sponsorhip => sponsorhip.payed);
       this.trip.startDate = new Date(this.trip.startDate);
       this.trip.endDate = new Date(this.trip.endDate);
-      console.log("Trip loaded", this.trip);
       this.isSpecial = this.trip.price < 100;
       this.currentActor = this.authService.getCurrentActor();
       
@@ -73,13 +73,13 @@ export class TripDisplayComponent implements OnInit {
       this.tripLoaded = true; // Indica que el viaje ha sido cargado
     }
   }
+
   startCountdown(): void {
     const start = new Date(this.trip.startDate).getTime();
   
     const interval = setInterval(() => {
-      const now = new Date().getTime();
       const distance =  this.trip.startDate.getTime() - new Date().getTime();
-
+  
       if (distance < 0) {
         this.countdown = '¡El viaje ya ha comenzado!';
         clearInterval(interval);
@@ -95,7 +95,6 @@ export class TripDisplayComponent implements OnInit {
     }, 1000);
   }
 
-  // Método para verificar y actualizar la propiedad tripEditable
   async checkIfTripIsEditable(trip: Trip) {
     this.tripEditable = await this.isEditable(trip);
   }
@@ -105,7 +104,7 @@ export class TripDisplayComponent implements OnInit {
       cancelledReason: reason
     };
   
-    this.tripService.updateTrip(trip.id, plainTrip).then(() => {
+    this.tripService.updateTrip(trip.ticker, plainTrip).then(() => {
       this.messageService.notifyMessage('Viaje cancelado correctamente', 'alert-success');
       this.router.navigate(['/trips']);
     }).catch((error) => {
@@ -178,14 +177,11 @@ export class TripDisplayComponent implements OnInit {
 
     if (confirm('¿Está seguro de que desea eliminar este viaje?')) {
       try {
-        // Establecer deleted a true
         await this.tripService.updateTrip(this.tripId, {
           deleted: true
         });
         
-        
         this.messageService.notifyMessage('Viaje eliminado correctamente', 'alert-success');
-        // Redireccionar a la lista de viajes
         this.router.navigate(['/trips']);
       } catch (error) {
         this.messageService.notifyMessage('Error al eliminar el viaje', 'alert-danger');
@@ -237,7 +233,20 @@ export class TripDisplayComponent implements OnInit {
     }
     catch (error) {
       console.error('Error submitting form:', error);
-      // Handle error, e.g., show an error message
     }
   }
+
+  onListSelected(list: SavedList): void {
+    if (this.tripId) {
+      this.savedTripsService.addTripToList(this.tripId, list.id)
+        .then(() => {
+          this.messageService.notifyMessage('Trip added to list successfully', 'alert-success');
+        })
+        .catch((error) => {
+          console.error('Error adding trip to list:', error);
+          this.messageService.notifyMessage('Error adding trip to list', 'alert-danger');
+        });
+    }
+  }
+
 }

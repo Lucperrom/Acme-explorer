@@ -1,10 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Trip } from '../models/trip.model';
 import { Location } from '../models/location.model';
-import { Firestore, collection, getDocs, getDoc, addDoc, doc, updateDoc } from '@angular/fire/firestore';
+import { Firestore, collection, getDocs, getDoc, addDoc, doc, updateDoc, where, query } from '@angular/fire/firestore';
 import { BehaviorSubject } from 'rxjs';
 import { MeteoService } from './meteo.service';
-import { setDoc } from 'firebase/firestore';
 
 @Injectable({
   providedIn: 'root'

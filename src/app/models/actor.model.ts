@@ -101,4 +101,8 @@ export class Actor extends Entity {
         }
         return JSON.stringify(json);
     }
+
+    public getFullName(): string {
+        return `${this._name} ${this._surname}`;
+    }
 }

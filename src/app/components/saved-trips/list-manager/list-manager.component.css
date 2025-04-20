@@ -1,0 +1,37 @@
+.list-manager .list-group-item {
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.list-manager .list-group-item:hover {
+  background-color: #f8f9fa;
+}
+
+.list-manager .badge {
+  font-size: 0.9rem;
+}
+
+.list-group-item .btn i {
+  font-size: 0.9rem; /* Smaller icon size */
+}
+
+.list-group-item.disabled {
+  background-color: #e9ecef;
+  color: #6c757d;
+  pointer-events: none;
+}
+
+.list-group-item.canceled {
+  background-color: #f8d7da;
+  color: #721c24;
+}
+
+.list-group-item.highlighted {
+  background-color: #fff3cd;
+  color: #856404;
+}
+
+.list-group-item.expired {
+  background-color: #f8f9fa;
+  color: #6c757d;
+}

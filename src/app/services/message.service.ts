@@ -12,8 +12,19 @@ export class MessageService {
     this.message = new Subject<InfoMessage | null>();
   }
 
+  private timeoutId: any;
+
   notifyMessage(code: string, typeMessage: string){
-    this.message.next(new InfoMessage(code, typeMessage))
+    this.message.next(new InfoMessage(code, typeMessage));
+    const secondsToShow = 3;
+
+    // Clear the previous timeout if it exists
+    if (this.timeoutId) {
+      clearTimeout(this.timeoutId);
+    }
+
+    // Set a new timeout to remove the message after a certain period
+    this.timeoutId = setTimeout(() => this.removeMessage(), secondsToShow * 1000);
   }
 
   removeMessage(){

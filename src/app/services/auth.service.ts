@@ -6,11 +6,6 @@ import { Observable, BehaviorSubject, Subject } from 'rxjs';
 import { Router } from '@angular/router';
 import { addDoc, collection, Firestore, query, where, getDocs, doc, updateDoc } from '@angular/fire/firestore';
 
-const httpOptions = {
-  headers: new HttpHeaders({
-    'Content-Type': 'application/json'
-  })
-};
 
 @Injectable({
   providedIn: 'root'
@@ -30,21 +25,25 @@ export class AuthService {
     onAuthStateChanged(this.auth, async (user) => {
       console.log("Calling on Auth State Changed: ");
       if (user) {
-        const localUser: String | null = localStorage.getItem('currentActor');
-        console.log("localUser: ", localUser);
-        if(localUser != null) {
+        const localUser: string | null = localStorage.getItem('currentActor');
+        if (localUser) {
           console.log("User already logged in: ", localUser);
           this.loggedInUserSubject.next(true);
           return;
         }
+
         const actorRef = collection(this.firestore, 'actors');
         const userQuery = query(actorRef, where("email", "==", user.email));
         const querySnapshot = await getDocs(userQuery);
-        this.currentActor = this.getCurrentActorFromDoc(querySnapshot.docs[0]);
-        // Avoid storing the password in localStorage
-        localStorage.setItem('currentActor', this.currentActor.toJSON(true));
-        this.loggedInUserSubject.next(true);
-        
+
+        if (!querySnapshot.empty) {
+          this.currentActor = this.getCurrentActorFromDoc(querySnapshot.docs[0]);
+          localStorage.setItem('currentActor', this.currentActor.toJSON(true));
+          this.loggedInUserSubject.next(true);
+        } else {
+          console.warn('No actor found for the logged-in user.');
+          this.loggedInUserSubject.next(false);
+        }
       } else {
         this.loggedInUserSubject.next(false);
         this.currentActor = null;

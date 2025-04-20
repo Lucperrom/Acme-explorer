@@ -1,0 +1,62 @@
+{
+  "saved-trips": [
+    {
+      "id": "administrator@administrator.com",
+      "savedLists": [
+        {
+          "id": "list-1745154749357",
+          "name": "1",
+          "tripTickers": [
+            "250413-TONJ"
+          ],
+          "editTime": "2025-04-20T13:12:30.572Z",
+          "deleted": false
+        },
+        {
+          "id": "list-1745154795389",
+          "name": "2",
+          "tripTickers": [],
+          "editTime": "2025-04-20T13:20:57.288Z",
+          "deleted": false
+        },
+        {
+          "id": "list-1745155253626",
+          "name": "3",
+          "tripTickers": [],
+          "editTime": "2025-04-20T13:20:53.626Z",
+          "deleted": false
+        }
+      ]
+    },
+    {
+      "id": "manager@manager.com",
+      "savedLists": [
+        {
+          "id": "list-1745171072040",
+          "name": "managerList",
+          "tripTickers": [
+            "250418-JVQL",
+            "250420-SDOV",
+            "250420-RJBT",
+            "250420-ORUD"
+          ],
+          "editTime": "2025-04-20T19:06:59.265Z",
+          "deleted": false
+        },
+        {
+          "id": "list-1745177843503",
+          "name": "new list",
+          "tripTickers": [
+            "250420-ORUD"
+          ],
+          "editTime": "2025-04-20T19:37:28.882Z",
+          "deleted": false
+        }
+      ]
+    },
+    {
+      "id": "explorer@explorer.com",
+      "savedLists": []
+    }
+  ]
+}

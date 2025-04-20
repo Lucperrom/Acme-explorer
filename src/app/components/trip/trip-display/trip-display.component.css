@@ -88,6 +88,13 @@ h1.bg-blue {
   color: #dddddd;
 }
 
+.list-group-item {
+  cursor: pointer;
+}
+.list-group-item:hover {
+  background-color: #f8f9fa;
+}
+
 /* =================== FORM CONTROLS =================== */
 
 .dark-mode .form-control {

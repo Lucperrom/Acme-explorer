@@ -1,0 +1,61 @@
+<div class="list-manager">
+  <div class="mb-2">
+    <div class="input-group">
+      <input
+        type="text"
+        class="form-control"
+        placeholder="Search saved lists..."
+        [(ngModel)]="searchTerm"
+      />
+    </div>
+  </div>
+
+  <div class="mb-2">
+    <div class="input-group">
+      <input
+        type="text"
+        class="form-control"
+        placeholder="Or create a new one"
+        #newListInput
+        (keydown.enter)="createList(newListInput.value); newListInput.value = ''"
+      />
+      <button
+        class="btn btn-success"
+        (click)="createList(newListInput.value); newListInput.value = ''"
+      >
+        Create
+      </button>
+    </div>
+  </div>
+
+  <ul class="list-group">
+    <li
+      *ngFor="let list of visibleLists"
+      class="list-group-item d-flex align-items-center"
+    >
+      <div class="d-flex flex-grow-1 align-items-center">
+        <span class="badge bg-primary me-2">{{ list.tripTickers.length }}</span>
+        <span
+          (click)="selectList(list)"
+          style="cursor: pointer; flex-grow: 1;"
+        >
+          {{ list.name }}
+        </span>
+      </div>
+      <button
+        class="btn btn-danger"
+        (click)="deleteList(list)"
+      >
+        Delete
+      </button>
+    </li>
+  </ul>
+
+  <button
+    *ngIf="lists.length > maxVisible"
+    class="btn btn-link mt-2"
+    (click)="toggleShowAll()"
+  >
+    {{ showAllLists ? 'Show Less' : 'Show More' }}
+  </button>
+</div>
