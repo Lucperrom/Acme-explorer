@@ -145,6 +145,7 @@ export class TripListComponent implements OnInit {
 
   removeTrip(index:number){
     this.trips[index].deleted = true;
-    this.messageService.notifyMessage("Item successfully deleted", "alert alert-success")
+    let msg = $localize `Trip successfully deleted`;
+    this.messageService.notifyMessage(msg, "alert alert-success")
   }
 }

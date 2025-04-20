@@ -31,7 +31,8 @@ export class LoginComponent implements OnInit {
       this.router.navigate([this.returnUrl]); // Redirect to the desired route
       form.reset();
     }).catch((error) => {
-      this.messageService.notifyMessage("Invalid Credentials", "alert-danger")
+      let msg = $localize `Invalid credentials`;
+      this.messageService.notifyMessage(msg, "alert-danger")
     });
   }
 

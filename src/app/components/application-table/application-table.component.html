@@ -5,7 +5,7 @@
         <ngx-datatable-row-detail [rowHeight]="100" #myDetailRow (toggle)="onDetailToggle($event)">
             <ng-template let-row let-expanded="expanded" ngx-datatable-row-detail-template>
                 <div style="padding-left:35px;">
-                    <div><strong>Ordered items</strong></div>
+                    <div><strong i18n>Ordered items</strong></div>
                     <div *ngFor="let i of row.orderedItems">
                         {{ i.name }} (sku: {{ i.sku }})
                     </div>

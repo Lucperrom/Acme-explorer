@@ -23,7 +23,8 @@ export class TripForecastComponent implements OnInit {
     this.isDarkMode = localStorage.getItem('darkMode') === 'true';
     const tripId = this.route.snapshot.paramMap.get('id');
     if (!tripId) {
-      this.errorMessage = 'Invalid trip ID.';
+      let msg = $localize `Invalid trip ID`;
+      this.errorMessage = msg;
       return;
     }
 
@@ -47,11 +48,13 @@ export class TripForecastComponent implements OnInit {
           precipProb: response.data.daily.precipitation_probability_max[index]
         }));
       } else {
-        this.errorMessage = 'No forecast data available for this trip.';
+        let msg = $localize `Trip location not available`;
+        this.errorMessage = msg;
       }
     } catch (error) {
       console.error('Error fetching forecast data:', error);
-      this.errorMessage = 'An error occurred while fetching the forecast data.';
+      let msg = $localize `Error fetching forecast data`;
+      this.errorMessage = msg;
     }
   }
 }

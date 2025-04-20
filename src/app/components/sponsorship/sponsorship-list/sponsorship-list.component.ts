@@ -57,7 +57,8 @@ export class SponsorshipListComponent implements OnInit {
           })
           .catch((error) => {
             console.error("Error fetching sponsorships: ", error);
-            this.messageService.notifyMessage("Error fetching sponsorships for sponsor.","alert-danger");
+            let msg = $localize `Error fetching sponsorships for sponsor.`;
+            this.messageService.notifyMessage(msg,"alert-danger");
           });
 
       } else {
@@ -68,7 +69,8 @@ export class SponsorshipListComponent implements OnInit {
           })
           .catch((error) => {
             console.error("Error fetching sponsorships: ", error);
-            this.messageService.notifyMessage("Error fetching sponsorships for trips.", "alert-danger");
+            let msg = $localize `Error fetching sponsorships for trips.`;
+            this.messageService.notifyMessage(msg, "alert-danger");
           });
       }
     }
@@ -89,12 +91,14 @@ export class SponsorshipListComponent implements OnInit {
 
   removeSponsorship(sponsorshipId: string): void {
     this.sponsorshipService.removeSponsorship(sponsorshipId).then(() => {
-      this.messageService.notifyMessage("Sponsorship successfully deleted", "alert alert-success");
+      let msg = $localize `Sponsorship successfully deleted`;
+      this.messageService.notifyMessage(msg, "alert alert-success");
       
       // Actualiza el listado de sponsorships
       this.loadSponsorships();
     }).catch((error) => {
-      this.messageService.notifyMessage("Error deleting sponsorship", "alert alert-danger");
+      let msg = $localize `Error deleting sponsorship`;
+      this.messageService.notifyMessage(msg, "alert alert-danger");
       console.error("Error deleting sponsorship:", error);
     });
   }

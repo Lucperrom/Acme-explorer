@@ -17,15 +17,15 @@
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+          <a i18n class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             Trips
           </a>
           <ul class="dropdown-menu">
-            <li><a class="dropdown-item" [routerLink]="['/trips']">List trips</a></li>
-            <li><a class="dropdown-item" [routerLink]="['/saved-trips']">Saved Trips</a></li>
-            <li><a class="dropdown-item" [routerLink]="['/trips/load']">Load trips</a></li>
+            <li><a i18n class="dropdown-item" [routerLink]="['/trips']">List trips</a></li>
+            <li><a i18n class="dropdown-item" [routerLink]="['/saved-trips']">Saved Trips</a></li>
+            <li><a i18n class="dropdown-item" [routerLink]="['/trips/load']">Load trips</a></li>
             <li *ngIf="currentActor && currentActor.role === 'MANAGER'"><hr class="dropdown-divider"></li>
-            <li *ngIf="currentActor && currentActor.role === 'MANAGER'"><a class="dropdown-item" [routerLink]="['/trips/create']">New trip</a></li>
+            <li *ngIf="currentActor && currentActor.role === 'MANAGER'"><a i18n class="dropdown-item" [routerLink]="['/trips/create']">New trip</a></li>
           </ul>
         </li>
 
@@ -34,14 +34,14 @@
             {{ currentActor.role }}
           </a>
           <ul class="dropdown-menu">
-            <li *ngIf="currentActor.role === 'ADMINISTRATOR'"><a class="dropdown-item" [routerLink]="['/dashboard']">Dashboard</a></li>
-            <li *ngIf="currentActor.role === 'ADMINISTRATOR'"><a class="dropdown-item" [routerLink]="['/cube']">Cube</a></li>
-            <li *ngIf="currentActor.role === 'ADMINISTRATOR'"><a class="dropdown-item" [routerLink]="['/create-manager']">Create New Manager</a></li>
-            <li *ngIf="currentActor.role === 'ADMINISTRATOR'"><a class="dropdown-item" [routerLink]="['/sponsorships']">Sponsorship</a></li>
-            <li *ngIf="currentActor.role === 'MANAGER'"><a class="dropdown-item" [routerLink]="['/applications']">Applications</a></li>
-            <li *ngIf="currentActor.role === 'SPONSOR'"><a class="dropdown-item" [routerLink]="['/sponsorships']">Sponsorships</a></li>
-            <li *ngIf="currentActor.role === 'EXPLORER'"><a class="dropdown-item" [routerLink]="['/my-applications']">My Applications</a></li>
-            <li *ngIf="currentActor.role === 'EXPLORER'"><a class="dropdown-item" [routerLink]="['/my-finder']">My Finder</a></li>
+            <li *ngIf="currentActor.role === 'ADMINISTRATOR'"><a i18n class="dropdown-item" [routerLink]="['/dashboard']">Dashboard</a></li>
+            <li *ngIf="currentActor.role === 'ADMINISTRATOR'"><a i18n class="dropdown-item" [routerLink]="['/cube']">Cube</a></li>
+            <li *ngIf="currentActor.role === 'ADMINISTRATOR'"><a i18n class="dropdown-item" [routerLink]="['/create-manager']">Create New Manager</a></li>
+            <li *ngIf="currentActor.role === 'ADMINISTRATOR'"><a i18n class="dropdown-item" [routerLink]="['/sponsorships']">Sponsorship</a></li>
+            <li *ngIf="currentActor.role === 'MANAGER'"><a i18n class="dropdown-item" [routerLink]="['/applications']">Applications</a></li>
+            <li *ngIf="currentActor.role === 'SPONSOR'"><a i18n class="dropdown-item" [routerLink]="['/sponsorships']">Sponsorships</a></li>
+            <li *ngIf="currentActor.role === 'EXPLORER'"><a i18n class="dropdown-item" [routerLink]="['/my-applications']">My Applications</a></li>
+            <li *ngIf="currentActor.role === 'EXPLORER'"><a i18n class="dropdown-item" [routerLink]="['/my-finder']">My Finder</a></li>
 
           </ul>
         </li>
@@ -50,13 +50,13 @@
       <!-- Barra de búsqueda -->
 
       <form class="form-inline d-flex my-2 my-lg-0 me-2" (submit)="onSearch($event)">
-        <input [(ngModel)]="searchTerm" name="search" class="form-control mr-2 me-1" type="search" placeholder="Search by ticker, title, or description" aria-label="Search">
-        <button class="btn btn-outline-success" type="submit">Search</button>
+        <input i18n-placeholder i18n-aria-label [(ngModel)]="searchTerm" name="search" class="form-control mr-2 me-1" type="search" placeholder="Search by ticker, title, or description" aria-label="Search">
+        <button i18n class="btn btn-outline-success" type="submit">Search</button>
       </form>
 
     <!-- Botones de cambiar idioma -->
-     <button class="btn btn-secondary me-2" (click)="changeLanguage('EN')">EN</button>
-     <button class="btn btn-secondary me-2" (click)="changeLanguage('ES')">ES</button>
+     <button class="btn btn-secondary me-2" (click)="changeLanguage('en')">EN</button>
+     <button class="btn btn-secondary me-2" (click)="changeLanguage('es')">ES</button>
      <button class="btn btn-sm" [ngClass]="isDarkMode ? 'btn-light' : 'btn-dark'" (click)="toggleDarkMode()">
         <i class="bi bi-sun-fill" [ngStyle]="{ color: isDarkMode ? '#f1c40f' : '#fff' }"></i>
      </button>
@@ -69,22 +69,22 @@
         </a>
         <ul class = "dropdown-menu text-small" data-popper-placement="bottom-end"
         style = "position:absolute; inset:0px 0px auto auto; margin: 0px; transform: translate3d(0.5px,34px,0px);">
-          <li><a class = "dropdown-item" [routerLink]="['/profile']"> Profile </a></li>
-          <li><a class = "dropdown-item" (click)="logout()"> Logout </a></li>
+          <li><a i18n class = "dropdown-item" [routerLink]="['/profile']"> Profile </a></li>
+          <li><a i18n class = "dropdown-item" (click)="logout()"> Logout </a></li>
 
         </ul>
       </div>
 
       <ul class="navbar-nav ms-auto">
         <li class="nav-item" *ngIf="!currentActor">
-          <a class="nav-link" routerLink="/login">Login</a>
+          <a i18n class="nav-link" routerLink="/login">Login</a>
         </li>
         <li class="nav-item" *ngIf="!currentActor">
-          <a class="nav-link" routerLink="/register">Register</a>
+          <a i18n class="nav-link" routerLink="/register">Register</a>
         </li>
         <li class="nav-item" *ngIf="activeRole ==='consumer'">
         <a class="nav-link active" routerLink="/applications">
-          <i class="fa-solid fa-cart-shopping"></i>
+          <i i18n class="fa-solid fa-cart-shopping"></i>
           Your Applications
         </a>
       

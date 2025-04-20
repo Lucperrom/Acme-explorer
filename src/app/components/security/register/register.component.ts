@@ -35,7 +35,8 @@ export class RegisterComponent implements OnInit {
 
   onRegister() {
     if (this.registrationForm.invalid) {
-      this.messageService.notifyMessage('Form is invalid', 'alert-danger');
+      let msg = $localize `Form is invalid`;
+      this.messageService.notifyMessage(msg, 'alert-danger');
       return;
     } else {
       this.authService.signUp(this.registrationForm.value)
@@ -47,13 +48,17 @@ export class RegisterComponent implements OnInit {
       .catch(err => {
         console.error('Registration failed', err);
         if (err.message.includes('email-already-in-use')) {
-          this.messageService.notifyMessage('Email already in use', 'alert-danger');
+          let msg = $localize `Email already in use`;
+          this.messageService.notifyMessage(msg, 'alert-danger');
         } else if (err.message.includes('invalid-email')) {
-          this.messageService.notifyMessage('Invalid email format', 'alert-danger');
+          let msg = $localize `Invalid email format`;
+          this.messageService.notifyMessage(msg, 'alert-danger');
         } else if (err.message.includes('weak-password')) {
-          this.messageService.notifyMessage('Password should be at least 6 characters', 'alert-danger');
+          let msg = $localize `Password should be at least 6 characters`;
+          this.messageService.notifyMessage(msg, 'alert-danger');
         } else {
-          this.messageService.notifyMessage('Registration failed', 'alert-danger');
+          let msg = $localize `Registration failed`;
+          this.messageService.notifyMessage(msg, 'alert-danger');
         }
       });
     }

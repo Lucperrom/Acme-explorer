@@ -2,50 +2,50 @@
 <div [ngClass]="{ 'dark-mode': isDarkMode }">
 <form [formGroup]="registerForm"(ngSubmit)= "onRegister()">
     <fieldset>
-        <legend>Register new Manager</legend>
+        <legend i18n>Register new Manager</legend>
         <div class="form-group has danger">
-            <label for="email" class="form-control-label">Email:</label>
+            <label i18n for="email" class="form-control-label">Email:</label>
             <input id="email" type="email" formControlName="email" class="form-control">
-            <div *ngIf="registerForm.get('email')?.invalid && registerForm.get('email')?.touched" class="text-danger mt-1">
+            <div i18n *ngIf="registerForm.get('email')?.invalid && registerForm.get('email')?.touched" class="text-danger mt-1">
                 Email is required.
               </div>
         </div>
         <div class="form-group has danger">
-            <label for="password" class="form-control-label">Password:</label>
+            <label i18n for="password" class="form-control-label">Password:</label>
             <input id="password" type="password" formControlName="password" class="form-control">
-            <div *ngIf="registerForm.get('password')?.invalid && registerForm.get('password')?.touched" class="text-danger mt-1">
+            <div i18n *ngIf="registerForm.get('password')?.invalid && registerForm.get('password')?.touched" class="text-danger mt-1">
                 Password must have at least 6 characters
               </div>
         </div>
         <div class="form-group has danger">
-            <label for="role" class="form-control-label">Role:</label>
+            <label i18n for="role" class="form-control-label">Role:</label>
             <input id="role" type="text" formControlName="role" class="form-control" readonly>
         </div>
         <div class="form-group has danger">
-            <label for="name" class="form-control-label">Name:</label>
+            <label i18n for="name" class="form-control-label">Name:</label>
             <input id="name" type="text" formControlName="name" class="form-control">
-            <div *ngIf="registerForm.get('name')?.invalid && registerForm.get('name')?.touched" class="text-danger mt-1">
+            <div i18n *ngIf="registerForm.get('name')?.invalid && registerForm.get('name')?.touched" class="text-danger mt-1">
                 Name is required.
               </div>
         </div>
         <div class="form-group has danger">
-            <label for="surname" class="form-control-label">Surname:</label>
+            <label i18n for="surname" class="form-control-label">Surname:</label>
             <input id="surname" type="text" formControlName="surname" class="form-control">
-            <div *ngIf="registerForm.get('surname')?.invalid && registerForm.get('surname')?.touched" class="text-danger mt-1">
+            <div i18n *ngIf="registerForm.get('surname')?.invalid && registerForm.get('surname')?.touched" class="text-danger mt-1">
                 Surname is required.
               </div>
         </div>
         <div class="form-group has danger">
-            <label for="phone" class="form-control-label">Phone (optional):</label>
+            <label i18n for="phone" class="form-control-label">Phone (optional):</label>
             <input id="phone" type="number" formControlName="phone" class="form-control">
         </div>
         <div class="form-group has danger">
-            <label for="address" class="form-control-label">Address (optional):</label>
+            <label i18n for="address" class="form-control-label">Address (optional):</label>
             <input id="address" type="text" formControlName="address" class="form-control">
         </div>
 
         <br>
-        <button type="submit" class="btn btn-primary">Register</button>
+        <button i18n type="submit" class="btn btn-primary">Register</button>
     </fieldset>
 </form>
 </div>

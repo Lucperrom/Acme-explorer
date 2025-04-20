@@ -74,8 +74,8 @@ import { MessageService } from 'src/app/services/message.service';
       if (finder) {
         this.finderForm.patchValue({
           keyWord: finder.keyWord,
-          minimumPrice: finder.minimumPrice,
-          maximumPrice: finder.maximumPrice,
+          minimumPrice: this.currencyCode === 'GBP' ? finder.minimumPrice / 1.2 : finder.minimumPrice,
+          maximumPrice: this.currencyCode === 'GBP' ? finder.maximumPrice / 1.2 : finder.maximumPrice,
           startingDate: finder.startingDate ? this.toDateInputValue(finder.startingDate) : '',
           endDate: finder.endDate ? this.toDateInputValue(finder.endDate) : '',
           cacheTTL: finder.cacheTTL,
@@ -105,6 +105,11 @@ import { MessageService } from 'src/app/services/message.service';
         }
       }
     }
+
+    get currencyCode(): string {
+      const locale = localStorage.getItem('locale');
+      return locale === 'es' ? 'EUR' : 'GBP';
+    }
     
     toDateInputValue(date: Date): string {
       return new Date(date).toISOString().split('T')[0];
@@ -118,7 +123,8 @@ import { MessageService } from 'src/app/services/message.service';
     async onSearch() {
 
       if (this.finderForm.invalid) {
-        this.messageService.notifyMessage('Form is invalid', 'alert-danger');
+        let msg = $localize`Form is invalid`;
+        this.messageService.notifyMessage(msg, 'alert-danger');
         return;
       } 
       else{
@@ -129,8 +135,8 @@ import { MessageService } from 'src/app/services/message.service';
   
         const finder = new Finder({
           keyWord: values.keyWord,
-          minimumPrice: values.minimumPrice,
-          maximumPrice: values.maximumPrice,
+          minimumPrice: this.currencyCode === 'GBP' ? values.minimumPrice * 1.2 : values.minimumPrice,
+          maximumPrice: this.currencyCode === 'GBP' ? values.maximumPrice * 1.2 : values.maximumPrice,
           startingDate: isValidDate(values.startingDate) ? new Date(values.startingDate) : null,
           endDate: isValidDate(values.endDate) ? new Date(values.endDate) : null,
           cacheTTL: values.cacheTTL,
@@ -202,7 +208,8 @@ import { MessageService } from 'src/app/services/message.service';
     
       await this.finderService.saveFinder(emptyFinder);
     
-      this.messageService.notifyMessage('Finder reiniciado correctamente', 'alert-info');
+      let msg = $localize`Finder reset successfully`;
+      this.messageService.notifyMessage(msg, 'alert-info');
     }
     
 }
