@@ -6,6 +6,9 @@
 .list-manager .list-group-item:hover {
   background-color: #f8f9fa;
 }
+.dark-mode .list-manager .list-group-item:hover{
+  background-color: #6c757d;
+}
 
 .list-manager .badge {
   font-size: 0.9rem;

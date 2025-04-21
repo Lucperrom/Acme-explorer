@@ -14,6 +14,7 @@ export class ListManagerComponent implements OnInit {
   lists: SavedList[] = [];
   searchTerm: string = '';
   showAllLists: boolean = false;
+  isDarkMode: boolean = false;
 
   constructor(
     private savedTripsService: SavedTripsService,
@@ -22,6 +23,8 @@ export class ListManagerComponent implements OnInit {
 
   ngOnInit(): void {
     this.savedTripsService.initializeSavedLists();// Triggers the sync
+    this.isDarkMode = localStorage.getItem('darkMode') === 'true';
+
     this.savedTripsService.savedLists$.subscribe(lists => {
       this.lists = lists;
     });

@@ -19,6 +19,11 @@
   color: white;
   border-color: #007bff;
 }
+.darkMode .list-group-item.active {
+  background-color: #007bff;
+  color: white;
+  border-color: #007bff;
+}
 
 /* Styling for canceled trips */
 .list-group-item.canceled {
@@ -44,17 +49,7 @@
 }
 
 /* Card styling for selected list */
-.card {
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  margin-top: 10px;
-}
 
-.card-header {
-  background-color: #f8f9fa;
-  border-bottom: 1px solid #ddd;
-}
 
 .card-body {
   padding: 1.5rem;
