@@ -60,10 +60,12 @@ export class SavedTripsComponent implements OnInit {
       await this.savedTripsService.renameList(this.selectedList.id, newName);
       this.selectedList.name = newName;
       this.applyFilter();
-      this.messageService.notifyMessage('List renamed successfully', 'alert-success');
+      let msg = $localize`List renamed successfully`;
+      this.messageService.notifyMessage(msg, 'alert-success');
     } catch (error) {
       console.error('Error renaming list:', error);
-      this.messageService.notifyMessage('Failed to rename list', 'alert-danger');
+      let msg = $localize`Failed to rename list`;
+      this.messageService.notifyMessage(msg, 'alert-danger');
     }
   }
 
@@ -74,10 +76,12 @@ export class SavedTripsComponent implements OnInit {
       await this.savedTripsService.removeTripFromList(this.selectedList.id, tripTicker);
       this.selectedList.tripTickers = this.selectedList.tripTickers.filter(id => id !== tripTicker);
       this.selectedListTrips = this.selectedListTrips.filter(trip => trip.ticker !== tripTicker); // Update the displayed trips
-      this.messageService.notifyMessage('Trip removed from list', 'alert-success');
+      let msg = $localize`Trip removed from list successfully`;
+      this.messageService.notifyMessage(msg, 'alert-success');
     } catch (error) {
       console.error('Error removing trip from list:', error);
-      this.messageService.notifyMessage('Failed to remove trip from list', 'alert-danger');
+      let msg = $localize`Failed to remove trip from list`;
+      this.messageService.notifyMessage(msg, 'alert-danger');
     }
   }
 

@@ -18,12 +18,14 @@
           <div class="card-body">
             <div class="input-group mb-3">
               <input
+                i18n-placeholder
                 type="text"
                 class="form-control"
                 placeholder="Rename list"
                 #renameInput
               />
               <button
+                i18n
                 class="btn btn-primary"
                 (click)="renameSelectedList(renameInput.value); renameInput.value = ''"
               >
@@ -42,13 +44,14 @@
                   <small class="text-muted d-block">{{ trip.startDate | date: 'mediumDate' }}</small>
                 </div>
                 <button
+                  i18n
                   class="btn btn-sm btn-danger"
                   (click)="removeTripFromSelectedList(trip.ticker); $event.stopPropagation()"
                 >
                   Remove
                 </button>
               </li>
-              <li *ngIf="selectedListTrips.length === 0" class="list-group-item text-center text-muted">
+              <li i18n *ngIf="selectedListTrips.length === 0" class="list-group-item text-center text-muted">
                 No trips in this list.
               </li>
             </ul>
@@ -57,7 +60,7 @@
       </div>
       <ng-template #noSelection>
         <div class="alert alert-secondary text-center">
-          <p class="mb-0">Select a list to view its details.</p>
+          <p i18n class="mb-0">Select a list to view its details.</p>
         </div>
       </ng-template>
     </div>
