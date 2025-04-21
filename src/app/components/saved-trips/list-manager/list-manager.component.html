@@ -25,8 +25,10 @@
         <button
           i18n
           class="btn btn-success"
+          [disabled]="isCreating"
           (click)="createList(newListInput.value); newListInput.value = ''"
         >
+          <span *ngIf="isCreating" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
           Create
         </button>
       </div>
@@ -49,8 +51,10 @@
         <button
           i18n
           class="btn btn-danger"
+          [disabled]="isDeleting"
           (click)="deleteList(list)"
         >
+          <span *ngIf="isDeleting" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
           Delete
         </button>
       </li>
