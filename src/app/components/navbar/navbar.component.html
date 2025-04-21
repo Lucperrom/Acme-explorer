@@ -49,7 +49,7 @@
 
       <!-- Barra de búsqueda -->
 
-      <form class="form-inline d-flex my-2 my-lg-0 me-2" (submit)="onSearch($event)">
+      <form *ngIf="isTrips()" class="form-inline d-flex my-2 my-lg-0 me-2" (submit)="onSearch($event)">
         <input i18n-placeholder i18n-aria-label [(ngModel)]="searchTerm" name="search" class="form-control mr-2 me-1" type="search" placeholder="Search by ticker, title, or description" aria-label="Search">
         <button i18n class="btn btn-outline-success" type="submit">Search</button>
       </form>

@@ -28,7 +28,7 @@ export class NavbarComponent implements OnInit {
   }
    ngOnInit(): void {
     const alreadyReloaded = sessionStorage.getItem('reloaded');
-
+ 
     this.isDarkMode = localStorage.getItem('darkMode') === 'true';
     console.log(localStorage.getItem('darkMode'))
     this.authService.loggedInUserSubject.asObservable().subscribe((loggedIn: boolean) => {
@@ -40,6 +40,12 @@ export class NavbarComponent implements OnInit {
     });
     
   }
+
+  isTrips() : boolean{
+    
+    return this.router.url === '/trips';
+  }
+
   toggleDarkMode() {
     this.isDarkMode = !this.isDarkMode;
     localStorage.setItem('darkMode', this.isDarkMode.toString());
