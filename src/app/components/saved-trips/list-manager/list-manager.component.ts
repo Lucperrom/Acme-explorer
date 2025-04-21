@@ -49,10 +49,12 @@ export class ListManagerComponent implements OnInit {
     if (trimmedName) {
       try {
         await this.savedTripsService.createList(trimmedName);
-        this.messageService.notifyMessage('List created successfully!', 'alert-success'); // Success message
+        let msg = $localize`List created successfully!`;
+        this.messageService.notifyMessage(msg, 'alert-success'); // Success message
       } catch (error: any) {
         console.error('Error creating list:', error.message);
-        this.messageService.notifyMessage(`Failed to create list: ${error.message}`, 'alert-danger'); // Error message
+        let msg = $localize`Failed to create list`;
+        this.messageService.notifyMessage(msg, 'alert-danger'); // Error message
       }
     }
   }
@@ -60,10 +62,12 @@ export class ListManagerComponent implements OnInit {
   async deleteList(list: SavedList): Promise<void> {
     try {
       await this.savedTripsService.deleteList(list.id);
-      this.messageService.notifyMessage('List deleted successfully!', 'alert-success'); // Success message
+      let msg = $localize`List deleted successfully!`;
+      this.messageService.notifyMessage(msg, 'alert-success'); // Success message
     } catch (error) {
       console.error('Error deleting list:', error);
-      this.messageService.notifyMessage('Failed to delete the list.', 'alert-danger'); // Error message
+      let msg = $localize`Failed to delete the list`;
+      this.messageService.notifyMessage(msg, 'alert-danger'); // Error message
     }
   }
 

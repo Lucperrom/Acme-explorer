@@ -31,9 +31,11 @@ export class AddToListComponent {
   async onListSelected(list: SavedList): Promise<void> {
     try {
       await this.savedTripsService.addTripToList(list.id, this.tripTicker);
-      this.messageService.notifyMessage('Trip added to list successfully', 'alert-success');
+      let msg = $localize`Trip added to list successfully!`;
+      this.messageService.notifyMessage(msg, 'alert-success');
     } catch (error) {
-      this.messageService.notifyMessage(`Failed to add trip to list: ${error}`, 'alert-danger');
+      let msg = $localize`Failed to add trip to list`;
+      this.messageService.notifyMessage(msg, 'alert-danger');
     }
     this.closeModal();
   }

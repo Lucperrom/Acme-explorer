@@ -33,6 +33,7 @@ export class TripDisplayComponent implements OnInit {
   tripEditable: boolean = true;
   tripLoaded: boolean = false;
   isDarkMode = false;
+  loading: boolean = true; // Add loading property
   
   constructor(
     private tripService: TripService, 
@@ -51,26 +52,33 @@ export class TripDisplayComponent implements OnInit {
   }
 
   async ngOnInit(): Promise<void> {
-    this.isDarkMode = localStorage.getItem('darkMode') === 'true';
-    this.tripId = this.route.snapshot.paramMap.get('id') || '';
-    if (this.tripId) {
-      this.startCountdown();
-      this.trip = await this.tripService.getTripById(this.tripId);
-      this.sponsorhips = await this.sponsorshipService.getAllSponsorshipsByTripId(this.trip.ticker);
-      this.filteredSponsorships = this.sponsorhips.filter(sponsorhip => sponsorhip.payed);
-      this.trip.startDate = new Date(this.trip.startDate);
-      this.trip.endDate = new Date(this.trip.endDate);
-      this.isSpecial = this.trip.price < 100;
-      this.currentActor = this.authService.getCurrentActor();
-      
-      if (this.currentActor?.email && this.tripId) {
-        this.hasAppliedFlag = await this.applicationService.hasApplied(this.currentActor.email, this.tripId);
-        this.isManager = this.currentActor.role.toLowerCase() === 'manager';
+    this.loading = true; // Start loading
+    try {
+      this.isDarkMode = localStorage.getItem('darkMode') === 'true';
+      this.tripId = this.route.snapshot.paramMap.get('id') || '';
+      if (this.tripId) {
+        this.startCountdown();
+        this.trip = await this.tripService.getTripById(this.tripId);
+        this.sponsorhips = await this.sponsorshipService.getAllSponsorshipsByTripId(this.trip.ticker);
+        this.filteredSponsorships = this.sponsorhips.filter(sponsorhip => sponsorhip.payed);
+        this.trip.startDate = new Date(this.trip.startDate);
+        this.trip.endDate = new Date(this.trip.endDate);
+        this.isSpecial = this.trip.price < 100;
+        this.currentActor = this.authService.getCurrentActor();
+        
+        if (this.currentActor?.email && this.tripId) {
+          this.hasAppliedFlag = await this.applicationService.hasApplied(this.currentActor.email, this.tripId);
+          this.isManager = this.currentActor.role.toLowerCase() === 'manager';
+        }
+        
+        // Calcular si el viaje es cancelable al cargar la página
+        this.checkIfTripIsEditable(this.trip);
+        this.tripLoaded = true; // Indica que el viaje ha sido cargado
       }
-      
-      // Calcular si el viaje es cancelable al cargar la página
-      this.checkIfTripIsEditable(this.trip);
-      this.tripLoaded = true; // Indica que el viaje ha sido cargado
+    } catch (error) {
+      console.error('Error loading trip:', error);
+    } finally {
+      this.loading = false; // End loading
     }
   }
 

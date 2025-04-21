@@ -3,6 +3,7 @@
     <div class="mb-2">
       <div class="input-group">
         <input
+          i18n-placeholder
           type="text"
           class="form-control"
           placeholder="Search saved lists..."
@@ -14,6 +15,7 @@
     <div class="mb-2">
       <div class="input-group">
         <input
+          i18n-placeholder
           type="text"
           class="form-control"
           placeholder="Or create a new one"
@@ -21,6 +23,7 @@
           (keydown.enter)="createList(newListInput.value); newListInput.value = ''"
         />
         <button
+          i18n
           class="btn btn-success"
           (click)="createList(newListInput.value); newListInput.value = ''"
         >
@@ -44,6 +47,7 @@
           </span>
         </div>
         <button
+          i18n
           class="btn btn-danger"
           (click)="deleteList(list)"
         >
@@ -57,7 +61,8 @@
       class="btn btn-link mt-2"
       (click)="toggleShowAll()"
     >
-      {{ showAllLists ? 'Show Less' : 'Show More' }}
+      <ng-container i18n *ngIf="showAllLists">Show Less</ng-container>
+      <ng-container i18n *ngIf="!showAllLists">Show More</ng-container>
     </button>
   </div>
 </div>
