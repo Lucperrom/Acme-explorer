@@ -21,29 +21,37 @@
   <button i18n class="btn btn-danger" (click)="filterByStatus('rejected')">Rejected</button>
 </div>
 
-<div class="application-list">
-  <div *ngFor="let application of filteredApplications" class="card">
-    <div class="card-body">
-      <h5 class="card-title"><ng-container i18n>Explorer:</ng-container> {{ application.explorerId }}</h5>
-      <p class="card-text"><ng-container i18n>Status:</ng-container> {{ application.status.toLowerCase() | statusTranslate }}</p>
-      <p class="card-text"><ng-container i18n>Trip:</ng-container> {{ application.trip.title }}</p>
-      <p  class="card-text"><ng-container i18n>Price:</ng-container> {{ application.trip.price |currencyChange }}</p>
-      <p *ngIf="application.comments" class="card-text"><ng-container i18n>Comments:</ng-container> {{ application.comments }}</p>
-      <p *ngIf="application.rejectReason" class="card-text"><ng-container i18n>Reject reason:</ng-container> {{ application.rejectReason }}</p>
+<div class="accordion mt-4" id="applicationAccordion">
+  <div *ngFor="let application of filteredApplications; let i = index" class="accordion-item">
+    <h2 class="accordion-header" [id]="'heading' + i">
+      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+              [attr.data-bs-target]="'#collapse' + i" aria-expanded="false" [attr.aria-controls]="'collapse' + i">
+        <ng-container i18n>Explorer:</ng-container> {{ application.explorerId }} - 
+        <ng-container i18n>Status:</ng-container> {{ application.status.toLowerCase() | statusTranslate }}
+      </button>
+    </h2>
+    <div [id]="'collapse' + i" class="accordion-collapse collapse" [attr.aria-labelledby]="'heading' + i"
+         data-bs-parent="#applicationAccordion">
+      <div class="accordion-body">
+        <p><ng-container i18n>Trip:</ng-container> {{ application.trip.title }}</p>
+        <p><ng-container i18n>Price:</ng-container> {{ application.trip.price | currencyChange }}</p>
+        <p *ngIf="application.comments"><ng-container i18n>Comments:</ng-container> {{ application.comments }}</p>
+        <p *ngIf="application.rejectReason"><ng-container i18n>Reject reason:</ng-container> {{ application.rejectReason }}</p>
 
-      <!-- Botones para el rol manager -->
-      <ng-container *ngIf="actor.role.toLowerCase() === 'manager'">
-        <button i18n *ngIf="application.status?.trim().toLowerCase() === 'pending'" class="btn btn-success" (click)="acceptApplication(application.id)">Due</button>
-        <div class="reject-section" *ngIf="application.status?.trim().toLowerCase() === 'pending'">
-          <input i18n-placeholder type="text" [(ngModel)]="rejectReason" placeholder="Enter reject reason" class="form-control mb-2" />
-          <button i18n class="btn btn-danger" (click)="rejectApplication(application)">Reject</button>
-        </div>
-      </ng-container>
+        <!-- Manager buttons -->
+        <ng-container *ngIf="actor.role.toLowerCase() === 'manager'">
+          <button i18n *ngIf="application.status?.trim().toLowerCase() === 'pending'" class="btn btn-success" (click)="acceptApplication(application.id)">Due</button>
+          <div class="reject-section mt-2" *ngIf="application.status?.trim().toLowerCase() === 'pending'">
+            <input i18n-placeholder type="text" [(ngModel)]="rejectReason" placeholder="Enter reject reason" class="form-control mb-2" />
+            <button i18n class="btn btn-danger" (click)="rejectApplication(application)">Reject</button>
+          </div>
+        </ng-container>
 
-      <!-- Botón para el rol explorer -->
-      <ng-container *ngIf="actor.role.toLowerCase() === 'explorer'">
-        <button i18n *ngIf="application.status?.trim().toLowerCase() === 'due'" class="btn btn-warning" (click)="payForApplication(application)">Pay with PayPal</button>
-      </ng-container>
+        <!-- Explorer button -->
+        <ng-container *ngIf="actor.role.toLowerCase() === 'explorer'">
+          <button i18n *ngIf="application.status?.trim().toLowerCase() === 'due'" class="btn btn-warning" (click)="payForApplication(application)">Pay with PayPal</button>
+        </ng-container>
+      </div>
     </div>
   </div>
 </div>
