@@ -61,7 +61,7 @@
         <!-- Mensajes de advertencia para el manager -->
         <div *ngIf="currentActor?.role === 'MANAGER' && tripLoaded">
           <p i18n class="text-danger mt-2" *ngIf="!tripEditable">This trip can NOT be edited or deleted</p>
-          <p i18n class="text-danger" *ngIf="!isCancelable()">This trip can NOT be cancelled</p>
+          <p i18n class="text-danger" *ngIf="!tripCancelable">This trip can NOT be cancelled</p>
         </div>
       </div>
 
@@ -112,7 +112,7 @@
         </button>
 
         <button i18n class="btn btn-success me-2"
-                *ngIf="currentActor?.role === 'SPONSOR'"
+                *ngIf="currentActor?.role === 'SPONSOR' && !hasSponsorFlag"
                 (click)="sponsorTrip(trip.ticker)">
           Sponsor
         </button>
@@ -124,7 +124,7 @@
         </button>
 
         <button i18n class="btn btn-warning"
-                *ngIf="currentActor?.role === 'MANAGER' && isCancelable()"
+                *ngIf="currentActor?.role === 'MANAGER' && tripCancelable"
                 (click)="showCancelInput = true">
           Cancel
         </button>
@@ -170,6 +170,11 @@
     <div class="container mt-5" *ngIf="hasAppliedFlag && !isManager">
       <div i18n class="alert alert-success text-center">
         You have already applied for this trip
+      </div>
+    </div>
+    <div class="container mt-5" *ngIf="currentActor?.role === 'SPONSOR' && hasSponsorFlag">
+      <div i18n class="alert alert-success text-center">
+        You have already sponsor this trip
       </div>
     </div>
   </div>

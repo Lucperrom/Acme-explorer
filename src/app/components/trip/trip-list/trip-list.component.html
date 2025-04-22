@@ -46,8 +46,8 @@
                   <p class="text-danger mb-1" *ngIf="!isTripEditable(trip.id)">
                     <i class="bi bi-exclamation-circle-fill"></i> <ng-container i18n>This trip can not be edited or deleted</ng-container> 
                   </p>
-                  <p class="text-danger" *ngIf="!isCancelable(trip)">
-                    <i class="bi bi-x-circle-fill"></i> <ng-container i18n>This trip can not be cancelled</ng-container>
+                  <p class="text-danger mb-1" *ngIf="!isTripCancelable(trip.id)">
+                    <i class="bi bi-exclamation-circle-fill"></i> <ng-container i18n>This trip can not be cancelled</ng-container> 
                   </p>
                 </div>
               </div>

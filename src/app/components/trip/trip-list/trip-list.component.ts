@@ -21,6 +21,7 @@ export class TripListComponent implements OnInit {
   protected activeRole: string = 'anonymous';
   selectedFilter: string = 'myTrips'; // Default filter renamed to "My Trips"
   tripEditableMap: Map<string, boolean> = new Map();
+  tripCancelableMap: Map<string, boolean> = new Map();
   isDarkMode = false;
   loading: boolean = true; // Add loading property
 
@@ -45,19 +46,41 @@ export class TripListComponent implements OnInit {
     return this.tripEditableMap.get(tripId) || false;
   }
 
+  isTripCancelable(tripId: string): boolean {
+    return this.tripCancelableMap.get(tripId) || false;
+  }
+
   isHighlighted(trip: Trip): boolean {
      return trip.startDate.getTime() - new Date().getTime() < 7 * 24 * 60 * 60 * 1000;
   }
 
-  isCancelable(trip: Trip): boolean {
+  async isCancelable(trip: Trip): Promise<boolean> {
     const timeReason = trip.startDate.getTime() - new Date().getTime() > 7 * 24 * 60 * 60 * 1000;
-    return trip.cancelledReason === "" && timeReason;
+    if (!timeReason || trip.cancelledReason !== "") return false;
+
+    try {
+      const applications = await this.applicationService.getAllApplicationsByTripId(trip.id);
+      const hasAccepted = applications.some(app => 
+        app.status.toLowerCase() === 'accepted'
+      );
+      console.log("hasAccepted: ", hasAccepted);
+      return !hasAccepted;
+    } catch (error) {
+      console.error('Error checking cancelability:', error);
+      return false;
+    }
   }
 
   async checkIfTripIsEditable(trip: Trip) {
     const isEditable = await this.isEditable(trip);
     this.tripEditableMap.set(trip.id, isEditable);
     return isEditable;
+  }
+
+  async checkIfTripIsCancelable(trip: Trip) {
+    const isCancelable = await this.isCancelable(trip);
+    this.tripCancelableMap.set(trip.id, isCancelable);
+    return isCancelable;
   }
 
   async isEditable(trip: Trip) {
@@ -96,6 +119,7 @@ export class TripListComponent implements OnInit {
 
       for (const trip of this.trips) {
         await this.checkIfTripIsEditable(trip);
+        await this.checkIfTripIsCancelable(trip);
       }
 
       this.tripService.searchTerm$.subscribe(term => {

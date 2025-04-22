@@ -39,7 +39,7 @@
     <div class="form-group">
         <label i18n for="link">Additional information (link)</label>
         <input type="text" id="link" formControlName="link" required />
-        <div i18n *ngIf="sponsorshipForm.get('link')?.hasError('required') && sponsorshipForm.get('link')?.touched" class="text-danger">
+        <div i18n *ngIf="sponsorshipForm.get('link')?.hasError('required')" class="text-danger">
           This field is required 
         </div>
       </div>
@@ -68,7 +68,7 @@
   </div>
   
     <br>
-    <button i18n type="submit" [disabled]="sponsorshipForm.invalid">Save Sponsorship</button>
+    <button i18n type="submit">Save Sponsorship</button>
   
   </form>
 </div>
