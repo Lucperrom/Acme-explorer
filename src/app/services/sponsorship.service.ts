@@ -120,4 +120,27 @@ export class SponsorshipService {
       throw error;
     }
   }
+
+  async hasSponsor(sponsorId: (string | undefined), tripId: (string | null)): Promise<boolean> {
+    try {
+      const sponsorhipsRef = collection(this.firestore, 'sponsorships');
+      const querySnapshot = await getDocs(sponsorhipsRef);
+
+      for (const doc of querySnapshot.docs) {
+        const sponsorhip = doc.data();
+        
+        if (sponsorhip['sponsorId'] === sponsorId && sponsorhip['tripId'] === tripId) {
+          console.log("Checking sponsorhip: ", sponsorhip);
+        console.log("Sponsor ID: ", sponsorId);
+        console.log("Trip ID: ", tripId);
+          return true;
+        }
+      }
+
+      return false;
+    } catch (error) {
+      console.error("Error checking sponsorhip: ", error);
+      return false;
+    }
+  }
 }
