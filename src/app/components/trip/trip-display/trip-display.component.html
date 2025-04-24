@@ -22,6 +22,9 @@
       <!-- Contenido principal -->
       <div class="card-body">
         <h4 class="card-title text-center text-dark">{{ trip.title }}</h4>
+        <h6 class="card-subtitle mb-2 text-muted text-center">
+          <strong i18n>Ticker:</strong> {{ trip.ticker }}
+        </h6>
         <p *ngIf="trip.startDate" class="text-center text-info">
           <strong i18n>Starts in:</strong> {{ countdown }}
         </p>
@@ -135,7 +138,7 @@
 
         <!-- Input motivo de cancelación -->
         <div *ngIf="showCancelInput" class="mt-3">
-          <input type="text" class="form-control mb-2" placeholder="Motivo de cancelación" [(ngModel)]="cancelReason" required>
+          <input maxLength="150" type="text" class="form-control mb-2" placeholder="Motivo de cancelación" [(ngModel)]="cancelReason" required>
           <button i18n class="btn btn-danger w-100"
                   [disabled]="!cancelReason || cancelReason.trim() === ''"
                   (click)="cancelTrip(trip, cancelReason)">
@@ -147,7 +150,7 @@
 
 
     <!-- Formulario de aplicación -->
-    <div class="container mt-5" *ngIf="!hasAppliedFlag && !isManager">
+    <div class="container mt-5" *ngIf="!hasAppliedFlag && currentActor?.role?.toLowerCase() === 'explorer' && countdown !== 'The trip has already started' && countdown !== 'El viaje ya ha comenzado'">
       <div class="card mx-auto shadow-sm" style="max-width: 32rem;">
         <div class="card-header text-center">
           <h5 i18n class="mb-0">Apply for this trip</h5>
@@ -167,7 +170,7 @@
     </div>
 
     <!-- Mensaje si ya aplicó -->
-    <div class="container mt-5" *ngIf="hasAppliedFlag && !isManager">
+    <div class="container mt-5" *ngIf="hasAppliedFlag && currentActor?.role?.toLowerCase() === 'explorer'">
       <div i18n class="alert alert-success text-center">
         You have already applied for this trip
       </div>

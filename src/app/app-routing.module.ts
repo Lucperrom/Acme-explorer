@@ -35,7 +35,6 @@ const routes: Routes = [
   },
   { path: 'create-manager', component: CreateManagerComponent, canActivate: [AuthGuard,ActorRoleGuard], data: {expectedRole: 'administrator' }},
   { path: 'trips', children:[
-    { path: 'load', component: TripLoadComponent, canActivate: [AuthGuard,ActorRoleGuard], data: {expectedRole: 'administrator' }},
     {path: 'create', component: TripFormComponent, canActivate: [AuthGuard,ActorRoleGuard], data: {expectedRole: 'manager', mode: 'post' }},
     {path: ':id', component: TripDisplayComponent},
     {path: '', component: TripListComponent},

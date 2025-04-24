@@ -6,7 +6,7 @@
       </h2>
       <div class="form-group">
       <label i18n for="sponsorId">Sponsor email</label>
-      <input type="text" id="sponsorId" formControlName="sponsorId" required readonly />
+      <input maxlength="254" type="text" id="sponsorId" formControlName="sponsorId" required readonly />
     </div>
   
     <div class="form-group">
@@ -22,10 +22,10 @@
 
         <ng-template #showRate>
           <div *ngIf="currentActor?.role === 'ADMINISTRATOR' && !sponsorshipForm.get('payed')?.value; else showInput">
-            <input type="number" id="amount" formControlName="rate"/>
+            <input max="1000000" min="0" type="number" id="amount" formControlName="rate"/>
           </div>   
           <ng-template #showInput>
-            <input type="number" id="amount" formControlName="rate" readonly />
+            <input max="1000000" min="0" type="number" id="amount" formControlName="rate" readonly />
           </ng-template>
         </ng-template>
       </div>
@@ -38,7 +38,7 @@
   
     <div class="form-group">
         <label i18n for="link">Additional information (link)</label>
-        <input type="text" id="link" formControlName="link" required />
+        <input maxlength="150" type="text" id="link" formControlName="link" required />
         <div i18n *ngIf="sponsorshipForm.get('link')?.hasError('required')" class="text-danger">
           This field is required 
         </div>

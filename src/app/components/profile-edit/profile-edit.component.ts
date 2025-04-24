@@ -48,7 +48,7 @@ export class ProfileEditComponent implements OnInit {
       .then(res => {
         console.log('Update successful', res);
         this.messageService.removeMessage();
-        this.router.navigate(['/trips']);
+        location.reload();
       })
       .catch(err => {
         console.error('Update failed', err);

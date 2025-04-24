@@ -7,7 +7,7 @@
       <!-- NAME -->
       <div class="form-group has-danger">
         <label i18n for="name" class="form-control-label">Name:</label>
-        <input id="name" type="text" formControlName="name" class="form-control"
+        <input maxlength="55" id="name" type="text" formControlName="name" class="form-control"
                [ngClass]="{'is-invalid': profileForm.get('name')?.invalid && profileForm.get('name')?.touched}">
         <div i18n *ngIf="profileForm.get('name')?.invalid && profileForm.get('name')?.touched" class="text-danger mt-1">
           Name is required.
@@ -17,7 +17,7 @@
       <!-- SURNAME -->
       <div class="form-group has-danger">
         <label i18n for="surname" class="form-control-label">Surname:</label>
-        <input id="surname" type="text" formControlName="surname" class="form-control"
+        <input maxlength="55" id="surname" type="text" formControlName="surname" class="form-control"
                [ngClass]="{'is-invalid': profileForm.get('surname')?.invalid && profileForm.get('surname')?.touched}">
         <div i18n *ngIf="profileForm.get('surname')?.invalid && profileForm.get('surname')?.touched" class="text-danger mt-1">
           Surname is required.
@@ -27,13 +27,13 @@
       <!-- PHONE -->
       <div class="form-group has-danger">
         <label i18n for="phone" class="form-control-label">Phone (optional):</label>
-        <input id="phone" type="number" formControlName="phone" class="form-control">
+        <input maxlength="15" id="phone" type="number" formControlName="phone" class="form-control">
       </div>
   
       <!-- ADDRESS -->
       <div class="form-group has-danger">
         <label i18n for="address" class="form-control-label">Address (optional):</label>
-        <input id="address" type="text" formControlName="address" class="form-control">
+        <input maxlength="70" id="address" type="text" formControlName="address" class="form-control">
       </div>
   
       <br>
