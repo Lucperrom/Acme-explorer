@@ -191,10 +191,6 @@ export class SavedTripsService {
       throw new Error('Unable to retrieve your saved lists. Please try again later.');
     }
 
-    if (userLists.savedLists.some(list => list.name.toLowerCase() === name.toLowerCase())) {
-      console.warn('[SavedTripsService] A list with this name already exists.');
-      throw new Error('A list with this name already exists.');
-    }
 
     const newList: SavedList = {
       id: `list-${Date.now()}`,
