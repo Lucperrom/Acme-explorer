@@ -78,7 +78,10 @@ export class DashboardService {
       stdDeviation,
     };
   }
-
+  async getNumberOfApplications(): Promise<any> {
+    const applications = await this.applicationService.getAllApplications();
+      return applications.length;
+  }
   
   async getApplicationsByStatus(): Promise<any> {
     const applications = await this.applicationService.getAllApplications();
@@ -99,7 +102,7 @@ export class DashboardService {
     const totalMin = validFinders.reduce((sum, f) => sum + Number(f.minimumPrice), 0);
     const totalMax = validFinders.reduce((sum, f) => sum + Number(f.maximumPrice), 0);
 
-    const count = validFinders.length || 1; // evitar división por cero
+    const count = validFinders.length || 1;
 
     return {
       averageMin: totalMin / count,

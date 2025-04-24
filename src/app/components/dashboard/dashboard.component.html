@@ -30,7 +30,7 @@
       <h2 i18n class="section-title">Applications by Status</h2>
       <ul class="status-list">
         <li class="status-item" *ngFor="let status of applicationsByStatus | keyvalue">
-          {{ status.key }}: {{ status.value }}
+          {{ status.key }}: {{ status.value }} / {{totalApplications}}
         </li>
       </ul>
     </section>

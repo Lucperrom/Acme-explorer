@@ -35,8 +35,14 @@
             />
             <!-- Mensaje de error -->
             <div *ngIf="spendingForm.get('selectedPeriod')?.touched && spendingForm.get('selectedPeriod')?.invalid" class="text-danger">
-              <small i18n>Period is required.</small>
+              <small *ngIf="spendingForm.get('selectedPeriod')?.errors?.['required']" i18n>
+                Period is required.
+              </small>
+              <small *ngIf="spendingForm.get('selectedPeriod')?.errors?.['pattern']" i18n>
+                Invalid format. Use M01–M36 or Y01–Y03.
+              </small>
             </div>
+            
           </div>
   
           <!-- Search Button -->
@@ -72,8 +78,15 @@
             />
             <!-- Mensaje de error -->
             <div *ngIf="explorerQueryForm.get('queryPeriod')?.touched && explorerQueryForm.get('queryPeriod')?.invalid" class="text-danger">
-              <small>Period is required.</small>
+              <small *ngIf="explorerQueryForm.get('queryPeriod')?.errors?.['required']">
+                Period is required.
+              </small>
+              <small *ngIf="explorerQueryForm.get('queryPeriod')?.errors?.['pattern']">
+                Invalid format. Use M01–M36 or Y01–Y03.
+              </small>
             </div>
+
+            
           </div>
   
           <!-- Operator Selection -->

@@ -42,7 +42,6 @@ export class NavbarComponent implements OnInit {
   }
 
   isTrips() : boolean{
-    
     return this.router.url === '/trips';
   }
 

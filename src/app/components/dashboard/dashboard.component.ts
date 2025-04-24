@@ -14,6 +14,7 @@ export class DashboardComponent implements OnInit {
   isDarkMode = false;
   averagePriceRange: { averageMin: number, averageMax: number } = { averageMin: 0, averageMax: 0 };
   topKeywords: { [key: string]: number } = {};
+  totalApplications: number = 0;
 
 
   constructor(private dashboardService: DashboardService) { }
@@ -26,6 +27,7 @@ export class DashboardComponent implements OnInit {
     this.loadApplicationsByStatus();
     this.loadAveragePriceRange();
     this.loadTopKeywords();
+    this.loadNumberOfApplications();
 
   }
 
@@ -47,6 +49,10 @@ export class DashboardComponent implements OnInit {
   
   private async loadTopKeywords(): Promise<void> {
     this.topKeywords = await this.dashboardService.getTopKeywordsFromFinders();
+  }
+
+  private async loadNumberOfApplications(): Promise<void>{
+    this.totalApplications = await this.dashboardService.getNumberOfApplications();
   }
 
 }

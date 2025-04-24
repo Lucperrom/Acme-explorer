@@ -26,15 +26,20 @@ export class CubeComponent implements OnInit {
 
     this.spendingForm = this.fb.group({
       selectedExplorer: ['', Validators.required],
-      selectedPeriod: ['', Validators.required],
+      selectedPeriod: ['',[Validators.required, Validators.pattern(/^(M(0[1-9]|[1-2][0-9]|3[0-6])|Y(0[1-3]))$/)]
+      ]
     });
+    
 
     this.explorerQueryForm = this.fb.group({
-      queryPeriod: ['', Validators.required],
+      queryPeriod: [
+        '',
+        [Validators.required, Validators.pattern(/^(M(0[1-9]|[1-2][0-9]|3[0-6])|Y(0[1-3]))$/)]
+      ],
       queryOperator: ['', Validators.required],
       queryValue: [0, [Validators.required, Validators.min(1)]],
     });
-
+    
     this.calculateCube();
   }
 
@@ -55,25 +60,55 @@ export class CubeComponent implements OnInit {
 
 
   getAmountSpent(): void {
-    if (this.spendingForm.invalid) {
-      this.messageService.notifyMessage('You must indicate an explorer id and a period of time', 'alert-danger');
-      return; 
-    }
+    const periodControl = this.spendingForm.get('selectedPeriod');
+    const explorerControl = this.spendingForm.get('selectedExplorer');
 
-    const { selectedExplorer, selectedPeriod } = this.spendingForm.value;
+    if (this.spendingForm.invalid) {
+      if (explorerControl?.invalid) {
+        this.messageService.notifyMessage('You must select an explorer ID.', 'alert-danger');
+      } else if (periodControl?.errors?.['pattern']) {
+        this.messageService.notifyMessage('Invalid period format. Use M01–M36 or Y01–Y03.', 'alert-danger');
+      } else {
+        this.messageService.notifyMessage('You must indicate an explorer ID and a valid period.', 'alert-danger');
+      }
+  
+      this.spendingForm.markAllAsTouched();
+      return;
+    }
+  
+    const selectedExplorer = explorerControl?.value;
+    const selectedPeriod = periodControl?.value;
+  
     this.amountResult = this.cubeService.getMoneyByExplorerAndPeriod(selectedExplorer, selectedPeriod);
   }
+  
 
   getExplorersByCondition(): void {
+    const periodControl = this.explorerQueryForm.get('queryPeriod');
+    const operatorControl = this.explorerQueryForm.get('queryOperator');
+    const valueControl = this.explorerQueryForm.get('queryValue');
+  
     if (this.explorerQueryForm.invalid) {
-      this.messageService.notifyMessage('You must indicate a period of time, operator, and a sum of money', 'alert-danger');
-      return; 
+      if (periodControl?.errors?.['required']) {
+        this.messageService.notifyMessage('You must enter a period.', 'alert-danger');
+      } else if (periodControl?.errors?.['pattern']) {
+        this.messageService.notifyMessage('Invalid period format. Use M01–M36 or Y01–Y03.', 'alert-danger');
+      } else if (operatorControl?.invalid) {
+        this.messageService.notifyMessage('You must select a comparison operator.', 'alert-danger');
+      } else if (valueControl?.errors?.['required']) {
+        this.messageService.notifyMessage('You must enter an amount of money.', 'alert-danger');
+      } else if (valueControl?.errors?.['min']) {
+        this.messageService.notifyMessage('The minimum value allowed is 1.', 'alert-danger');
+      } else {
+        this.messageService.notifyMessage('You must complete all fields with valid values.', 'alert-danger');
+      }
+  
+      this.explorerQueryForm.markAllAsTouched();
+      return;
     }
+  
     const { queryPeriod, queryOperator, queryValue } = this.explorerQueryForm.value;
-    console.log("query period" + queryPeriod);
-    console.log("query operator" + queryOperator);
-    console.log("query value" + queryValue);
-
     this.explorerResults = this.cubeService.getExplorersByCondition(queryPeriod, queryOperator, queryValue);
   }
+  
 }
