@@ -35,10 +35,10 @@ export class TripListComponent implements OnInit {
   }
 
   isVisible(trip: Trip) {
-    if(this.activeRole === 'MANAGER'){
-      return !trip.deleted;
-    }else{
-      return !trip.deleted && trip.cancelledReason === "" && !trip.deleted && trip.startDate.getTime() - new Date().getTime() > 0;
+    if (this.activeRole === 'MANAGER') {
+        return !trip.deleted;
+    } else {
+        return !trip.deleted && trip.getTripStatus() !== 'canceled' && trip.getTripStatus() !== 'deleted';
     }
   }
 
@@ -48,10 +48,6 @@ export class TripListComponent implements OnInit {
 
   isTripCancelable(tripId: string): boolean {
     return this.tripCancelableMap.get(tripId) || false;
-  }
-
-  isHighlighted(trip: Trip): boolean {
-     return trip.startDate.getTime() - new Date().getTime() < 7 * 24 * 60 * 60 * 1000;
   }
 
   async isCancelable(trip: Trip): Promise<boolean> {

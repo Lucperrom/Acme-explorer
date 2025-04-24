@@ -23,7 +23,10 @@
       <div class="row">
         <ng-container *ngFor="let trip of filteredTrips; let i = index">
           <div class="col-md-6 col-lg-4 mb-4" *ngIf="isVisible(trip)">
-            <div class="card h-100 shadow-sm rounded overflow-hidden" (click)="goToTrip(trip.id)" style="cursor: pointer;" [ngClass]="{ 'highlight-non-cancelable': isHighlighted(trip) }">
+            <div class="card h-100 shadow-sm rounded overflow-hidden" 
+                 (click)="goToTrip(trip.id)" 
+                 style="cursor: pointer;" 
+                 [ngClass]="trip.getTripStatus()">
               <!-- Imágenes del viaje -->
               <div class="card-img-top p-0">
                 <ngb-carousel *ngIf="trip.pictures?.length" (click)="$event.stopPropagation()">

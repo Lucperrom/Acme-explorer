@@ -85,23 +85,6 @@ export class SavedTripsComponent implements OnInit {
     }
   }
 
-  getTripStatus(trip: Trip): string {
-    const currentDate = new Date();
-    const tripStartDate = new Date(trip.startDate);
-    const tripEndDate = new Date(trip.endDate);
-
-    if (trip.deleted) {
-      return 'deleted';
-    } else if (trip.cancelledReason && trip.cancelledReason !== '') {
-      return 'canceled';
-    } else if (tripEndDate < currentDate) {
-      return 'expired';
-    } else if ((tripStartDate.getTime() - currentDate.getTime()) / (1000 * 60 * 60 * 24) <= 7) {
-      return 'highlighted';
-    } else {
-      return '';
-    }
-  }
 
   async updateActiveTripList(): Promise<any[]> {
     if (!this.selectedList) {

@@ -37,7 +37,7 @@
               <li
                 *ngFor="let trip of selectedListTrips"
                 class="list-group-item d-flex justify-content-between align-items-center"
-                [ngClass]="getTripStatus(trip)"
+                [ngClass]="trip.getTripStatus()"
                 (click)="navigateToTrip(trip.id)"
               >
                 <div>

@@ -80,4 +80,22 @@ export class Trip extends Entity {
     public set price(value: number) { this._price = value; }
     public set createdAt(value: Date) { this._createdAt = value; } // Setter for createdAt
     public set location(value: Location) { this._location = value; } // Setter for location
+
+    public getTripStatus(): string {
+        const currentDate = new Date();
+        const tripStartDate = new Date(this.startDate);
+        const tripEndDate = new Date(this.endDate);
+
+        if (this.deleted) {
+            return 'deleted';
+        } else if (this.cancelledReason && this.cancelledReason !== '') {
+            return 'canceled';
+        } else if (tripEndDate < currentDate) {
+            return 'expired';
+        } else if ((tripStartDate.getTime() - currentDate.getTime()) / (1000 * 60 * 60 * 24) <= 7) {
+            return 'highlighted';
+        } else {
+            return '';
+        }
+    }
 }
