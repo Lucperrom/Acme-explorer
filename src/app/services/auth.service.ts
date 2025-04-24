@@ -75,6 +75,10 @@ export class AuthService {
     return ['EXPLORER', 'ADMINISTRATOR', 'MANAGER', 'SPONSOR'];
   }
 
+  getRolesToSingUp(): string[] {
+    return ['EXPLORER', 'SPONSOR'];
+  }
+
   async login(email: string, password: string) {
     const response = await signInWithEmailAndPassword(this.auth, email, password);
     console.log(response);

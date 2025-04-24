@@ -16,7 +16,7 @@ export class RegisterComponent implements OnInit {
 
 
   constructor(private authService: AuthService, private fb: FormBuilder, private router: Router, private messageService: MessageService) { // Inject Router
-    this.roleList = this.authService.getRoles();
+    this.roleList = this.authService.getRolesToSingUp();
     this.createForm();
   }
 
