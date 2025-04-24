@@ -13,7 +13,7 @@
     <div class="row g-3">
       <div class="col-md-6" *ngFor="let field of ['title', 'description', 'startDate', 'endDate']">
         <label [for]="field" class="form-label">{{ field | fieldTranslation }}:</label>
-        <input [id]="field" [type]="field.includes('Date') ? 'date' : 'text'" class="form-control"
+        <input [maxLength]="field === 'title' ? '100' : field === 'description' ? '300' : ''" [id]="field" [type]="field.includes('Date') ? 'date' : 'text'" class="form-control"
           [formControlName]="field" />
         <div class="text-danger small mt-1" *ngIf="tripForm.get(field)?.invalid && tripForm.get(field)?.touched">
           <div *ngFor="let err of tripForm.get(field)?.errors | keyvalue">
@@ -25,7 +25,7 @@
 
     <div *ngIf="isEditMode" class="mt-3">
       <label i18n for="cancelledReason" class="form-label">Cancel Reason:</label>
-      <input id="cancelledReason" type="text" class="form-control" formControlName="cancelledReason" />
+      <input maxLength="150" id="cancelledReason" type="text" class="form-control" formControlName="cancelledReason" />
       <div class="text-danger small mt-1" *ngIf="tripForm.get('cancelledReason')?.invalid && tripForm.get('cancelledReason')?.touched">
         <div *ngFor="let err of tripForm.get('cancelledReason')?.errors | keyvalue">
           {{ err.key }} error.
@@ -50,7 +50,7 @@
               <h6 class="card-title"><ng-container i18n>Stage</ng-container> {{ i + 1 }}</h6>
               <div *ngFor="let field of ['title', 'description', 'price']" class="mb-2">
                 <label [for]="field + i" class="form-label">{{ field | fieldTranslation }}:</label>
-                <input [id]="field + i" [type]="field === 'price' ? 'number' : 'text'" class="form-control"
+                <input [max]="field === 'price' ? '1000000' : ''" [maxLength]="field === 'title' ? '100' : field === 'description' ? '300' : ''" [id]="field + i" [type]="field === 'price' ? 'number' : 'text'" class="form-control"
                   [formControlName]="field" />
                 <div class="text-danger small mt-1" *ngIf="stage.get(field)?.invalid && stage.get(field)?.touched">
                   <div *ngFor="let err of stage.get(field)?.errors | keyvalue">
@@ -77,7 +77,7 @@
       <label i18n class="form-label">Requirements:</label>
       <div formArrayName="requirements">
         <div *ngFor="let req of requirements.controls; let i = index" class="input-group mb-2">
-          <input [formControlName]="i" type="text" class="form-control" />
+          <input maxlength="100" [formControlName]="i" type="text" class="form-control" />
           <button type="button" class="btn btn-danger" (click)="removeRequirement(i)" *ngIf="requirements.length > 1">-</button>
         </div>
         <div i18n class="text-danger small"
@@ -114,7 +114,7 @@
     <div class="mt-4">
       <label i18n for="location" class="form-label">Location:</label>
       <div class="d-flex mb-2">
-        <input i18n-placeholder type="text" id="search" class="form-control me-2"
+        <input maxlength="100" i18n-placeholder type="text" id="search" class="form-control me-2"
           placeholder="Search for a location"
           formControlName="searchQuery"
           (keydown.enter)="onSearch($event)" />
@@ -127,7 +127,7 @@
 
       <div [formGroupName]="'location'" class="mb-3">
         <label i18n for="address" class="form-label">Address:</label>
-        <input type="text" formControlName="address" readonly class="form-control mb-2"/>
+        <input maxlength="100" type="text" formControlName="address" readonly class="form-control mb-2"/>
         <input type="hidden" formControlName="latitude" />
         <input type="hidden" formControlName="longitude" />
       </div>

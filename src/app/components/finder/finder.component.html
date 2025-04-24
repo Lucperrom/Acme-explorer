@@ -6,17 +6,17 @@
         <div class="row g-3">
           <div class="col-md-6">
             <label i18n for="keyWord" class="form-label">Keyword:</label>
-            <input id="keyWord" type="text" class="form-control" formControlName="keyWord" />
+            <input maxlength="30" id="keyWord" type="text" class="form-control" formControlName="keyWord" />
           </div>
   
           <div class="col-md-3">
             <label i18n for="minimumPrice" class="form-label">Min Price:</label>
-            <input id="minimumPrice" type="number" class="form-control" formControlName="minimumPrice" />
+            <input max="1000000" min="0" id="minimumPrice" type="number" class="form-control" formControlName="minimumPrice" />
           </div>
   
           <div class="col-md-3">
             <label i18n for="maximumPrice" class="form-label">Max Price:</label>
-            <input id="maximumPrice" type="number" class="form-control" formControlName="maximumPrice" />
+            <input max="1000000" min="0" id="maximumPrice" type="number" class="form-control" formControlName="maximumPrice" />
           </div>
   
           <div class="col-md-6">

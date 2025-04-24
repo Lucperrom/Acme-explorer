@@ -15,6 +15,8 @@ export class ListManagerComponent implements OnInit {
   searchTerm: string = '';
   showAllLists: boolean = false;
   isDarkMode: boolean = false;
+  isCreating: boolean = false;
+  isDeleting: boolean = false;
 
   constructor(
     private savedTripsService: SavedTripsService,
@@ -47,6 +49,7 @@ export class ListManagerComponent implements OnInit {
   async createList(newListName: string): Promise<void> {
     const trimmedName = newListName.trim();
     if (trimmedName) {
+      this.isCreating = true; // Start spinner
       try {
         await this.savedTripsService.createList(trimmedName);
         let msg = $localize`List created successfully!`;
@@ -55,11 +58,14 @@ export class ListManagerComponent implements OnInit {
         console.error('Error creating list:', error.message);
         let msg = $localize`Failed to create list`;
         this.messageService.notifyMessage(msg, 'alert-danger'); // Error message
+      } finally {
+        this.isCreating = false; // Stop spinner
       }
     }
   }
 
   async deleteList(list: SavedList): Promise<void> {
+    this.isDeleting = true; // Start spinner
     try {
       await this.savedTripsService.deleteList(list.id);
       let msg = $localize`List deleted successfully!`;
@@ -68,6 +74,8 @@ export class ListManagerComponent implements OnInit {
       console.error('Error deleting list:', error);
       let msg = $localize`Failed to delete the list`;
       this.messageService.notifyMessage(msg, 'alert-danger'); // Error message
+    } finally {
+      this.isDeleting = false; // Stop spinner
     }
   }
 

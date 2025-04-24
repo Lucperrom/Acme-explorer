@@ -27,10 +27,12 @@ export class TripDisplayComponent implements OnInit {
   protected filteredSponsorships: Sponsorship[] = [];
   showCancelInput = false;
   hasAppliedFlag = false;
+  hasSponsorFlag = false;
   isManager = false;
   cancelReason = "";
   countdown: string = '';
   tripEditable: boolean = true;
+  tripCancelable: boolean = true;
   tripLoaded: boolean = false;
   isDarkMode = false;
   loading: boolean = true; // Add loading property
@@ -70,9 +72,13 @@ export class TripDisplayComponent implements OnInit {
           this.hasAppliedFlag = await this.applicationService.hasApplied(this.currentActor.email, this.tripId);
           this.isManager = this.currentActor.role.toLowerCase() === 'manager';
         }
+        if (this.currentActor?.email && this.trip.ticker) {
+          this.hasSponsorFlag = await this.sponsorshipService.hasSponsor(this.currentActor.email, this.trip.ticker);
+        }
         
         // Calcular si el viaje es cancelable al cargar la página
         this.checkIfTripIsEditable(this.trip);
+        this.checkIfTripIsCancelable(this.trip);
         this.tripLoaded = true; // Indica que el viaje ha sido cargado
       }
     } catch (error) {
@@ -108,6 +114,10 @@ export class TripDisplayComponent implements OnInit {
     this.tripEditable = await this.isEditable(trip);
   }
 
+  async checkIfTripIsCancelable(trip: Trip) {
+    this.tripCancelable = await this.isCancelable(trip);
+  }
+
   cancelTrip(trip: Trip, reason: string) {
     const plainTrip = {
       cancelledReason: reason
@@ -125,9 +135,21 @@ export class TripDisplayComponent implements OnInit {
   }
   
 
-  isCancelable() {
-    const timeReason = this.trip.startDate.getTime() - new Date().getTime() > 7 * 24 * 60 * 60 * 1000;
-    return this.trip.cancelledReason === "" && timeReason;
+  async isCancelable(trip: Trip): Promise<boolean>{
+    const timeReason = trip.startDate.getTime() - new Date().getTime() > 7 * 24 * 60 * 60 * 1000;
+    if (!timeReason || trip.cancelledReason !== "") return false;
+
+    try {
+      const applications = await this.applicationService.getAllApplicationsByTripId(trip.id);
+      const hasAccepted = applications.some(app => 
+        app.status.toLowerCase() === 'accepted'
+      );
+      console.log("hasAccepted: ", hasAccepted);
+      return !hasAccepted;
+    } catch (error) {
+      console.error('Error checking cancelability:', error);
+      return false;
+    }
   }
   
   getFontColor() {
@@ -227,6 +249,10 @@ export class TripDisplayComponent implements OnInit {
 
   hasApplied() {
     return this.applicationService.hasApplied(this.currentActor?.email, this.tripId);
+  }
+
+  hasSponsor() {
+    return this.sponsorshipService.hasSponsor(this.currentActor?.email, this.trip.ticker);
   }
 
   sponsorTrip(tripTicker: string) {
