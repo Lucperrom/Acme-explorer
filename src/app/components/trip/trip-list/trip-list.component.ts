@@ -42,59 +42,59 @@ export class TripListComponent implements OnInit {
     }
   }
 
-  isTripEditable(tripId: string): boolean {
-    return this.tripEditableMap.get(tripId) || false;
-  }
+  // isTripEditable(tripId: string): boolean {
+  //   return this.tripEditableMap.get(tripId) || false;
+  // }
 
-  isTripCancelable(tripId: string): boolean {
-    return this.tripCancelableMap.get(tripId) || false;
-  }
+  // isTripCancelable(tripId: string): boolean {
+  //   return this.tripCancelableMap.get(tripId) || false;
+  // }
 
-  async isCancelable(trip: Trip): Promise<boolean> {
-    const timeReason = trip.startDate.getTime() - new Date().getTime() > 7 * 24 * 60 * 60 * 1000;
-    if (!timeReason || trip.cancelledReason !== "") return false;
+  // async isCancelable(trip: Trip): Promise<boolean> {
+  //   const timeReason = trip.startDate.getTime() - new Date().getTime() > 7 * 24 * 60 * 60 * 1000;
+  //   if (!timeReason || trip.cancelledReason !== "") return false;
 
-    try {
-      const applications = await this.applicationService.getAllApplicationsByTripId(trip.id);
-      const hasAccepted = applications.some(app => 
-        app.status.toLowerCase() === 'accepted'
-      );
-      console.log("hasAccepted: ", hasAccepted);
-      return !hasAccepted;
-    } catch (error) {
-      console.error('Error checking cancelability:', error);
-      return false;
-    }
-  }
+  //   try {
+  //     const applications = await this.applicationService.getAllApplicationsByTripId(trip.id);
+  //     const hasAccepted = applications.some(app => 
+  //       app.status.toLowerCase() === 'accepted'
+  //     );
+  //     console.log("hasAccepted: ", hasAccepted);
+  //     return !hasAccepted;
+  //   } catch (error) {
+  //     console.error('Error checking cancelability:', error);
+  //     return false;
+  //   }
+  // }
 
-  async checkIfTripIsEditable(trip: Trip) {
-    const isEditable = await this.isEditable(trip);
-    this.tripEditableMap.set(trip.id, isEditable);
-    return isEditable;
-  }
+  // async checkIfTripIsEditable(trip: Trip) {
+  //   const isEditable = await this.isEditable(trip);
+  //   this.tripEditableMap.set(trip.id, isEditable);
+  //   return isEditable;
+  // }
 
-  async checkIfTripIsCancelable(trip: Trip) {
-    const isCancelable = await this.isCancelable(trip);
-    this.tripCancelableMap.set(trip.id, isCancelable);
-    return isCancelable;
-  }
+  // async checkIfTripIsCancelable(trip: Trip) {
+  //   const isCancelable = await this.isCancelable(trip);
+  //   this.tripCancelableMap.set(trip.id, isCancelable);
+  //   return isCancelable;
+  // }
 
-  async isEditable(trip: Trip) {
-    const timeReason = trip.startDate.getTime() - new Date().getTime() > 10 * 24 * 60 * 60 * 1000
-    if (!timeReason) return false;
+  // async isEditable(trip: Trip) {
+  //   const timeReason = trip.startDate.getTime() - new Date().getTime() > 10 * 24 * 60 * 60 * 1000
+  //   if (!timeReason) return false;
 
-    try {
-      const applications = await this.applicationService.getAllApplicationsByTripId(trip.id);
-      const hasAccepted = applications.some(app => 
-        app.status.toLowerCase() === 'accepted'
-      );
-      console.log("hasAccepted: ", hasAccepted);
-      return !hasAccepted;
-    } catch (error) {
-      console.error('Error checking editability:', error);
-      return false;
-    }
-  }
+  //   try {
+  //     const applications = await this.applicationService.getAllApplicationsByTripId(trip.id);
+  //     const hasAccepted = applications.some(app => 
+  //       app.status.toLowerCase() === 'accepted'
+  //     );
+  //     console.log("hasAccepted: ", hasAccepted);
+  //     return !hasAccepted;
+  //   } catch (error) {
+  //     console.error('Error checking editability:', error);
+  //     return false;
+  //   }
+  // }
 
   async ngOnInit(): Promise<void> {
     this.loading = true; // Start loading
@@ -113,10 +113,11 @@ export class TripListComponent implements OnInit {
 
       this.filteredTrips = [...this.trips];
 
-      for (const trip of this.trips) {
-        await this.checkIfTripIsEditable(trip);
-        await this.checkIfTripIsCancelable(trip);
-      }
+      // Too expensive in terms of performance
+      // for (const trip of this.trips) {
+      //   await this.checkIfTripIsEditable(trip);
+      //   await this.checkIfTripIsCancelable(trip);
+      // }
 
       this.tripService.searchTerm$.subscribe(term => {
         if (this.selectedFilter === 'myTrips') {

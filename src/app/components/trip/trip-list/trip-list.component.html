@@ -46,14 +46,14 @@
                 <p class="mb-1s text-secondary"><i class="bi bi-calendar-event text-success"></i> <strong i18n> Dates:</strong> {{ trip.startDate | date:'d MMMM yyyy'}} - {{ trip.endDate | date:'d MMMM yyyy' }}</p>
     
                 <!-- Mensajes para el MANAGER -->
-                <div *ngIf="currentActor?.role === 'MANAGER'">
+                <!-- <div *ngIf="currentActor?.role === 'MANAGER'">
                   <p class="text-danger mb-1" *ngIf="!isTripEditable(trip.id)">
                     <i class="bi bi-exclamation-circle-fill"></i> <ng-container i18n>This trip can not be edited or deleted</ng-container> 
                   </p>
                   <p class="text-danger mb-1" *ngIf="!isTripCancelable(trip.id)">
                     <i class="bi bi-exclamation-circle-fill"></i> <ng-container i18n>This trip can not be cancelled</ng-container> 
                   </p>
-                </div>
+                </div> -->
               </div>
             </div>
           </div>
