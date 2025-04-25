@@ -34,9 +34,19 @@ export class RegisterComponent implements OnInit {
   }
 
   onRegister() {
+    // Mark all fields as touched to trigger validation display
+    this.markFormGroupAsTouched(this.registrationForm);
+    
     if (this.registrationForm.invalid) {
       let msg = $localize `Form is invalid`;
       this.messageService.notifyMessage(msg, 'alert-danger');
+      console.log('Invalid fields:', this.registrationForm.errors, this.registrationForm.value);
+      Object.keys(this.registrationForm.controls).forEach(key => {
+        const controlErrors = this.registrationForm.get(key)?.errors;
+        if (controlErrors) {
+          console.log(`Field "${key}" errors:`, controlErrors);
+        }
+      });
       return;
     } else {
       this.authService.signUp(this.registrationForm.value)
@@ -63,6 +73,13 @@ export class RegisterComponent implements OnInit {
       });
     }
     
+  }
+
+  // Helper method to mark all controls in a form group as touched
+  private markFormGroupAsTouched(formGroup: FormGroup) {
+    Object.values(formGroup.controls).forEach(control => {
+      control.markAsTouched();
+    });
   }
 
   ngOnInit(): void {

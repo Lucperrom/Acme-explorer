@@ -145,26 +145,75 @@ export class TripFormComponent implements AfterViewInit, OnInit {
   }
 
   prefillForm(): void {
+    // Calculate dates (starting next month, ending a week later)
+    const startDate = new Date();
+    startDate.setMonth(startDate.getMonth() + 6); // In 6 months
+    const startDateString = startDate.toISOString().split('T')[0];
+    
+    const endDate = new Date(startDate);
+    endDate.setDate(endDate.getDate() + 7); // One week after start date
+    const endDateString = endDate.toISOString().split('T')[0];
+    
+    // Prefill main form fields with realistic data
     this.tripForm.patchValue({
-      title: 'Sample Trip Title',
-      description: 'This is a sample trip description.',
-      startDate: '2027-01-01',
-      endDate: '2027-12-31'
+      title: 'Explore the Costa Brava Coastline',
+      description: 'Discover the breathtaking beauty of the Costa Brava with this week-long adventure. We will explore hidden coves, picturesque fishing villages, and enjoy the Mediterranean cuisine. Perfect for nature lovers and photography enthusiasts alike. The trip includes guided hiking tours, snorkeling sessions, and authentic local experiences.',
+      startDate: startDateString,
+      endDate: endDateString
     });
 
+    // Clear and add realistic stages
     const stagesArray = this.tripForm.get('stages') as FormArray;
     stagesArray.clear();
+    
     stagesArray.push(new FormGroup({
-      title: new FormControl('Stage 1', Validators.required),
-      description: new FormControl('Description for Stage 1', Validators.required),
-      price: new FormControl(100, [Validators.required, Validators.min(0)])
+      title: new FormControl('Barcelona to Blanes', Validators.required),
+      description: new FormControl('Departure from Barcelona to Blanes. Visit to the Marimurtra Botanical Garden and welcome dinner at a local seafood restaurant.', Validators.required),
+      price: new FormControl(150, [Validators.required, Validators.min(0)])
+    }));
+    
+    stagesArray.push(new FormGroup({
+      title: new FormControl('Blanes to Tossa de Mar', Validators.required),
+      description: new FormControl('Coastal hike from Blanes to Tossa de Mar with spectacular views. Visit to the ancient walled town and Vila Vella historic site.', Validators.required),
+      price: new FormControl(120, [Validators.required, Validators.min(0)])
+    }));
+    
+    stagesArray.push(new FormGroup({
+      title: new FormControl('Tossa de Mar to Sant Feliu de Guíxols', Validators.required),
+      description: new FormControl('Snorkeling experience in crystal clear waters and visit to the Monastery of Sant Feliu. Evening free for shopping and exploration.', Validators.required),
+      price: new FormControl(180, [Validators.required, Validators.min(0)])
     }));
 
+    // Clear and add realistic requirements
     const requirementsArray = this.tripForm.get('requirements') as FormArray;
     requirementsArray.clear();
-    requirementsArray.push(new FormControl('Requirement 1', Validators.required));
+    
+    requirementsArray.push(new FormControl('Comfortable walking shoes for coastal hiking', Validators.required));
+    requirementsArray.push(new FormControl('Swimwear and beach towel', Validators.required));
+    requirementsArray.push(new FormControl('Sunscreen and hat for sun protection', Validators.required));
+    requirementsArray.push(new FormControl('Light rain jacket (just in case)', Validators.required));
+    
+    // Add Barcelona as default location
+    this.handleDefaultLocation();
   }
 
+  // Helper method to set a default location for prefill (Barcelona)
+  private async handleDefaultLocation(): Promise<void> {
+    // Barcelona coordinates
+    const latitude = 41.3851;
+    const longitude = 2.1734;
+    
+    try {
+      // Update map and form with Barcelona's location
+      await this.updateLocation(latitude, longitude, 'Barcelona, Catalonia, Spain');
+      
+      if (this.map) {
+        this.map.setView([latitude, longitude], 10);
+      }
+    } catch (error) {
+      console.error('Error setting default location:', error);
+    }
+  }
 
   ngAfterViewInit(): void {
     this.initializeMap();
@@ -257,6 +306,25 @@ export class TripFormComponent implements AfterViewInit, OnInit {
     }
   }
 
+  // Add method to clear location data
+  clearLocation(): void {
+    const locationGroup = this.tripForm.get('location') as FormGroup;
+    locationGroup.patchValue({
+      latitude: null,
+      longitude: null,
+      address: ''
+    });
+    
+    // Remove marker if exists
+    if (this.marker) {
+      this.map.removeLayer(this.marker);
+      this.marker = undefined as unknown as L.Marker;
+    }
+    
+    // Reset map view
+    this.map.setView([0, 0], 2);
+  }
+
   // Utility Getters
   get stages(): FormArray {
     return this.tripForm.get('stages') as FormArray;
@@ -331,81 +399,126 @@ export class TripFormComponent implements AfterViewInit, OnInit {
     console.log('Dates', this.tripForm.get('startDate')?.value, this.tripForm.get('endDate')?.value);
     console.log('Form Valid?', this.tripForm.valid);
     console.log('Form Errors:', this.tripForm.errors);
-  
+
+    // Mark all form controls as touched to trigger validation display
+    this.markFormGroupTouched(this.tripForm);
+
     if (this.tripForm.invalid) {
-      this.tripForm.markAllAsTouched();
-      let msg = $localize `Invalid form`;
+      let msg = $localize `Please correct the errors before submitting`;
       this.messageService.notifyMessage(msg, 'alert-danger');
       return;
     }
 
     try {
-      console.log('Form is valid, submitting...');
-      const formData = this.tripForm.getRawValue();
+        console.log('Form is valid, submitting...');
+        const formData = this.tripForm.getRawValue();
 
-      let startDate, endDate;
-      try {
-        startDate = new Date(formData.startDate);
-        endDate = new Date(formData.endDate);
-        
-        // Validar que las fechas son válidas
-        if (isNaN(startDate.getTime()) || isNaN(endDate.getTime())) {
-          throw new Error('Fechas inválidas');
+        let startDate, endDate;
+        try {
+            startDate = new Date(formData.startDate);
+            endDate = new Date(formData.endDate);
+            
+            // Validar que las fechas son válidas
+            if (isNaN(startDate.getTime()) || isNaN(endDate.getTime())) {
+                throw new Error('Fechas inválidas');
+            }
+        } catch (error) {
+            let msg = $localize `Error in date format`;
+            this.messageService.notifyMessage(msg, 'alert-danger');
+            console.error('Error al procesar fechas:', error, formData.startDate, formData.endDate);
+            return;
         }
-      } catch (error) {
-        let msg = $localize `Error in date format`;
-        this.messageService.notifyMessage(msg, 'alert-danger');
-        console.error('Error al procesar fechas:', error, formData.startDate, formData.endDate);
-        return;
-      }
 
-      if (this.currencyCode === 'GBP') {
-        formData.price = (formData.price * 1.2).toFixed(2); // Convertir a GBP
-        formData.stages.forEach((stage: any) => {
-          stage.price = (stage.price * 1.2) // Convertir a GBP
-        });
-      }
+        if (this.currencyCode === 'GBP') {
+            formData.price = (formData.price * 1.2).toFixed(2); // Convertir a GBP
+            formData.stages.forEach((stage: any) => {
+                stage.price = (stage.price * 1.2) // Convertir a GBP
+            });
+        }
 
 
-      const tripData = {
-        ...formData,
-        startDate: startDate.toISOString(),
-        endDate: endDate.toISOString(),
-        managerId: this.actor?.email,
-        managerName: `${this.actor?.name || ''} ${this.actor?.surname || ''}`,
-        ticker: this.trip?.ticker || this.generateTicker(),
-        deleted: this.trip?.deleted || false // Aseguramos que el campo deleted se mantiene
-      };
+        const tripData = {
+            ...formData,
+            startDate: startDate.toISOString(),
+            endDate: endDate.toISOString(),
+            managerId: this.actor?.email,
+            managerName: `${this.actor?.name || ''} ${this.actor?.surname || ''}`,
+            ticker: this.trip?.ticker || this.generateTicker(),
+            deleted: this.trip?.deleted || false // Aseguramos que el campo deleted se mantiene
+        };
 
-      // Asegura que cancelledReason se actualiza con el valor del formulario
-      if (this.tripId && formData.cancelledReason !== undefined) {
-        tripData.cancelledReason = formData.cancelledReason;
-      }
+        // Asegura que cancelledReason se actualiza con el valor del formulario
+        if (this.tripId && formData.cancelledReason !== undefined) {
+            tripData.cancelledReason = formData.cancelledReason;
+        }
 
-      let tripId;
-      if (this.tripId) {
-        await this.tripService.updateTrip(this.tripId, tripData);
-        tripId = this.tripId;
-        let msg = $localize `Trip updated successfully`;
-        this.messageService.notifyMessage(msg, 'alert-success');
-      } else {
-        tripId = await this.tripService.createTrip({
-          ...tripData, 
-          createdAt: new Date().toISOString(),
-          cancelledReason: "",
-          deleted: false // Al crear un nuevo viaje, deleted siempre es false
-        });
-        let msg = $localize `Trip created successfully`;
-        this.messageService.notifyMessage(msg, 'alert-success');
-      }
+        let tripId;
+        if (this.tripId) {
+            await this.tripService.updateTrip(this.tripId, tripData);
+            tripId = this.tripId;
+            let msg = $localize `Trip updated successfully`;
+            this.messageService.notifyMessage(msg, 'alert-success');
+        } else {
+            tripId = await this.tripService.createTrip({
+                ...tripData, 
+                createdAt: new Date().toISOString(),
+                cancelledReason: "",
+                deleted: false // Al crear un nuevo viaje, deleted siempre es false
+            });
+            let msg = $localize `Trip created successfully`;
+            this.messageService.notifyMessage(msg, 'alert-success');
+        }
 
-      this.router.navigate(['/trips', tripId]);
-      this.tripForm.reset();
+        this.router.navigate(['/trips', tripId]);
+        this.tripForm.reset();
     } catch (error) {
-      let msg = this.tripId ? $localize `Error updating trip` : $localize `Error creating trip`;
-      this.messageService.notifyMessage(msg, 'alert-danger');
-      console.error(msg, error);
+        let msg = this.tripId ? $localize `Error updating trip` : $localize `Error creating trip`;
+        this.messageService.notifyMessage(msg, 'alert-danger');
+        console.error(msg, error);
     }
+  }
+
+  // Helper method to mark all controls in a form group as touched
+  private markFormGroupTouched(formGroup: FormGroup): void {
+    Object.values(formGroup.controls).forEach(control => {
+      if (control instanceof FormGroup) {
+        this.markFormGroupTouched(control);
+      } else if (control instanceof FormArray) {
+        control.controls.forEach(arrayControl => {
+          if (arrayControl instanceof FormGroup) {
+            this.markFormGroupTouched(arrayControl);
+          } else {
+            arrayControl.markAsTouched();
+          }
+        });
+      } else {
+        control.markAsTouched();
+      }
+    });
+  }
+
+  // Error message handling methods
+  getErrorMessage(controlName: string): string {
+    const control = this.tripForm.get(controlName);
+    if (!control || !control.errors || !control.touched) return '';
+    
+    if (control.hasError('required')) return $localize `This field is required`;
+    if (control.hasError('notInFuture')) return $localize `Date must be in the future`;
+    if (control.hasError('endBeforeStart')) return $localize `End date must be after start date`;
+    if (control.hasError('min')) return $localize `Value must be greater than or equal to 0`;
+    
+    return $localize `Invalid field`;
+  }
+
+  getStageErrorMessage(stageIndex: number, fieldName: string): string {
+    const stage = this.stages.at(stageIndex) as FormGroup;
+    const control = stage.get(fieldName);
+    if (!control || !control.errors || !control.touched) return '';
+    
+    if (control.hasError('required')) return $localize `This field is required`;
+    if (control.hasError('min')) return $localize `Value must be greater than or equal to 0`;
+    
+    return $localize `Invalid field`;
   }
 
   // Generate ticker

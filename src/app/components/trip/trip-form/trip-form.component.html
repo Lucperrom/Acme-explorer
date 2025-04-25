@@ -13,12 +13,10 @@
     <div class="row g-3">
       <div class="col-md-6" *ngFor="let field of ['title', 'description', 'startDate', 'endDate']">
         <label [for]="field" class="form-label">{{ field | fieldTranslation }}:</label>
-        <input [maxLength]="field === 'title' ? '100' : field === 'description' ? '300' : ''" [id]="field" [type]="field.includes('Date') ? 'date' : 'text'" class="form-control"
-          [formControlName]="field" />
+        <input [maxLength]="field === 'title' ? '100' : field === 'description' ? '1000' : ''" [id]="field" [type]="field.includes('Date') ? 'date' : 'text'" class="form-control"
+          [formControlName]="field" [ngClass]="{'is-invalid': tripForm.get(field)?.invalid && tripForm.get(field)?.touched}" />
         <div class="text-danger small mt-1" *ngIf="tripForm.get(field)?.invalid && tripForm.get(field)?.touched">
-          <div *ngFor="let err of tripForm.get(field)?.errors | keyvalue">
-            {{ err.key }} error.
-          </div>
+          {{ getErrorMessage(field) }}
         </div>
       </div>
     </div>
@@ -51,11 +49,9 @@
               <div *ngFor="let field of ['title', 'description', 'price']" class="mb-2">
                 <label [for]="field + i" class="form-label">{{ field | fieldTranslation }}:</label>
                 <input [max]="field === 'price' ? '1000000' : ''" [maxLength]="field === 'title' ? '100' : field === 'description' ? '300' : ''" [id]="field + i" [type]="field === 'price' ? 'number' : 'text'" class="form-control"
-                  [formControlName]="field" />
+                  [formControlName]="field" [ngClass]="{'is-invalid': stage.get(field)?.invalid && stage.get(field)?.touched}" />
                 <div class="text-danger small mt-1" *ngIf="stage.get(field)?.invalid && stage.get(field)?.touched">
-                  <div *ngFor="let err of stage.get(field)?.errors | keyvalue">
-                    {{ err.key }} error.
-                  </div>
+                  {{ getStageErrorMessage(i, field) }}
                 </div>
               </div>
               <div class="text-end">
@@ -77,8 +73,12 @@
       <label i18n class="form-label">Requirements:</label>
       <div formArrayName="requirements">
         <div *ngFor="let req of requirements.controls; let i = index" class="input-group mb-2">
-          <input maxlength="100" [formControlName]="i" type="text" class="form-control" />
+          <input maxlength="100" [formControlName]="i" type="text" class="form-control" 
+            [ngClass]="{'is-invalid': req.invalid && req.touched}" />
           <button type="button" class="btn btn-danger" (click)="removeRequirement(i)" *ngIf="requirements.length > 1">-</button>
+          <div class="invalid-feedback" *ngIf="req.invalid && req.touched">
+            <ng-container i18n>This field is required.</ng-container>
+          </div>
         </div>
         <div i18n class="text-danger small"
           *ngIf="tripForm.get('requirements')?.hasError('emptyArray') && tripForm.get('requirements')?.touched">
@@ -119,6 +119,7 @@
           formControlName="searchQuery"
           (keydown.enter)="onSearch($event)" />
         <button i18n type="button" class="btn btn-outline-primary" (click)="handleSearch()">Search</button>
+        <button i18n type="button" class="btn btn-outline-secondary ms-2" (click)="clearLocation()">Clear</button>
       </div>
 
       <div id="map-container" class="rounded border" style="height: 300px; overflow: hidden; margin-bottom: 10px;">
@@ -127,7 +128,12 @@
 
       <div [formGroupName]="'location'" class="mb-3">
         <label i18n for="address" class="form-label">Address:</label>
-        <input maxlength="100" type="text" formControlName="address" readonly class="form-control mb-2"/>
+        <input maxlength="1000" type="text" formControlName="address" readonly class="form-control mb-2"/>
+        <div class="text-danger small mt-1" *ngIf="tripForm.get('location.address')?.invalid && tripForm.get('location.address')?.touched">
+          <div *ngFor="let err of tripForm.get('location.address')?.errors | keyvalue">
+            {{ err.key }} error.
+          </div>
+        </div>
         <input type="hidden" formControlName="latitude" />
         <input type="hidden" formControlName="longitude" />
       </div>
