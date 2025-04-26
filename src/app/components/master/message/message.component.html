@@ -1,9 +1,6 @@
 <div class="alert {{cssClass}} alert-dismissible fade show" role="alert" *ngIf="infoMessage != null && infoMessage.length > 0 && showMessage">
-    <div style="margin-left: 25px;">
-        <strong i18n>Message:</strong> {{infoMessage}}
-    </div>
-    <button i18n-aria-label type="button" class="close-left" (click)="removeMessage()" aria-label="Close" style="left: 10px;">
-      <span aria-hidden="true">❌</span>
-    </button>
+  <button i18n-aria-label type="button" class="btn-close position-absolute start-0 top-50 translate-middle-y ms-2" (click)="removeMessage()" aria-label="Close"></button>
+  <div class="ms-5">
+    <strong i18n>Message:</strong> {{infoMessage}}
   </div>
-  
+</div>

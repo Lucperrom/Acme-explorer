@@ -90,7 +90,6 @@ export class TripFormComponent implements AfterViewInit, OnInit {
 
       console.log(this.actor, this.trip.managerId);
       if (this.actor && this.isEditMode && this.actor?.email !== this.trip.managerId) {
-        console.log('User does not have permission to edit this trip. Redirecting to denied access page.');
         this.router.navigate(['/denied-access']);
       }
 
