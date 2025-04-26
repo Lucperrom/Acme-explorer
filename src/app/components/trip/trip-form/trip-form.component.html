@@ -11,12 +11,39 @@
     </div>
 
     <div class="row g-3">
-      <div class="col-md-6" *ngFor="let field of ['title', 'description', 'startDate', 'endDate']">
-        <label [for]="field" class="form-label">{{ field | fieldTranslation }}:</label>
-        <input [maxLength]="field === 'title' ? '100' : field === 'description' ? '1000' : ''" [id]="field" [type]="field.includes('Date') ? 'date' : 'text'" class="form-control"
-          [formControlName]="field" [ngClass]="{'is-invalid': tripForm.get(field)?.invalid && tripForm.get(field)?.touched}" />
-        <div class="text-danger small mt-1" *ngIf="tripForm.get(field)?.invalid && tripForm.get(field)?.touched">
-          {{ getErrorMessage(field) }}
+      <div class="col-md-6">
+        <label for="title" class="form-label">{{ 'title' | fieldTranslation }}:</label>
+        <input maxLength="100" id="title" type="text" class="form-control"
+          formControlName="title" [ngClass]="{'is-invalid': tripForm.get('title')?.invalid && tripForm.get('title')?.touched}" />
+        <div class="text-danger small mt-1" *ngIf="tripForm.get('title')?.invalid && tripForm.get('title')?.touched">
+          {{ getErrorMessage('title') }}
+        </div>
+      </div>
+
+      <div class="col-md-6">
+        <label for="description" class="form-label">{{ 'description' | fieldTranslation }}:</label>
+        <textarea maxLength="1000" id="description" class="form-control" rows="4"
+          formControlName="description" [ngClass]="{'is-invalid': tripForm.get('description')?.invalid && tripForm.get('description')?.touched}"></textarea>
+        <div class="text-danger small mt-1" *ngIf="tripForm.get('description')?.invalid && tripForm.get('description')?.touched">
+          {{ getErrorMessage('description') }}
+        </div>
+      </div>
+
+      <div class="col-md-6">
+        <label for="startDate" class="form-label">{{ 'startDate' | fieldTranslation }}:</label>
+        <input id="startDate" type="date" class="form-control"
+          formControlName="startDate" [ngClass]="{'is-invalid': tripForm.get('startDate')?.invalid && tripForm.get('startDate')?.touched}" />
+        <div class="text-danger small mt-1" *ngIf="tripForm.get('startDate')?.invalid && tripForm.get('startDate')?.touched">
+          {{ getErrorMessage('startDate') }}
+        </div>
+      </div>
+
+      <div class="col-md-6">
+        <label for="endDate" class="form-label">{{ 'endDate' | fieldTranslation }}:</label>
+        <input id="endDate" type="date" class="form-control"
+          formControlName="endDate" [ngClass]="{'is-invalid': tripForm.get('endDate')?.invalid && tripForm.get('endDate')?.touched}" />
+        <div class="text-danger small mt-1" *ngIf="tripForm.get('endDate')?.invalid && tripForm.get('endDate')?.touched">
+          {{ getErrorMessage('endDate') }}
         </div>
       </div>
     </div>
