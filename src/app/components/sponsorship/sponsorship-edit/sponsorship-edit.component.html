@@ -1,5 +1,5 @@
 <div [ngClass]="{ 'dark-mode': isDarkMode }">
-<form [formGroup]="sponsorshipForm" (ngSubmit)="onSubmit()" class="form-container">
+<form *ngIf="!(payed && isEditMode)" [formGroup]="sponsorshipForm" (ngSubmit)="onSubmit()" class="form-container">
       <h2>
         <ng-container *ngIf="isEditMode" i18n>Edit Sponsorship</ng-container>
         <ng-container *ngIf="!isEditMode" i18n>Create Sponsorship</ng-container>

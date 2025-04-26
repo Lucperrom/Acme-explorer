@@ -24,6 +24,11 @@ export class CheckoutComponent implements OnInit {
     const total = this.route.snapshot.queryParams['total'];
     const applicationId = this.route.snapshot.queryParams['applicationId'];
     const sponsorshipId = this.route.snapshot.queryParams['id'];
+
+    if (!total && !(applicationId || sponsorshipId)) {
+      this.router.navigate(['/denied-access']);
+    }
+
     this.payPalConfig = {
       currency: 'EUR',
       clientId: 'AaU6_-mjz316lEGTU0ru9KoznPsudlcy8VFW3vghRKzZwN5CzoWAWmFWATKYjoQ2Wiz1kn0HSLnsqoSX',

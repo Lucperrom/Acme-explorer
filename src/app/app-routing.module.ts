@@ -28,11 +28,7 @@ const routes: Routes = [
   { path: 'profile', component: ProfileEditComponent, canActivate: [AuthGuard] },
   { path: 'login', component: LoginComponent, canActivate: [ActorRoleGuard], data: {expectedRole: 'anonymous'} },
   { path: 'register', component: RegisterComponent, canActivate: [ActorRoleGuard], data: {expectedRole: 'anonymous' }},
-  {
-    path: 'forecast', children: [
-      { path: ':id', component: TripForecastComponent },
-    ]
-  },
+  { path: 'forecast/:id', component: TripForecastComponent },
   { path: 'create-manager', component: CreateManagerComponent, canActivate: [AuthGuard,ActorRoleGuard], data: {expectedRole: 'administrator' }},
   { path: 'trips', children:[
     {path: 'create', component: TripFormComponent, canActivate: [AuthGuard,ActorRoleGuard], data: {expectedRole: 'manager', mode: 'post' }},

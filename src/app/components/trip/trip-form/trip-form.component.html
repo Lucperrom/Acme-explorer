@@ -1,5 +1,5 @@
 <div [ngClass]="{ 'dark-mode': isDarkMode }">
-<form [formGroup]="tripForm" (ngSubmit)="onSubmit()" class="container mt-4 shadow p-4 rounded bg-light">
+<form *ngIf="!(isEditMode && actor?.email !== trip.managerId)" [formGroup]="tripForm" (ngSubmit)="onSubmit()" class="container mt-4 shadow p-4 rounded bg-light">
   <fieldset>
     <legend class="mb-4">
       <ng-container *ngIf="isEditMode" i18n>Edit this Trip</ng-container>

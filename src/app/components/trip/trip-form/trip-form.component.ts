@@ -12,6 +12,7 @@ import { TripService } from 'src/app/services/trip.service';
 import * as L from 'leaflet';
 import { Trip } from 'src/app/models/trip.model';
 import { ActivatedRoute } from '@angular/router';
+import { ApplicationService } from 'src/app/services/application.service';
 
 @Component({
   selector: 'app-trip-form',
@@ -35,6 +36,7 @@ export class TripFormComponent implements AfterViewInit, OnInit {
     private router: Router,
     private route: ActivatedRoute,
     private messageService: MessageService,
+    private applicationService: ApplicationService, 
     private authService: AuthService) {
     this.trip = new Trip();
   }
@@ -85,6 +87,18 @@ export class TripFormComponent implements AfterViewInit, OnInit {
       
       this.trip.startDate = startDate;
       this.trip.endDate = endDate;
+
+      console.log(this.actor, this.trip.managerId);
+      if (this.actor && this.isEditMode && this.actor?.email !== this.trip.managerId) {
+        console.log('User does not have permission to edit this trip. Redirecting to denied access page.');
+        this.router.navigate(['/denied-access']);
+      }
+
+      const editable = await this.isEditable(this.trip);
+
+      if (!editable) {
+        this.router.navigate(['/denied-access']);
+      }
 
       // Actualiza el formulario con los valores del viaje
       this.tripForm.patchValue({
@@ -554,4 +568,21 @@ export class TripFormComponent implements AfterViewInit, OnInit {
     const locale = localStorage.getItem('locale');
     return locale === 'es' ? 'EUR' : 'GBP';
   }
+
+  async isEditable(trip: Trip): Promise<boolean> {
+      const timeReason = trip.startDate.getTime() - new Date().getTime() > 10 * 24 * 60 * 60 * 1000;
+      if (!timeReason) return false;
+  
+      try {
+        const applications = await this.applicationService.getAllApplicationsByTripId(trip.id);
+        const hasAccepted = applications.some(app => 
+          app.status.toLowerCase() === 'accepted'
+        );
+        console.log("hasAccepted: ", hasAccepted);
+        return !hasAccepted;
+      } catch (error) {
+        console.error('Error checking cancelability:', error);
+        return false;
+      }
+    }
 }

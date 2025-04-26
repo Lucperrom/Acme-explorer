@@ -63,6 +63,16 @@ export class SponsorshipEditComponent implements OnInit {
       this.sponsorId = sponsorship.sponsorId;
       this.payed = sponsorship.payed;
       this.rate = sponsorship.rate;
+
+      if (sponsorship.sponsorId !== this.currentActor?.email) {
+        this.router.navigate(['/denied-access']);
+      }
+      console.log(sponsorship.sponsorId, this.currentActor?.email);
+
+      if (sponsorship.payed) {
+        this.router.navigate(['/denied-access']);
+      }
+
       this.sponsorshipForm.patchValue({
         url: sponsorship.url,
         link: sponsorship.link,

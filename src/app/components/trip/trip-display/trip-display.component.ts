@@ -61,6 +61,10 @@ export class TripDisplayComponent implements OnInit {
       if (this.tripId) {
         this.startCountdown();
         this.trip = await this.tripService.getTripById(this.tripId);
+        console.log("Trip: ", this.trip);
+        if (!this.trip.ticker) {
+          this.router.navigate(['/not-found']);
+        }
         this.sponsorhips = await this.sponsorshipService.getAllSponsorshipsByTripId(this.trip.ticker);
         this.filteredSponsorships = this.sponsorhips.filter(sponsorhip => sponsorhip.payed);
         this.trip.startDate = new Date(this.trip.startDate);
