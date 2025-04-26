@@ -40,7 +40,7 @@ export class ApplicationListComponent implements OnInit {
           if (!application.trip) { // Evita llamadas duplicadas si el viaje ya está asignado
             return this.tripService.getTripById(application.tripId).then(trip => {
               application.trip = trip;
-              if (this.actor.role.toLowerCase() === 'manager') {
+              if (this.actor.role.toLowerCase() === 'manager' && !(trip.deleted || trip.cancelledReason !== '')) {
                 tripTitleSet.add(trip.title); // Agrega el título del viaje al Set
               }
             }).catch(error => {
