@@ -25,13 +25,13 @@
             <input max="1000000" min="0" type="number" id="amount" formControlName="rate"/>
           </div>   
           <ng-template #showInput>
-            <input max="1000000" min="0" type="number" id="amount" formControlName="rate" readonly />
+            <input max="1000000" min="0" type="number" id="amount" formControlName="rate" readonly style="pointer-events: none; opacity: 0.5;" />
           </ng-template>
         </ng-template>
       </div>
       
 
-    <div class="form-group">
+    <div class="form-group" hidden>
         <label i18n for="payed">Payed</label>
         <input type="text" id="payed" formControlName="payed" required readonly />
     </div>
