@@ -37,9 +37,11 @@ export class TripListComponent implements OnInit {
   isVisible(trip: Trip) {
     if (this.activeRole === 'MANAGER') {
         return !trip.deleted;
+    } else if (this.activeRole === 'ADMINISTRATOR') {
+        return true;
     } else {
-        return !trip.deleted && trip.getTripStatus() !== 'canceled' && trip.getTripStatus() !== 'deleted';
-    }
+      return !trip.deleted && trip.getTripStatus() !== 'canceled' && trip.getTripStatus() !== 'deleted';
+  }
   }
 
   // isTripEditable(tripId: string): boolean {
@@ -105,8 +107,11 @@ export class TripListComponent implements OnInit {
       this.currentActor = actorData ? JSON.parse(actorData) as Actor : null;
       this.activeRole = this.currentActor?.role || '';
 
+      console.log("Current actor: ", this.activeRole);
       if (this.activeRole === 'MANAGER') {
         this.trips = await this.tripService.getAllTripsByManager(this.currentActor?.email || '');
+      } else if (this.activeRole === 'ADMINISTRATOR') {
+        this.trips = await this.tripService.getAllTripsAdmin();
       } else {
         this.trips = await this.tripService.getAllTrips();
       }
@@ -124,6 +129,10 @@ export class TripListComponent implements OnInit {
           if (this.activeRole === 'MANAGER') {
             this.tripService.getAllTripsFilteredByManager(term, this.currentActor?.email || '').then((trips: Trip[]) => {
               this.filteredTrips = trips.filter(trip => trip.cancelledReason === "" && !trip.deleted);
+            });
+          } else if (this.activeRole === 'ADMINISTRATOR') {
+            this.tripService.getAllTripsFilteredAdmin(term).then((trips: Trip[]) => {
+              this.filteredTrips = trips
             });
           } else {
             this.tripService.getAllTripsFiltered(term).then((trips: Trip[]) => {

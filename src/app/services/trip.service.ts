@@ -35,6 +35,24 @@ export class TripService {
     return trip;
   }
 
+  async getAllTripsAdmin(): Promise<Trip[]> {
+    try {
+      const tripsRef = collection(this.firestore, 'trips');
+      const querySnapshot = await getDocs(tripsRef);
+
+      let trips: Trip[] = [];
+      querySnapshot.forEach((doc) => {
+        let trip = this.getCurrentTripFromDoc(doc);
+          trips.push(trip);
+      });
+
+      return trips;
+    } catch (error) {
+      console.error("Error fetching trips:", error);
+      return [];
+    }
+  }
+
   async getAllTrips(): Promise<Trip[]> {
     try {
       const tripsRef = collection(this.firestore, 'trips');
@@ -158,6 +176,45 @@ export class TripService {
             trips.push(trip);
           }
         }
+      });
+
+      return trips;
+    } catch (error) {
+      console.error("Error fetching trips:", error);
+      return [];
+    }
+  }
+
+  async getAllTripsFilteredAdmin(term: string): Promise<Trip[]> {
+    try {
+      const tripsRef = collection(this.firestore, 'trips');
+      const querySnapshot = await getDocs(tripsRef);
+  
+      let trips: Trip[] = [];
+      querySnapshot.forEach((doc) => {
+        let trip = this.getCurrentTripFromDoc(doc);
+          let condicion1 = false;
+          let condicion2 = false;
+          let condicion3 = false;
+          if(trip.ticker != undefined && trip.ticker != null) {
+            if(trip.ticker.toLowerCase().includes(term.toLowerCase())){
+              condicion1 = true
+            }
+          }
+          if(trip.title != undefined && trip.title != null) {
+            if(trip.title.toLowerCase().includes(term.toLowerCase())){
+              condicion2 = true
+            }
+          }
+          if(trip.description != undefined && trip.description != null) {
+            if(trip.description.toLowerCase().includes(term.toLowerCase())){
+              condicion3 = true
+            }
+          }
+          if (condicion1 || condicion2 || condicion3 ){
+            trips.push(trip);
+          }
+        
       });
 
       return trips;
