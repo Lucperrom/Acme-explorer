@@ -315,10 +315,20 @@ export class TripFormComponent implements AfterViewInit, OnInit {
   }
 
   ngAfterViewInit(): void {
-    this.initializeMap();
+    // Use setTimeout to ensure the DOM is fully rendered
+    setTimeout(() => {
+      this.initializeMap();
+    }, 100);
   }
 
   initializeMap(): void {
+    // Check if map container exists before initializing
+    const mapElement = document.getElementById('map');
+    if (!mapElement) {
+      console.error('Map container element not found');
+      return;
+    }
+
     const customIcon = L.icon({
       iconUrl: '/assets/images/marker.png',
       iconSize: [25, 41],
@@ -327,29 +337,55 @@ export class TripFormComponent implements AfterViewInit, OnInit {
 
     // Ensure the map is initialized only once
     if (!this.map) {
-      this.map = L.map('map').setView([0, 0], 2);
-      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '© OpenStreetMap contributors'
-      }).addTo(this.map);
+      try {
+        this.map = L.map('map').setView([0, 0], 2);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+          attribution: '© OpenStreetMap contributors'
+        }).addTo(this.map);
 
-      this.map.on('click', async (e: L.LeafletMouseEvent) => {
-        const { lat, lng } = e.latlng;
-        await this.updateLocation(lat, lng);
-        this.map.setView([lat, lng], 13);
-      });
+        this.map.on('click', async (e: L.LeafletMouseEvent) => {
+          const { lat, lng } = e.latlng;
+          await this.updateLocation(lat, lng);
+          this.map.setView([lat, lng], 13);
+        });
+        
+        // If we already have location data, update marker
+        const locationData = this.tripForm.get('location')?.value;
+        if (locationData && locationData.latitude && locationData.longitude) {
+          setTimeout(() => {
+            if (!this.marker) {
+              this.marker = L.marker([locationData.latitude, locationData.longitude], { icon: customIcon }).addTo(this.map);
+            } else {
+              this.marker.setLatLng([locationData.latitude, locationData.longitude]);
+            }
+            this.map.setView([locationData.latitude, locationData.longitude], 13);
+          }, 100);
+        }
+        
+        console.log('Map initialized successfully');
+      } catch (error) {
+        console.error('Error initializing map:', error);
+      }
     }
 
-    this.map.invalidateSize();
+    // Force a resize after initialization to handle any layout issues
+    setTimeout(() => {
+      if (this.map) {
+        this.map.invalidateSize();
+      }
+    }, 300);
 
     // Update marker position if form values change
     this.tripForm.get('location')?.valueChanges.subscribe((loc: any) => {
-      if (loc.latitude && loc.longitude) {
+      if (loc && loc.latitude && loc.longitude) {
         if (this.marker) {
           this.marker.setLatLng([loc.latitude, loc.longitude]);
-        } else {
+        } else if (this.map) {
           this.marker = L.marker([loc.latitude, loc.longitude], { icon: customIcon }).addTo(this.map);
         }
-        this.map.setView([loc.latitude, loc.longitude], 13);
+        if (this.map) {
+          this.map.setView([loc.latitude, loc.longitude], 13);
+        }
       }
     });
   }
