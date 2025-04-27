@@ -685,7 +685,7 @@ export class TripFormComponent implements AfterViewInit, OnInit {
     return (control: AbstractControl): ValidationErrors | null => {
       const startDate = new Date(this.tripForm?.get('startDate')?.value);
       const endDate = new Date(control.value);
-      return endDate > startDate ? null : { endBeforeStart: true };
+      return endDate >= startDate ? null : { endBeforeStart: true };
     };
   }
 

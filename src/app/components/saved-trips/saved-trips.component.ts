@@ -17,6 +17,8 @@ export class SavedTripsComponent implements OnInit {
   filter: string = '';
   selectedListTrips: Trip[] = [];
   allTrips: Trip[] = [];
+  // This are trips that are not in the system anymore
+  unavailableTickers: string[] = [];
 
   constructor(
     private savedTripsService: SavedTripsService,
@@ -29,6 +31,7 @@ export class SavedTripsComponent implements OnInit {
     this.savedTripsService.savedLists$.subscribe(lists => {
       this.savedLists = lists;
       this.applyFilter();
+      this.updateActiveTripList();
     });
     this.fetchAllTrips();
   }
@@ -76,6 +79,9 @@ export class SavedTripsComponent implements OnInit {
       await this.savedTripsService.removeTripFromList(this.selectedList.id, tripTicker);
       this.selectedList.tripTickers = this.selectedList.tripTickers.filter(id => id !== tripTicker);
       this.selectedListTrips = this.selectedListTrips.filter(trip => trip.ticker !== tripTicker); // Update the displayed trips
+      if (this.unavailableTickers.includes(tripTicker)) {
+        this.unavailableTickers = this.unavailableTickers.filter(t => t !== tripTicker);
+      }
       let msg = $localize`Trip removed from list successfully`;
       this.messageService.notifyMessage(msg, 'alert-success');
     } catch (error) {
@@ -93,10 +99,19 @@ export class SavedTripsComponent implements OnInit {
     }
     console.log('Filtering trips for selected list.');
 
+    // Initialize unavailableTickers with all tickers from the selected list
+    this.unavailableTickers = [...(this.selectedList?.tripTickers || [])];
+
     // Filter trips by selected list tickers and exclude deleted trips
-    this.selectedListTrips = this.allTrips.filter(
-      trip => this.selectedList?.tripTickers?.includes(trip.ticker) && !trip.deleted
-    );
+    this.selectedListTrips = this.allTrips.filter(trip => {
+      if (this.selectedList?.tripTickers?.includes(trip.ticker) && !trip.deleted) {
+      // Remove the trip ticker from unavailableTickers if it is valid
+      this.unavailableTickers = this.unavailableTickers.filter(ticker => ticker !== trip.ticker);
+      return true;
+      }
+      return false;
+    });
+
 
     return this.selectedListTrips;
   }

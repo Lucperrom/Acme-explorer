@@ -35,6 +35,21 @@
             </div>
             <ul class="list-group">
               <li
+                *ngFor="let ticker of unavailableTickers"
+                class="list-group-item d-flex justify-content-between align-items-center expired"
+              >
+                <div>
+                  <span i18n>This trip no longer exists: </span>{{ ticker }}
+                </div>
+                <button
+                  i18n
+                  class="btn btn-sm btn-danger"
+                  (click)="removeTripFromSelectedList(ticker); $event.stopPropagation()"
+                >
+                  Remove
+                </button>
+              </li>
+              <li
                 *ngFor="let trip of selectedListTrips"
                 class="list-group-item d-flex justify-content-between align-items-center"
                 [ngClass]="trip.getTripStatus()"
@@ -52,7 +67,7 @@
                   Remove
                 </button>
               </li>
-              <li i18n *ngIf="selectedListTrips.length === 0" class="list-group-item text-center text-muted">
+              <li i18n *ngIf="selectedListTrips.length === 0 && unavailableTickers.length === 0" class="list-group-item text-center text-muted">
                 No trips in this list.
               </li>
             </ul>

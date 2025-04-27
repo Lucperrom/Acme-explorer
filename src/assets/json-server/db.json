@@ -35,21 +35,14 @@
           "id": "list-1745171072040",
           "name": "managerList",
           "tripTickers": [
-            "250418-JVQL",
             "250420-SDOV",
             "250420-RJBT",
-            "250420-ORUD"
+            "250427-XQVN",
+            "250427-EYOH",
+            "250427-WVWU",
+            "250427-MUHC"
           ],
-          "editTime": "2025-04-20T19:06:59.265Z",
-          "deleted": false
-        },
-        {
-          "id": "list-1745177843503",
-          "name": "new list",
-          "tripTickers": [
-            "250420-ORUD"
-          ],
-          "editTime": "2025-04-20T19:37:28.882Z",
+          "editTime": "2025-04-27T15:51:38.893Z",
           "deleted": false
         }
       ]
