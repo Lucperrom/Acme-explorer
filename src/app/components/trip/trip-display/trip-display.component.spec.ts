@@ -6,6 +6,7 @@ import { of } from "rxjs";
 import { ActivatedRouteStub } from "../../shared/activatedRouteStub";
 import { Firestore } from '@angular/fire/firestore';
 import { TripService } from "src/app/services/trip.service";
+import { AuthService } from "src/app/services/auth.service"; // Import AuthService
 
 describe('TripDisplayComponent', () => {
     let component: TripDisplayComponent;
@@ -13,6 +14,7 @@ describe('TripDisplayComponent', () => {
     let activatedRouteStub: ActivatedRouteStub;
     let tripServiceSpy: jasmine.SpyObj<TripService>;
     let testTrip: Trip;
+    let mockAuthService: any; // Add mock for AuthService
 
     beforeEach(async () => {
         activatedRouteStub = new ActivatedRouteStub();
@@ -26,12 +28,23 @@ describe('TripDisplayComponent', () => {
         tripServiceSpy = jasmine.createSpyObj('TripService', ['getTripById']);
         tripServiceSpy.getTripById.and.returnValue(Promise.resolve(testTrip));
 
+        mockAuthService = {
+            getCurrentActor: jasmine.createSpy('getCurrentActor').and.returnValue({
+                id: 'actor1',
+                name: 'John',
+                surname: 'Doe',
+                email: 'actor@actor.com',
+                role: 'MANAGER'
+            })
+        };
+
         await TestBed.configureTestingModule({
             declarations: [TripDisplayComponent],
             providers: [
                 { provide: ActivatedRoute, useValue: activatedRouteStub },
                 { provide: TripService, useValue: tripServiceSpy },
-                { provide: Firestore, useValue: {} } // Mock Firestore
+                { provide: Firestore, useValue: {} }, // Mock Firestore
+                { provide: AuthService, useValue: mockAuthService } // Provide mock AuthService
             ]
         }).compileComponents();
 
