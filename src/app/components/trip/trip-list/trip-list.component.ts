@@ -142,7 +142,7 @@ export class TripListComponent implements OnInit {
           }
         } else if (this.selectedFilter === 'allTrips') {
           this.tripService.getAllTripsFiltered(term).then((trips: Trip[]) => {
-            this.filteredTrips = trips.filter(trip => !trip.deleted);
+            this.filteredTrips = trips.filter(trip => !trip.deleted && trip.cancelledReason === "" && trip.getTripStatus() !== 'expired');
           });
         }
       });
