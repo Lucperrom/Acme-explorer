@@ -1,0 +1,291 @@
+[
+    {
+        "title": "Explore the Costa Brava Coastline",
+        "description": "Discover the breathtaking beauty of the Costa Brava with this week-long adventure. We will explore hidden coves, picturesque fishing villages, and enjoy the Mediterranean cuisine. Perfect for nature lovers and photography enthusiasts alike. The trip includes guided hiking tours, snorkeling sessions, and authentic local experiences.",
+        "stages": [
+          {
+            "title": "Barcelona to Blanes",
+            "description": "Departure from Barcelona to Blanes. Visit to the Marimurtra Botanical Garden and welcome dinner at a local seafood restaurant.",
+            "price": 150
+          },
+          {
+            "title": "Blanes to Tossa de Mar",
+            "description": "Coastal hike from Blanes to Tossa de Mar with spectacular views. Visit to the ancient walled town and Vila Vella historic site.",
+            "price": 120
+          },
+          {
+            "title": "Tossa de Mar to Sant Feliu de Guíxols",
+            "description": "Snorkeling experience in crystal clear waters and visit to the Monastery of Sant Feliu. Evening free for shopping and exploration.",
+            "price": 180
+          }
+        ],
+        "requirements": [
+          "Comfortable walking shoes for coastal hiking",
+          "Swimwear and beach towel",
+          "Sunscreen and hat for sun protection",
+          "Light rain jacket (just in case)"
+        ],
+        "pictures": [
+          "https://unexpectedcatalonia.com/wp-content/uploads/People-swimming-Costa-Brava.jpeg"
+        ],
+        "searchQuery": "Costa Brava, Spain"
+      },
+      {
+        "title": "Andalusian Road Trip: From Seville to Granada",
+        "description": "Embark on a 7-day cultural journey through the heart of Andalusia. Explore historic cities, flamenco traditions, and stunning Moorish architecture across Seville, Córdoba, and Granada.",
+        "stages": [
+          {
+            "title": "Seville Discovery",
+            "description": "Visit the Royal Alcázar, Seville Cathedral, and enjoy a live flamenco show in the old town.",
+            "price": 200
+          },
+          {
+            "title": "Córdoba and the Mezquita",
+            "description": "Drive to Córdoba to explore the iconic Mezquita, the old Jewish quarter, and taste local tapas.",
+            "price": 180
+          },
+          {
+            "title": "Granada and the Alhambra",
+            "description": "Final stop in Granada, with a guided tour of the Alhambra Palace and strolls through the Albaicín neighborhood.",
+            "price": 250
+          }
+        ],
+        "requirements": [
+          "Comfortable walking shoes",
+          "Sunscreen and hat",
+          "Light jacket for evenings",
+          "Valid driving license for rental car"
+        ],
+        "pictures": [
+          "https://i0.wp.com/katestraveltips.com/wp-content/uploads/2015/08/golden-triangle1.jpg?resize=468%2C286&ssl=1"
+        ],
+        "searchQuery": "Andalusia, Spain"
+      },
+      {
+        "title": "Northern Spain Adventure: Basque Country",
+        "description": "Discover the green hills, dramatic coastline, and culinary wonders of the Basque Country on this 6-day tour. Visit Bilbao, San Sebastián, and charming fishing villages.",
+        "stages": [
+          {
+            "title": "Bilbao and Guggenheim Museum",
+            "description": "Explore the futuristic Guggenheim Museum, stroll the Old Town, and enjoy pintxos (Basque tapas).",
+            "price": 190
+          },
+          {
+            "title": "Coastal Villages: Getaria and Zumaia",
+            "description": "Visit small fishing towns, walk along the Flysch cliffs, and relax on unspoiled beaches.",
+            "price": 160
+          },
+          {
+            "title": "San Sebastián Food and Culture",
+            "description": "Culinary tour in San Sebastián, visiting the Old Town and Concha Beach.",
+            "price": 220
+          }
+        ],
+        "requirements": [
+          "Comfortable walking shoes",
+          "Rain jacket (variable weather)",
+          "Appetite for food experiences",
+          "Camera for coastal views"
+        ],
+        "pictures": [
+          "https://tourism.euskadi.eus/contenidos/blog_post/0000000201_post_turismo/en_201/images/FP_SanJuandeGaztelugatxe.jpg",
+          "https://www.sansebastianturismoa.eus/images/tematicos-2/geoparque-txiki.jpg"
+
+        ],
+        "searchQuery": "Basque Country, Spain"
+      },
+      {
+        "title": "Oktoberfest Experience in Munich",
+        "description": "Dive into Bavarian culture with a 5-day trip to the world's largest beer festival. Experience traditional parades, lively beer tents, and Munich’s rich history during Oktoberfest.",
+        "stages": [
+          {
+            "title": "Arrival and City Tour",
+            "description": "Explore Munich’s Old Town, including Marienplatz, Viktualienmarkt, and the English Garden.",
+            "price": 160
+          },
+          {
+            "title": "Oktoberfest Tents and Traditions",
+            "description": "Day at Oktoberfest: table reservations at a traditional beer tent, local food, music, and dancing.",
+            "price": 250
+          },
+          {
+            "title": "Day Trip to Neuschwanstein Castle",
+            "description": "Guided tour to the fairy-tale Neuschwanstein Castle and the Bavarian countryside.",
+            "price": 220
+          }
+        ],
+        "requirements": [
+          "Traditional Bavarian outfit (optional but fun: lederhosen or dirndl)",
+          "Comfortable shoes",
+          "Advance booking for Oktoberfest tents highly recommended",
+          "ID for beer tent entrance"
+        ],
+        "pictures": [
+          "https://i.ytimg.com/vi/MnCVapaFquY/maxresdefault.jpg"
+        ],
+        "searchQuery": "Oktoberfest, Munich, Germany"
+      },
+      {
+        "title": "Fairytale Castles of the Loire Valley",
+        "description": "Spend 6 enchanting days visiting the most beautiful castles of France's Loire Valley. Explore Renaissance palaces, historic gardens, and charming villages in a dreamlike landscape.",
+        "stages": [
+          {
+            "title": "Château de Chambord",
+            "description": "Tour the iconic Chambord castle, with its grand staircase and vast hunting grounds.",
+            "price": 180
+          },
+          {
+            "title": "Château de Chenonceau",
+            "description": "Visit the 'Ladies’ Castle' spanning over the River Cher, surrounded by romantic gardens.",
+            "price": 190
+          },
+          {
+            "title": "Amboise and Clos Lucé",
+            "description": "Explore the Royal Château d'Amboise and Leonardo da Vinci’s final residence, Clos Lucé.",
+            "price": 160
+          }
+        ],
+        "requirements": [
+          "Comfortable walking shoes",
+          "Light jacket",
+          "Camera for castle photography",
+          "Interest in history and architecture"
+        ],
+        "pictures": [
+          "https://gobargingwp-s3.s3.eu-west-1.amazonaws.com/wp-content/uploads/2022/11/Chateau-de-Chenonceau-in-the-Loire-Valley.jpg"
+        ],
+        "searchQuery": "Loire Valley, France"
+      }
+,
+{
+    "title": "Tulip Season in the Netherlands",
+    "description": "Celebrate the arrival of spring with a 5-day journey through vibrant tulip fields, picturesque canals, and historic cities during the famous tulip season in the Netherlands.",
+    "stages": [
+      {
+        "title": "Amsterdam and Keukenhof Gardens",
+        "description": "Visit the world-renowned Keukenhof Gardens and explore Amsterdam’s historic canals and museums.",
+        "price": 180
+      },
+      {
+        "title": "Tulip Fields of Lisse",
+        "description": "Guided bicycle tour through colorful tulip fields and traditional windmill landscapes.",
+        "price": 160
+      },
+      {
+        "title": "Zaanse Schans and Traditional Villages",
+        "description": "Day trip to Zaanse Schans to see working windmills, cheese farms, and wooden clogs workshops.",
+        "price": 150
+      }
+    ],
+    "requirements": [
+      "Comfortable cycling clothes",
+      "Rain jacket (spring weather)",
+      "Camera for flower fields",
+      "Good walking shoes"
+    ],
+    "pictures": [
+      "https://www.leshuttle.com/media-library/media/leshuttle/articles/netherlands/keukenhof%20tulip%20festival/adobestock_502548664.jpg?width=1536&height=824&rmode=crop&format=webp&quality=60&v=202502191517"
+    ],
+    "searchQuery": "Tulip Fields, Netherlands"
+  }
+,
+{
+    "title": "Road Trip Through the Scottish Castles",
+    "description": "Set off on a legendary 7-day road trip across Scotland visiting ancient castles, dramatic landscapes, and mystical lochs. A perfect adventure for history lovers and photographers.",
+    "stages": [
+      {
+        "title": "Edinburgh and Edinburgh Castle",
+        "description": "Explore Scotland’s capital and visit the famous Edinburgh Castle towering over the city.",
+        "price": 200
+      },
+      {
+        "title": "Stirling Castle and Loch Lomond",
+        "description": "Tour Stirling Castle and relax along the beautiful shores of Loch Lomond.",
+        "price": 180
+      },
+      {
+        "title": "Inverness and Eilean Donan Castle",
+        "description": "Drive through the Highlands to visit Eilean Donan Castle and explore the surroundings of Inverness and Loch Ness.",
+        "price": 240
+      }
+    ],
+    "requirements": [
+      "Valid driving license (left-hand driving)",
+      "Warm layers for variable weather",
+      "Hiking shoes for outdoor stops",
+      "Camera for landscapes and castles"
+    ],
+    "pictures": [
+      "https://myitchytravelfeet.com/wp-content/uploads/2017/05/Eilean-Doane-Castle-scaled.jpg"
+    ],
+    "searchQuery": "Scottish Castles, Scotland"
+  },
+  {
+    "title": "The Amalfi Coast Dream Journey",
+    "description": "Sail, hike, and savor your way along Italy's spectacular Amalfi Coast over 6 sun-drenched days. Visit colorful villages, swim in crystal-clear waters, and indulge in Italian cuisine.",
+    "stages": [
+      {
+        "title": "Positano and Amalfi",
+        "description": "Wander the cliffside streets of Positano and explore the historic town of Amalfi, including the famous cathedral.",
+        "price": 200
+      },
+      {
+        "title": "Path of the Gods Hike",
+        "description": "Hike the breathtaking 'Path of the Gods' trail with stunning views of the Mediterranean.",
+        "price": 180
+      },
+      {
+        "title": "Capri Island Excursion",
+        "description": "Boat trip to Capri, visit the Blue Grotto, and stroll the chic boutiques of the island.",
+        "price": 250
+      }
+    ],
+    "requirements": [
+      "Good hiking shoes",
+      "Swimsuit for boat excursions",
+      "Sunscreen and hat",
+      "Light clothes for warm weather"
+    ],
+    "pictures": [
+      "https://blog.nautal.com/wp-content/uploads/2023/02/Amalfi-Coast-City-1160x519.jpg"
+    ],
+    "searchQuery": "Amalfi Coast, Italy"
+  },
+  {
+    "title": "Transylvanian Castles and Legends",
+    "description": "Uncover the mysteries of Transylvania in this 5-day tour. Explore Dracula’s Castle, medieval towns, and beautiful Carpathian landscapes.",
+    "stages": [
+      {
+        "title": "Bran Castle (Dracula’s Castle)",
+        "description": "Tour the iconic Bran Castle, linked to the Dracula legend, and learn about its real history.",
+        "price": 150
+      },
+      {
+        "title": "Brașov and Sighișoara",
+        "description": "Stroll the cobblestone streets of Brașov and visit Sighișoara, the birthplace of Vlad the Impaler.",
+        "price": 170
+      },
+      {
+        "title": "Peleș Castle and Sinaia",
+        "description": "Discover the luxurious Peleș Castle in the Carpathian Mountains and relax in the mountain resort of Sinaia.",
+        "price": 180
+      }
+    ],
+    "requirements": [
+      "Comfortable walking shoes",
+      "Jacket for mountain weather",
+      "Interest in history and legends",
+      "Camera for medieval architecture"
+    ],
+    "pictures": [
+      "https://i.ytimg.com/vi/xMinOHVbiJ0/maxresdefault.jpg"
+    ],
+    "searchQuery": "Transylvania, Romania"
+  }
+  
+  
+  
+      
+
+      
+]

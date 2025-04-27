@@ -220,4 +220,18 @@ export class TripService {
     }
   }
 
+  getSampleTrips(): Promise<any[]> {
+    return fetch('/assets/sample-trips.json')
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Failed to fetch sample trips');
+        }
+        return response.json();
+      })
+      .catch(error => {
+        console.error('Error fetching sample trips:', error);
+        return [];
+      });
+  }
+
 }

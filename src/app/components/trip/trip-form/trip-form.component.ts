@@ -31,6 +31,10 @@ export class TripFormComponent implements AfterViewInit, OnInit {
   searchQuery: string = ''; // Add search query state
   isDarkMode = false;
 
+  // Add these properties for template handling
+  sampleTrips: any[] = [];
+  selectedTemplate: string = '';
+
   constructor(
     private tripService: TripService,
     private router: Router,
@@ -148,6 +152,88 @@ export class TripFormComponent implements AfterViewInit, OnInit {
         });
       }
     }
+
+    // Load sample trips
+    this.loadSampleTrips();
+  }
+
+  // Add this method to load sample trips
+  async loadSampleTrips(): Promise<void> {
+    try {
+      this.sampleTrips = await this.tripService.getSampleTrips();
+    } catch (error) {
+      console.error('Error loading sample trips:', error);
+    }
+  }
+
+  // Add this method to fill form with selected template
+  prefillFromTemplate(): void {
+    if (!this.selectedTemplate) return;
+    
+    const selectedTrip = this.sampleTrips.find(trip => trip.title === this.selectedTemplate);
+    if (!selectedTrip) return;
+
+    // Calculate dates (starting next month, ending a week later)
+    const startDate = new Date();
+    startDate.setMonth(startDate.getMonth() + 1);
+    const startDateString = startDate.toISOString().split('T')[0];
+
+    const endDate = new Date(startDate);
+    endDate.setDate(endDate.getDate() + 7);
+    const endDateString = endDate.toISOString().split('T')[0];
+
+    // Fill main form fields
+    this.tripForm.patchValue({
+      title: selectedTrip.title,
+      description: selectedTrip.description,
+      startDate: startDateString,
+      endDate: endDateString
+    });
+
+    // Clear and add stages from template
+    const stagesArray = this.tripForm.get('stages') as FormArray;
+    stagesArray.clear();
+
+    if (selectedTrip.stages && Array.isArray(selectedTrip.stages)) {
+      selectedTrip.stages.forEach((stage: { title: any; description: any; price: any; }) => {
+        stagesArray.push(new FormGroup({
+          title: new FormControl(stage.title, Validators.required),
+          description: new FormControl(stage.description, Validators.required),
+          price: new FormControl(stage.price, [Validators.required, Validators.min(0)])
+        }));
+      });
+    }
+
+    // Clear and add requirements from template
+    const requirementsArray = this.tripForm.get('requirements') as FormArray;
+    requirementsArray.clear();
+
+    if (selectedTrip.requirements && Array.isArray(selectedTrip.requirements)) {
+      selectedTrip.requirements.forEach((req: any) => {
+        requirementsArray.push(new FormControl(req, Validators.required));
+      });
+    }
+
+    // Add pictures if available
+    if (selectedTrip.pictures && Array.isArray(selectedTrip.pictures)) {
+      const picturesArray = this.tripForm.get('pictures') as FormArray;
+      picturesArray.clear();
+      
+      selectedTrip.pictures.forEach((pic: any) => {
+        picturesArray.push(new FormControl(pic));
+      });
+    }
+
+    // Handle search query if available
+    if (selectedTrip.searchQuery) {
+      this.tripForm.get('searchQuery')?.setValue(selectedTrip.searchQuery);
+      this.handleSearch();
+    }
+
+    this.updatePrice();
+    
+    let msg = $localize`Template applied successfully`;
+    this.messageService.notifyMessage(msg, 'alert-success');
   }
 
   nonEmptyArrayValidator(): ValidatorFn {

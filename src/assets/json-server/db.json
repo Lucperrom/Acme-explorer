@@ -57,6 +57,20 @@
     {
       "id": "explorer@explorer.com",
       "savedLists": []
+    },
+    {
+      "id": "manager2@manager2.com",
+      "savedLists": [
+        {
+          "id": "list-1745753779422",
+          "name": "manager2newList",
+          "tripTickers": [
+            "250427-RAAS"
+          ],
+          "editTime": "2025-04-27T11:36:36.068Z",
+          "deleted": false
+        }
+      ]
     }
   ]
 }

@@ -7,7 +7,18 @@
     </legend>
     
     <div class="mb-3 text-end" *ngIf="!isEditMode">
-      <button i18n type="button" class="btn btn-outline-secondary" (click)="prefillForm()">Prefill Form</button>
+      <!-- Replaced prefill button with template dropdown -->
+      <div class="d-flex justify-content-end align-items-center">
+        <select class="form-select me-2" id="templateSelector" [(ngModel)]="selectedTemplate" 
+            [ngModelOptions]="{standalone: true}" style="max-width: 300px;">
+          <option value="" i18n>Select a template</option>
+          <option *ngFor="let template of sampleTrips" [value]="template.title">
+            {{template.title}}
+          </option>
+        </select>
+        <button type="button" class="btn btn-outline-primary" [disabled]="!selectedTemplate" 
+            (click)="prefillFromTemplate()" i18n>Apply</button>
+      </div>
     </div>
 
     <div class="row g-3">
