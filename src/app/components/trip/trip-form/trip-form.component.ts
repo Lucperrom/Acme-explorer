@@ -36,7 +36,7 @@ export class TripFormComponent implements AfterViewInit, OnInit {
     private router: Router,
     private route: ActivatedRoute,
     private messageService: MessageService,
-    private applicationService: ApplicationService, 
+    private applicationService: ApplicationService,
     private authService: AuthService) {
     this.trip = new Trip();
   }
@@ -76,15 +76,15 @@ export class TripFormComponent implements AfterViewInit, OnInit {
       this.trip = await this.tripService.getTripById(this.tripId);
       const startDate = this.trip.startDate ? new Date(this.trip.startDate) : new Date();
       const endDate = this.trip.endDate ? new Date(this.trip.endDate) : new Date();
-      
+
       // Verifica que las fechas sean válidas
       if (isNaN(startDate.getTime()) || isNaN(endDate.getTime())) {
         console.error('Fechas inválidas recibidas:', this.trip.startDate, this.trip.endDate);
-        let msg = $localize `Invalid dates received`;
+        let msg = $localize`Invalid dates received`;
         this.messageService.notifyMessage(msg, 'alert-danger');
         return;
       }
-      
+
       this.trip.startDate = startDate;
       this.trip.endDate = endDate;
 
@@ -162,11 +162,11 @@ export class TripFormComponent implements AfterViewInit, OnInit {
     const startDate = new Date();
     startDate.setMonth(startDate.getMonth() + 6); // In 6 months
     const startDateString = startDate.toISOString().split('T')[0];
-    
+
     const endDate = new Date(startDate);
     endDate.setDate(endDate.getDate() + 7); // One week after start date
     const endDateString = endDate.toISOString().split('T')[0];
-    
+
     // Prefill main form fields with realistic data
     this.tripForm.patchValue({
       title: 'Explore the Costa Brava Coastline',
@@ -178,19 +178,19 @@ export class TripFormComponent implements AfterViewInit, OnInit {
     // Clear and add realistic stages
     const stagesArray = this.tripForm.get('stages') as FormArray;
     stagesArray.clear();
-    
+
     stagesArray.push(new FormGroup({
       title: new FormControl('Barcelona to Blanes', Validators.required),
       description: new FormControl('Departure from Barcelona to Blanes. Visit to the Marimurtra Botanical Garden and welcome dinner at a local seafood restaurant.', Validators.required),
       price: new FormControl(150, [Validators.required, Validators.min(0)])
     }));
-    
+
     stagesArray.push(new FormGroup({
       title: new FormControl('Blanes to Tossa de Mar', Validators.required),
       description: new FormControl('Coastal hike from Blanes to Tossa de Mar with spectacular views. Visit to the ancient walled town and Vila Vella historic site.', Validators.required),
       price: new FormControl(120, [Validators.required, Validators.min(0)])
     }));
-    
+
     stagesArray.push(new FormGroup({
       title: new FormControl('Tossa de Mar to Sant Feliu de Guíxols', Validators.required),
       description: new FormControl('Snorkeling experience in crystal clear waters and visit to the Monastery of Sant Feliu. Evening free for shopping and exploration.', Validators.required),
@@ -200,12 +200,12 @@ export class TripFormComponent implements AfterViewInit, OnInit {
     // Clear and add realistic requirements
     const requirementsArray = this.tripForm.get('requirements') as FormArray;
     requirementsArray.clear();
-    
+
     requirementsArray.push(new FormControl('Comfortable walking shoes for coastal hiking', Validators.required));
     requirementsArray.push(new FormControl('Swimwear and beach towel', Validators.required));
     requirementsArray.push(new FormControl('Sunscreen and hat for sun protection', Validators.required));
     requirementsArray.push(new FormControl('Light rain jacket (just in case)', Validators.required));
-    
+
     // Add Barcelona as default location
     this.handleDefaultLocation();
   }
@@ -215,11 +215,11 @@ export class TripFormComponent implements AfterViewInit, OnInit {
     // Barcelona coordinates
     const latitude = 41.3851;
     const longitude = 2.1734;
-    
+
     try {
       // Update map and form with Barcelona's location
       await this.updateLocation(latitude, longitude, 'Barcelona, Catalonia, Spain');
-      
+
       if (this.map) {
         this.map.setView([latitude, longitude], 10);
       }
@@ -327,13 +327,13 @@ export class TripFormComponent implements AfterViewInit, OnInit {
       longitude: null,
       address: ''
     });
-    
+
     // Remove marker if exists
     if (this.marker) {
       this.map.removeLayer(this.marker);
       this.marker = undefined as unknown as L.Marker;
     }
-    
+
     // Reset map view
     this.map.setView([0, 0], 2);
   }
@@ -396,6 +396,12 @@ export class TripFormComponent implements AfterViewInit, OnInit {
     fileInput.click();
   }
 
+  addUrlPicture(url: string): void {
+    if (url && url.trim()) {
+      this.pictures.push(new FormControl(url.trim()));
+    }
+  }
+
   removePicture(index: number): void {
     this.pictures.removeAt(index);
   }
@@ -417,77 +423,75 @@ export class TripFormComponent implements AfterViewInit, OnInit {
     this.markFormGroupTouched(this.tripForm);
 
     if (this.tripForm.invalid) {
-      let msg = $localize `Please correct the errors before submitting`;
+      let msg = $localize`Please correct the errors before submitting`;
       this.messageService.notifyMessage(msg, 'alert-danger');
       return;
     }
 
     try {
-        console.log('Form is valid, submitting...');
-        const formData = this.tripForm.getRawValue();
+      console.log('Form is valid, submitting...');
+      const formData = this.tripForm.getRawValue();
 
-        let startDate, endDate;
-        try {
-            startDate = new Date(formData.startDate);
-            endDate = new Date(formData.endDate);
-            
-            // Validar que las fechas son válidas
-            if (isNaN(startDate.getTime()) || isNaN(endDate.getTime())) {
-                throw new Error('Fechas inválidas');
-            }
-        } catch (error) {
-            let msg = $localize `Error in date format`;
-            this.messageService.notifyMessage(msg, 'alert-danger');
-            console.error('Error al procesar fechas:', error, formData.startDate, formData.endDate);
-            return;
+      let startDate, endDate;
+      try {
+        startDate = new Date(formData.startDate);
+        endDate = new Date(formData.endDate);
+
+        // Validar que las fechas son válidas
+        if (isNaN(startDate.getTime()) || isNaN(endDate.getTime())) {
+          throw new Error('Fechas inválidas');
         }
-
-        if (this.currencyCode === 'GBP') {
-            formData.price = (formData.price * 1.2).toFixed(2); // Convertir a GBP
-            formData.stages.forEach((stage: any) => {
-                stage.price = (stage.price * 1.2) // Convertir a GBP
-            });
-        }
-
-
-        const tripData = {
-            ...formData,
-            startDate: startDate.toISOString(),
-            endDate: endDate.toISOString(),
-            managerId: this.actor?.email,
-            managerName: `${this.actor?.name || ''} ${this.actor?.surname || ''}`,
-            ticker: this.trip?.ticker || this.generateTicker(),
-            deleted: this.trip?.deleted || false // Aseguramos que el campo deleted se mantiene
-        };
-
-        // Asegura que cancelledReason se actualiza con el valor del formulario
-        if (this.tripId && formData.cancelledReason !== undefined) {
-            tripData.cancelledReason = formData.cancelledReason;
-        }
-
-        let tripId;
-        if (this.tripId) {
-            await this.tripService.updateTrip(this.tripId, tripData);
-            tripId = this.tripId;
-            let msg = $localize `Trip updated successfully`;
-            this.messageService.notifyMessage(msg, 'alert-success');
-        } else {
-            tripId = await this.tripService.createTrip({
-                ...tripData, 
-                createdAt: new Date().toISOString(),
-                cancelledReason: "",
-                deleted: false // Al crear un nuevo viaje, deleted siempre es false
-            });
-            let msg = $localize `Trip created successfully`;
-            this.messageService.notifyMessage(msg, 'alert-success');
-        }
-
-        this.router.navigate(['/trips', tripId]);
-        this.tripForm.reset();
-    } catch (error) {
-        let msg = this.tripId ? $localize `Error updating trip` : $localize `Error creating trip`;
+      } catch (error) {
+        let msg = $localize`Error in date format`;
         this.messageService.notifyMessage(msg, 'alert-danger');
-        console.error(msg, error);
+        console.error('Error al procesar fechas:', error, formData.startDate, formData.endDate);
+        return;
+      }
+
+      if (this.currencyCode === 'GBP') {
+        formData.price = (formData.price * 1.2).toFixed(2); // Convertir a GBP
+        formData.stages.forEach((stage: any) => {
+          stage.price = (stage.price * 1.2) // Convertir a GBP
+        });
+      }
+
+      // Extract pictures array from form controls for proper Firestore storage
+      const picturesArray = this.pictures.controls.map(control => control.value);
+
+      const tripData = {
+        ...formData,
+        pictures: picturesArray, // Explicitly add pictures array
+        startDate: startDate.toISOString(),
+        endDate: endDate.toISOString(),
+        managerId: this.actor?.email,
+        managerName: `${this.actor?.name || ''} ${this.actor?.surname || ''}`,
+        ticker: this.trip?.ticker || this.generateTicker(),
+        deleted: this.trip?.deleted || false
+      };
+
+      // Asegura que cancelledReason se actualiza con el valor del formulario
+      if (this.tripId && formData.cancelledReason !== undefined) {
+        tripData.cancelledReason = formData.cancelledReason;
+      }
+
+      let tripId;
+      if (this.tripId) {
+        await this.tripService.updateTrip(this.tripId, tripData);
+        tripId = this.tripId;
+        let msg = $localize`Trip updated successfully`;
+        this.messageService.notifyMessage(msg, 'alert-success');
+      } else {
+        tripId = await this.tripService.createTrip(tripData); // Use the same tripData format for both update and create
+        let msg = $localize`Trip created successfully`;
+        this.messageService.notifyMessage(msg, 'alert-success');
+      }
+
+      this.router.navigate(['/trips', tripId]);
+      this.tripForm.reset();
+    } catch (error) {
+      let msg = this.tripId ? $localize`Error updating trip` : $localize`Error creating trip`;
+      this.messageService.notifyMessage(msg, 'alert-danger');
+      console.error(msg, error);
     }
   }
 
@@ -514,24 +518,24 @@ export class TripFormComponent implements AfterViewInit, OnInit {
   getErrorMessage(controlName: string): string {
     const control = this.tripForm.get(controlName);
     if (!control || !control.errors || !control.touched) return '';
-    
-    if (control.hasError('required')) return $localize `This field is required`;
-    if (control.hasError('notInFuture')) return $localize `Date must be in the future`;
-    if (control.hasError('endBeforeStart')) return $localize `End date must be after start date`;
-    if (control.hasError('min')) return $localize `Value must be greater than or equal to 0`;
-    
-    return $localize `Invalid field`;
+
+    if (control.hasError('required')) return $localize`This field is required`;
+    if (control.hasError('notInFuture')) return $localize`Date must be in the future`;
+    if (control.hasError('endBeforeStart')) return $localize`End date must be after start date`;
+    if (control.hasError('min')) return $localize`Value must be greater than or equal to 0`;
+
+    return $localize`Invalid field`;
   }
 
   getStageErrorMessage(stageIndex: number, fieldName: string): string {
     const stage = this.stages.at(stageIndex) as FormGroup;
     const control = stage.get(fieldName);
     if (!control || !control.errors || !control.touched) return '';
-    
-    if (control.hasError('required')) return $localize `This field is required`;
-    if (control.hasError('min')) return $localize `Value must be greater than or equal to 0`;
-    
-    return $localize `Invalid field`;
+
+    if (control.hasError('required')) return $localize`This field is required`;
+    if (control.hasError('min')) return $localize`Value must be greater than or equal to 0`;
+
+    return $localize`Invalid field`;
   }
 
   // Generate ticker
@@ -569,19 +573,19 @@ export class TripFormComponent implements AfterViewInit, OnInit {
   }
 
   async isEditable(trip: Trip): Promise<boolean> {
-      const timeReason = trip.startDate.getTime() - new Date().getTime() > 10 * 24 * 60 * 60 * 1000;
-      if (!timeReason) return false;
-  
-      try {
-        const applications = await this.applicationService.getAllApplicationsByTripId(trip.id);
-        const hasAccepted = applications.some(app => 
-          app.status.toLowerCase() === 'accepted'
-        );
-        console.log("hasAccepted: ", hasAccepted);
-        return !hasAccepted;
-      } catch (error) {
-        console.error('Error checking cancelability:', error);
-        return false;
-      }
+    const timeReason = trip.startDate.getTime() - new Date().getTime() > 10 * 24 * 60 * 60 * 1000;
+    if (!timeReason) return false;
+
+    try {
+      const applications = await this.applicationService.getAllApplicationsByTripId(trip.id);
+      const hasAccepted = applications.some(app =>
+        app.status.toLowerCase() === 'accepted'
+      );
+      console.log("hasAccepted: ", hasAccepted);
+      return !hasAccepted;
+    } catch (error) {
+      console.error('Error checking cancelability:', error);
+      return false;
     }
+  }
 }

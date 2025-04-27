@@ -123,6 +123,26 @@
         <button i18n type="button" class="btn btn-primary" (click)="triggerFileInput()">Upload Pictures</button>
       </div>
 
+      <!-- Rebuild URL input from scratch -->
+      <div class="form-group mb-3">
+        <label for="pictureUrlInput">Add Picture URL</label>
+        <div class="input-group">
+          <input 
+            type="text" 
+            id="pictureUrlInput" 
+            class="form-control" 
+            placeholder="Enter image URL" 
+            #urlInput>
+          <button 
+            class="btn btn-primary" 
+            type="button" 
+            (click)="addUrlPicture(urlInput.value); urlInput.value = ''">
+            Add
+          </button>
+        </div>
+      </div>
+
+      <!-- Pictures Preview -->
       <div *ngIf="pictures.controls.length > 0" style="max-width: 300px;">
         <ngb-carousel>
           <ng-template ngbSlide *ngFor="let picture of pictures.controls; let j = index">
