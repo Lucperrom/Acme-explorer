@@ -102,31 +102,31 @@
 
       <!-- Acciones -->
       <div class="card-body text-center">
-        <button i18n class="btn btn-outline-primary me-2" 
+        <button i18n class="btn btn-outline-primary me-2 mb-2" 
                 *ngIf="trip.location?.latitude && trip.location?.longitude"
                 (click)="seeForecast(trip.id)">
           See Forecast
         </button>
 
-        <button i18n class="btn btn-primary me-2"
+        <button i18n class="btn btn-primary me-2 mb-2"
                 *ngIf="currentActor?.role === 'MANAGER' && tripEditable && tripLoaded"
                 (click)="editTrip(trip.id)">
           Edit
         </button>
 
-        <button i18n class="btn btn-success me-2"
+        <button i18n class="btn btn-success me-2 mb-2"
                 *ngIf="currentActor?.role === 'SPONSOR' && !hasSponsorFlag"
                 (click)="sponsorTrip(trip.ticker)">
           Sponsor
         </button>
 
-        <button i18n class="btn btn-danger me-2"
+        <button i18n class="btn btn-danger me-2 mb-2"
                 *ngIf="currentActor?.role === 'MANAGER' && tripEditable && tripLoaded"
                 (click)="deleteTrip()">
           Delete
         </button>
 
-        <button i18n class="btn btn-warning me-2"
+        <button i18n class="btn btn-warning me-2 mb-2"
                 *ngIf="currentActor?.role === 'MANAGER' && tripCancelable"
                 (click)="showCancelInput = true">
           Cancel
