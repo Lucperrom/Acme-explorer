@@ -1,15 +1,10 @@
 import { TestBed } from '@angular/core/testing';
 import { TripService } from './trip.service';
-import { Firestore, provideFirestore } from '@angular/fire/firestore';
-import { of } from 'rxjs';
+import { Firestore } from '@angular/fire/firestore';
+import { HttpClientModule } from '@angular/common/http'; // Import HttpClientModule
+import { MeteoService } from './meteo.service'; // Import MeteoService
 import { Trip } from '../models/trip.model';
-import { HttpClientModule } from '@angular/common/http';
-import { provideAuth } from '@angular/fire/auth';
-import { getAuth } from 'firebase/auth';
-import { environment } from 'src/environments/environment';
-import { getFirestore } from 'firebase/firestore';
-import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
-import { AngularFireModule } from '@angular/fire/compat';
+
 
 
 describe('TripService', () => {
@@ -42,7 +37,12 @@ describe('TripService', () => {
     };
 
     TestBed.configureTestingModule({
-      providers: [TripService, { provide: Firestore, useValue: firestoreMock }],
+      imports: [HttpClientModule], // Add HttpClientModule here
+      providers: [
+        TripService,
+        MeteoService, // Provide MeteoService
+        { provide: Firestore, useValue: firestoreMock },
+      ],
     });
 
     service = TestBed.inject(TripService);

@@ -7,6 +7,9 @@ import { By } from '@angular/platform-browser';
 import { RouterTestingModule } from '@angular/router/testing';
 import { NgbCarouselModule } from '@ng-bootstrap/ng-bootstrap';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { Firestore } from '@angular/fire/firestore'; // Import Firestore
+import { Trip } from 'src/app/models/trip.model';
+import { CurrencyChangePipe } from '../../../pipes/currency-change.pipe'; // Import the pipe
 
 describe('TripListComponent', () => {
   let component: TripListComponent;
@@ -17,9 +20,45 @@ describe('TripListComponent', () => {
   beforeEach(async () => {
     mockTripService = {
       getAllTrips: jasmine.createSpy('getAllTrips').and.returnValue(Promise.resolve([
-        { id: '1', title: 'Trip 1', description: 'Description 1', price: 100, startDate: new Date(), endDate: new Date(), pictures: [], deleted: false, cancelledReason: '', managerName: 'Manager 1', createdAt: new Date() },
-        { id: '2', title: 'Trip 2', description: 'Description 2', price: 200, startDate: new Date(), endDate: new Date(), pictures: [], deleted: false, cancelledReason: '', managerName: 'Manager 2', createdAt: new Date() },
-        { id: '3', title: 'Trip 3', description: 'Description 3', price: 300, startDate: new Date(), endDate: new Date(), pictures: [], deleted: false, cancelledReason: '', managerName: 'Manager 3', createdAt: new Date() }
+        new Trip({
+          id: '1',
+          title: 'Trip 1',
+          description: 'Description 1',
+          price: 100,
+          startDate: new Date(),
+          endDate: new Date(),
+          pictures: [],
+          deleted: false,
+          cancelledReason: '',
+          managerName: 'Manager 1',
+          createdAt: new Date()
+        }),
+        new Trip({
+          id: '2',
+          title: 'Trip 2',
+          description: 'Description 2',
+          price: 200,
+          startDate: new Date(),
+          endDate: new Date(),
+          pictures: [],
+          deleted: false,
+          cancelledReason: '',
+          managerName: 'Manager 2',
+          createdAt: new Date()
+        }),
+        new Trip({
+          id: '3',
+          title: 'Trip 3',
+          description: 'Description 3',
+          price: 300,
+          startDate: new Date(),
+          endDate: new Date(),
+          pictures: [],
+          deleted: false,
+          cancelledReason: '',
+          managerName: 'Manager 3',
+          createdAt: new Date()
+        })
       ]))
     };
 
@@ -32,11 +71,12 @@ describe('TripListComponent', () => {
     };
 
     await TestBed.configureTestingModule({
-      declarations: [TripListComponent],
+      declarations: [TripListComponent, CurrencyChangePipe], // Add the pipe to declarations
       imports: [RouterTestingModule, NgbCarouselModule, FontAwesomeModule],
       providers: [
         { provide: TripService, useValue: mockTripService },
-        { provide: AuthService, useValue: mockAuthService }
+        { provide: AuthService, useValue: mockAuthService },
+        { provide: Firestore, useValue: {} } // Mock Firestore
       ]
     }).compileComponents();
   });

@@ -5,8 +5,7 @@ import { AuthService } from 'src/app/services/auth.service';
 import { TripService } from 'src/app/services/trip.service';
 import { MessageService } from 'src/app/services/message.service';
 import { Firestore } from '@angular/fire/firestore';
-import { collection, getDocs, getDoc, doc } from '@angular/fire/firestore';
-import { of } from 'rxjs';
+import { Router } from '@angular/router';
 
 describe('ApplicationListComponent', () => {
   let component: ApplicationListComponent;
@@ -16,6 +15,7 @@ describe('ApplicationListComponent', () => {
   let mockTripService: any;
   let mockMessageService: any;
   let mockFirestore: any;
+  let mockRouter: any;
 
   beforeEach(async () => {
     mockApplicationService = {
@@ -43,6 +43,10 @@ describe('ApplicationListComponent', () => {
       getDoc: jasmine.createSpy('getDoc').and.returnValue(Promise.resolve({ exists: () => true, data: () => ({ title: 'Mock Trip' }) }))
     };
 
+    mockRouter = {
+      navigate: jasmine.createSpy('navigate')
+    };
+
     await TestBed.configureTestingModule({
       declarations: [ApplicationListComponent],
       providers: [
@@ -50,7 +54,8 @@ describe('ApplicationListComponent', () => {
         { provide: AuthService, useValue: mockAuthService },
         { provide: TripService, useValue: mockTripService },
         { provide: MessageService, useValue: mockMessageService },
-        { provide: Firestore, useValue: mockFirestore } // Proveedor funcional para Firestore
+        { provide: Firestore, useValue: mockFirestore }, // Proveedor funcional para Firestore
+        { provide: Router, useValue: mockRouter }
       ]
     }).compileComponents();
   });
@@ -106,20 +111,22 @@ describe('ApplicationListComponent', () => {
     await component.rejectApplication(application);
 
     expect(mockApplicationService.updateApplicationStatus).toHaveBeenCalledWith(
-      { ...application, rejectReason: 'Not eligible' },
-      'rejected'
+      application.id,
+      'rejected',
+      { ...application, rejectReason: 'Not eligible' }
     );
     expect(component.rejectReason).toBe('');
   });
 
-  it('should update application status to accepted when paying', async () => {
-    component.actor.role = 'explorer';
-    const application = { id: 'app1' };
+  it('should navigate to checkout page when paying for an application', async () => {
+    component.actor = { role: 'explorer' }; // Ensure the actor is an explorer
+    const application = { id: 'app1', trip: { price: 100 } };
 
-    await component.payForApplication(application);
+    component.payForApplication(application);
 
-    expect(mockApplicationService.updateApplicationStatus).toHaveBeenCalledWith(application, 'accepted');
-    expect(mockMessageService.notifyMessage).toHaveBeenCalledWith("Application successfully paid and accepted!", "alert-success");
+    expect(mockRouter.navigate).toHaveBeenCalledWith(['/checkout-application'], {
+      queryParams: { total: 100, applicationId: 'app1' }
+    });
   });
 
   it('should list applications of a trip that has at least two applications', async () => {

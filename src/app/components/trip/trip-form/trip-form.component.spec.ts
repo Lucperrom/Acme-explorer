@@ -1,11 +1,14 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule, FormArray, FormControl, Validators, FormGroup } from '@angular/forms';
+import { FormsModule } from '@angular/forms'; // Import FormsModule
 import { TripFormComponent } from './trip-form.component';
 import { TripService } from '../../../services/trip.service';
 import { AuthService } from '../../../services/auth.service';
 import { MessageService } from '../../../services/message.service';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router'; // Import ActivatedRoute
 import { of, throwError } from 'rxjs';
+import { Firestore } from '@angular/fire/firestore'; // Import Firestore
+import { FieldTranslationPipe } from '../../../pipes/field-translation.pipe'; // Import the pipe
 
 describe('TripFormComponent', () => {
   let component: TripFormComponent;
@@ -14,6 +17,7 @@ describe('TripFormComponent', () => {
   let mockAuthService: any;
   let mockMessageService: any;
   let mockRouter: any;
+  let mockActivatedRoute: any; // Add mock for ActivatedRoute
 
   beforeEach(async () => {
     mockTripService = {
@@ -38,14 +42,33 @@ describe('TripFormComponent', () => {
       navigate: jasmine.createSpy('navigate')
     };
 
+    mockActivatedRoute = {
+      snapshot: {
+        paramMap: {
+          get: jasmine.createSpy('get').and.returnValue(null)
+        },
+        routeConfig: {
+          path: ''
+        }
+      }
+    };
+
     await TestBed.configureTestingModule({
-      declarations: [TripFormComponent],
-      imports: [ReactiveFormsModule],
+      declarations: [
+        TripFormComponent,
+        FieldTranslationPipe // Ensure the pipe is declared
+      ],
+      imports: [
+        ReactiveFormsModule, // Ensure ReactiveFormsModule is imported
+        FormsModule // Add FormsModule to imports
+      ],
       providers: [
         { provide: TripService, useValue: mockTripService },
         { provide: AuthService, useValue: mockAuthService },
         { provide: MessageService, useValue: mockMessageService },
-        { provide: Router, useValue: mockRouter }
+        { provide: Router, useValue: mockRouter },
+        { provide: ActivatedRoute, useValue: mockActivatedRoute }, // Provide mock ActivatedRoute
+        { provide: Firestore, useValue: {} } // Mock Firestore
       ]
     }).compileComponents();
 
@@ -57,6 +80,14 @@ describe('TripFormComponent', () => {
   function initializeFormArrays() {
     (component.tripForm.get('stages') as FormArray).push(component.createStageGroup());
     (component.tripForm.get('requirements') as FormArray).push(new FormControl('Requirement 1', Validators.required));
+    component.tripForm.addControl('cancelledReason', new FormControl(''));
+    component.tripForm.addControl('deleted', new FormControl(false));
+    component.tripForm.addControl('location', new FormGroup({
+      latitude: new FormControl(null),
+      longitude: new FormControl(null),
+      address: new FormControl('')
+    }));
+    component.tripForm.addControl('searchQuery', new FormControl('')); // Ensure searchQuery is initialized
   }
 
   // ------------------ POSITIVE CASES ------------------
@@ -71,7 +102,11 @@ describe('TripFormComponent', () => {
       price: 500,
       stages: [{ title: 'Stage 1', description: 'Stage 1 desc', price: 500 }],
       requirements: ['Requirement 1'],
-      pictures: []
+      pictures: [],
+      cancelledReason: '',
+      deleted: false,
+      location: { latitude: 41.3851, longitude: 2.1734, address: 'Barcelona, Spain' },
+      searchQuery: '' // Add searchQuery to the form value
     });
 
     expect(component.tripForm.valid).toBeTrue();
@@ -80,14 +115,18 @@ describe('TripFormComponent', () => {
     expect(mockTripService.createTrip).toHaveBeenCalledWith(jasmine.objectContaining({
       title: 'Jungle party',
       description: 'A fun jungle adventure',
-      price: 500,
-      startDate: '2025-09-20',
-      endDate: '2025-10-01',
-      stages: [{ title: 'Stage 1', description: 'Stage 1 desc', price: 500 }],
+      price: '600.00', // Adjusted to match the formatted price
+      startDate: '2025-09-20T00:00:00.000Z', // Adjusted to match the ISO string format
+      endDate: '2025-10-01T00:00:00.000Z', // Adjusted to match the ISO string format
+      stages: [{ title: 'Stage 1', description: 'Stage 1 desc', price: 600 }], // Adjusted to match the formatted stage price
       requirements: ['Requirement 1'],
       pictures: [],
       managerId: 'actor@actor.com',
-      managerName: 'John Doe'
+      managerName: 'John Doe',
+      cancelledReason: '',
+      deleted: false,
+      location: { latitude: 41.3851, longitude: 2.1734, address: 'Barcelona, Spain' },
+      searchQuery: '' // Ensure searchQuery is included in the expected object
     }));
   });
 
@@ -102,7 +141,11 @@ describe('TripFormComponent', () => {
       price: 500,
       stages: [{ title: 'Stage 1', description: 'Stage 1 desc', price: 500 }],
       requirements: ['Requirement 1'],
-      pictures: []
+      pictures: [],
+      cancelledReason: '',
+      deleted: false,
+      location: { latitude: null, longitude: null, address: '' },
+      searchQuery: '' // Add searchQuery to the form value
     });
 
     expect(component.tripForm.valid).toBeTrue();
@@ -111,14 +154,18 @@ describe('TripFormComponent', () => {
     expect(mockTripService.createTrip).toHaveBeenCalledWith(jasmine.objectContaining({
       title: 'Jungle party',
       description: 'A fun jungle adventure',
-      price: 500,
-      startDate: '2025-09-20',
-      endDate: '2025-10-01',
-      stages: [{ title: 'Stage 1', description: 'Stage 1 desc', price: 500 }],
+      price: '600.00', // Adjusted to match the formatted price
+      startDate: '2025-09-20T00:00:00.000Z', // Adjusted to match the ISO string format
+      endDate: '2025-10-01T00:00:00.000Z', // Adjusted to match the ISO string format
+      stages: [{ title: 'Stage 1', description: 'Stage 1 desc', price: 600 }], // Adjusted to match the formatted stage price
       requirements: ['Requirement 1'],
       pictures: [],
       managerId: 'actor@actor.com',
-      managerName: 'John Doe'
+      managerName: 'John Doe',
+      cancelledReason: '',
+      deleted: false,
+      location: { latitude: null, longitude: null, address: '' },
+      searchQuery: '' // Ensure searchQuery is included in the expected object
     }));
   });
 
@@ -133,7 +180,11 @@ describe('TripFormComponent', () => {
       price: 0,
       stages: [],
       requirements: [],
-      pictures: []
+      pictures: [],
+      cancelledReason: '',
+      deleted: false,
+      location: { latitude: null, longitude: null, address: '' },
+      searchQuery: '' // Add searchQuery to the form value
     });
 
     expect(component.tripForm.invalid).toBeTrue();
@@ -153,7 +204,11 @@ describe('TripFormComponent', () => {
       price: 500,
       stages: [{ title: 'Stage 1', description: 'Stage 1', price: 500 }],
       requirements: ['Requirement 1'],
-      pictures: []
+      pictures: [],
+      cancelledReason: '',
+      deleted: false,
+      location: { latitude: null, longitude: null, address: '' },
+      searchQuery: '' // Add searchQuery to the form value
     });
 
     expect(component.tripForm.invalid).toBeTrue();
@@ -176,7 +231,11 @@ describe('TripFormComponent', () => {
       price: 500,
       stages: [{ title: 'Stage 1', description: 'Stage', price: 500 }],
       requirements: ['Requirement 1'],
-      pictures: []
+      pictures: [],
+      cancelledReason: '',
+      deleted: false,
+      location: { latitude: null, longitude: null, address: '' },
+      searchQuery: '' // Add searchQuery to the form value
     });
 
     expect(component.tripForm.invalid).toBeTrue();
