@@ -19,7 +19,7 @@ Acme Explorer is a web application designed for explorers, managers, sponsors, a
 
 Before starting, ensure you have the following installed:
 
-1. **Node.js** (v16 or higher) and **npm** (Node Package Manager)
+1. **Node.js** (v18) and **npm** (Node Package Manager)
    - [Download Node.js](https://nodejs.org/)
 2. **Angular CLI** (v14 or higher)
    - Install globally using:
