@@ -1,0 +1,54 @@
+<div class="container mt-4">
+  <h2 i18n class="text-center mb-4">My Watchlist</h2>
+
+  <div *ngIf="loading" class="text-center">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden" i18n>Loading...</span>
+    </div>
+  </div>
+
+  <div *ngIf="!loading && trips.length === 0 && unavailableTickers.length === 0" class="alert alert-secondary text-center">
+    <p i18n class="mb-0">Your watchlist is empty.</p>
+  </div>
+
+  <div *ngIf="!loading && trips.length > 0">
+    <ul class="list-group">
+      <li 
+        *ngFor="let trip of trips" 
+        class="list-group-item d-flex justify-content-between align-items-center"
+        [ngClass]="trip.getTripStatus()"
+      >
+        <div (click)="navigateToTrip(trip.id)" style="cursor: pointer;">
+          <h5 class="mb-1">{{ trip.title }}</h5>
+          <p class="mb-1">
+            <strong i18n>Price:</strong> {{ trip.price | currencyChange }}
+          </p>
+          <p class="text-info mb-0">
+            <strong i18n>Starts in:</strong> {{ getCountdown(trip) }}
+          </p>
+        </div>
+        <button 
+          i18n 
+          class="btn btn-sm btn-danger" 
+          (click)="removeFromWatchlist(trip.ticker); $event.stopPropagation()"
+        >
+          Remove
+        </button>
+      </li>
+    </ul>
+  </div>
+
+  <div *ngIf="!loading && unavailableTickers.length > 0">
+    <h5 i18n class="mt-4">Unavailable Trips</h5>
+    <ul class="list-group">
+      <li *ngFor="let ticker of unavailableTickers" class="list-group-item d-flex justify-content-between align-items-center expired">
+        <div>
+          <span i18n>This trip no longer exists: </span>{{ ticker }}
+        </div>
+        <button i18n class="btn btn-sm btn-danger" (click)="removeFromWatchlist(ticker)">
+          Remove
+        </button>
+      </li>
+    </ul>
+  </div>
+</div>

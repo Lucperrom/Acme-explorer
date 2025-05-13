@@ -23,6 +23,7 @@
           <ul class="dropdown-menu">
             <li><a i18n class="dropdown-item" [routerLink]="['/trips']">List trips</a></li>
             <li><a i18n class="dropdown-item" [routerLink]="['/saved-trips']">Saved Trips</a></li>
+            <li><a i18n class="dropdown-item" [routerLink]="['/watchlist']">Watchlist</a></li>
             <li *ngIf="currentActor && currentActor.role === 'MANAGER'"><hr class="dropdown-divider"></li>
             <li *ngIf="currentActor && currentActor.role === 'MANAGER'"><a i18n class="dropdown-item" [routerLink]="['/trips/create']">New trip</a></li>
           </ul>

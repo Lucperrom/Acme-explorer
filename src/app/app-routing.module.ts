@@ -23,6 +23,7 @@ import { CreateManagerComponent } from './components/security/create-manager/cre
 import { FinderComponent } from './components/finder/finder.component';
 import { CubeComponent } from './components/cube/cube.component';
 import { SavedTripsComponent } from './components/saved-trips/saved-trips.component';
+import { WatchlistComponent } from './components/watchlist/watchlist.component';
 
 const routes: Routes = [
   { path: 'profile', component: ProfileEditComponent, canActivate: [AuthGuard] },
@@ -64,6 +65,7 @@ const routes: Routes = [
   { path: 'home', component: HomeComponent },
   { path: 'denied-access', component: DeniedAccessComponent },
   { path: 'saved-trips', component: SavedTripsComponent },
+  { path: 'watchlist', component: WatchlistComponent },
   { path: '', redirectTo: '/trips', pathMatch: 'full' },
   { path: '**', component: NotFoundComponent },
 ];

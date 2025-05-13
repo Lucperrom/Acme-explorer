@@ -132,6 +132,10 @@
           Cancel
         </button>
 
+        <button i18n class="btn btn-info m-2" (click)="openAddToWatchlistModal()">
+          Add to Watchlist
+        </button>
+
         <app-add-to-list
           [tripTicker]="trip.ticker"
         ></app-add-to-list>
@@ -148,6 +152,24 @@
       </div>
     </div>
 
+    <!-- Modal for Add to Watchlist -->
+    <div class="modal" [class.show]="isWatchlistModalOpen" [style.display]="isWatchlistModalOpen ? 'block' : 'none'">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" i18n>Add Trip to Watchlist</h5>
+            <button type="button" class="btn-close" aria-label="Close" (click)="closeWatchlistModal()"></button>
+          </div>
+          <div class="modal-body">
+            <p i18n>Are you sure you want to add this trip to your watchlist?</p>
+          </div>
+          <div class="modal-footer">
+            <button i18n class="btn btn-secondary" (click)="closeWatchlistModal()">Cancel</button>
+            <button i18n class="btn btn-info" (click)="addToWatchlist()">Add to Watchlist</button>
+          </div>
+        </div>
+      </div>
+    </div>
 
     <!-- Formulario de aplicación -->
     <div class="container mt-5" *ngIf="!hasAppliedFlag && currentActor?.role?.toLowerCase() === 'explorer' && countdown !== 'The trip has already started' && countdown !== 'El viaje ya ha comenzado'">

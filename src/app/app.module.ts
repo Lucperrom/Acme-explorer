@@ -48,6 +48,7 @@ import { CurrencyChangePipe } from './pipes/currency-change.pipe';
 import { SavedTripsComponent } from './components/saved-trips/saved-trips.component';
 import { AddToListComponent } from './components/saved-trips/add-to-list/add-to-list.component';
 import { ListManagerComponent } from './components/saved-trips/list-manager/list-manager.component';
+import { WatchlistComponent } from './components/watchlist/watchlist.component';
 
 @NgModule({
   declarations: [
@@ -83,6 +84,7 @@ import { ListManagerComponent } from './components/saved-trips/list-manager/list
     CurrencyChangePipe,
     SavedTripsComponent,
     AddToListComponent,
+    WatchlistComponent,
     ListManagerComponent
   ],
   imports: [

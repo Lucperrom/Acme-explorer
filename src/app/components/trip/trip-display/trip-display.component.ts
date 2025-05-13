@@ -12,6 +12,8 @@ import { SponsorshipService } from 'src/app/services/sponsorship.service';
 import { Sponsorship } from 'src/app/models/sponsorship.model';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { SavedTripsService, SavedList } from 'src/app/services/saved-trips.service';
+import { WatchlistService } from 'src/app/services/watchlist.service';
+
 @Component({
   selector: 'app-trip-display',
   templateUrl: './trip-display.component.html',
@@ -36,7 +38,8 @@ export class TripDisplayComponent implements OnInit {
   tripLoaded: boolean = false;
   isDarkMode = false;
   loading: boolean = true; // Add loading property
-  
+  isWatchlistModalOpen = false;
+
   constructor(
     private tripService: TripService, 
     private savedTripsService: SavedTripsService,
@@ -46,7 +49,8 @@ export class TripDisplayComponent implements OnInit {
     private messageService: MessageService,
     private router: Router,
     private sponsorshipService: SponsorshipService,
-    private modalService: NgbModal
+    private modalService: NgbModal,
+    private watchlistService: WatchlistService
   ) { 
     this.trip = new Trip();
     this.trip.pictures = ["/assets/images/playa3.jpg"];
@@ -295,6 +299,27 @@ export class TripDisplayComponent implements OnInit {
           this.messageService.notifyMessage('Error adding trip to list', 'alert-danger');
         });
     }
+  }
+
+  openAddToWatchlistModal(): void {
+    this.isWatchlistModalOpen = true;
+  }
+
+  closeWatchlistModal(): void {
+    this.isWatchlistModalOpen = false;
+  }
+
+  async addToWatchlist(): Promise<void> {
+    if (this.trip.ticker) {
+      try {
+        this.watchlistService.addTripToWatchlist(this.trip.ticker);
+        this.messageService.notifyMessage('Trip added to watchlist successfully', 'alert-success');
+      } catch (error: any) {
+        console.error('Error adding trip to watchlist:', error);
+        this.messageService.notifyMessage(error.message || 'Error adding trip to watchlist', 'alert-danger');
+      }
+    }
+    this.closeWatchlistModal();
   }
 
 }
